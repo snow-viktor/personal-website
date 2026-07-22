@@ -1,0 +1,79 @@
+---
+import { formatDate } from '../lib/utils';
+
+export interface Props {
+  title: string;
+  date: Date;
+  type: string;
+  tags: string[];
+  summary: string;
+  url: string;
+}
+
+const { title, date, type, tags, summary, url } = Astro.props;
+---
+
+<article class="card project-card">
+  <a href={url} class="project-card-link">
+    <div class="project-card-header">
+      <span class="type-badge">{type}</span>
+      <time datetime={date.toISOString()}>{formatDate(date)}</time>
+    </div>
+    <h2 class="project-card-title">{title}</h2>
+    <p class="project-card-summary">{summary}</p>
+    {tags.length > 0 && (
+      <div class="project-card-tags">
+        {tags.slice(0, 3).map((tag) => (
+          <span class="tag">{tag}</span>
+        ))}
+      </div>
+    )}
+  </a>
+</article>
+
+<style>
+  .project-card {
+    padding: 1.25rem;
+  }
+
+  .project-card-link {
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    &:hover {
+      color: inherit;
+    }
+  }
+
+  .project-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8125rem;
+    color: var(--accent-gold);
+  }
+
+  .project-card-title {
+    font-size: 1.125rem;
+    margin: 0;
+  }
+
+  .project-card-summary {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .project-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+</style>

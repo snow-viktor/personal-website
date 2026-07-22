@@ -1,0 +1,64 @@
+---
+export interface Props {
+  type?: 'info' | 'tip' | 'caution';
+}
+
+const { type = 'info' } = Astro.props;
+
+const colors: Record<string, { border: string; bg: string; label: string }> = {
+  info: {
+    border: 'var(--accent-blue)',
+    bg: 'var(--accent-blue-muted)',
+    label: 'var(--accent-blue)',
+  },
+  tip: {
+    border: 'var(--accent-gold)',
+    bg: 'var(--accent-gold-muted)',
+    label: 'var(--accent-gold)',
+  },
+  caution: {
+    border: 'var(--accent)',
+    bg: 'var(--accent-muted)',
+    label: 'var(--accent)',
+  },
+};
+
+const c = colors[type];
+---
+
+<div
+  class="note"
+  style={`border-left-color: ${c.border}; background: ${c.bg};`}
+>
+  <span class="note-label" style={`color: ${c.label};`}>{type}</span>
+  <div class="note-body">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .note {
+    border-left: 3px solid;
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .note-label {
+    display: inline-block;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+
+  .note-body {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+  }
+
+  .note-body :global(p) {
+    margin-bottom: 0;
+  }
+</style>

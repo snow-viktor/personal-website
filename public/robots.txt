@@ -1,0 +1,18 @@
+# The best robot of all movies is WALL-E.
+#  __      ____  ____
+# /---__  / (O)|/(O) )
+#  \\\\/  \___/.\___/
+#    L\       ||
+#     \\ ____|||_____
+#      \\|==|[]__/==|\-|
+#       \|* |||||\==|/-|
+#    ____| *|[][]-- |_
+#   ||EEE|__EEEE_[]_|EE\
+#   ||EEE|=O     O|=|EEE|
+#   \LEEE|         \|EEE|  __))
+#                          ```
+
+User-agent: *
+Allow: /
+
+Sitemap: https://snow-viktor.pages.dev/sitemap-index.xml

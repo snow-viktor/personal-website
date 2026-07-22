@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('articles', ({ data }) => !data.draft);
+articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const grouped = new Map<string, typeof articles>();
+const ungrouped: typeof articles = [];
+
+for (const article of articles) {
+  if (article.data.collection) {
+    const col = article.data.collection;
+    if (!grouped.has(col)) grouped.set(col, []);
+    grouped.get(col)!.push(article);
+  } else {
+    ungrouped.push(article);
+  }
+}
+---
+
+<BaseLayout title="All Articles" description="All published articles">
+  <div class="container container--narrow page">
+    <h1 class="page-title">All Articles <span class="page-count">{articles.length}</span></h1>
+
+    {ungrouped.length > 0 && (
+      <div class="article-group">
+        <div class="articles-list">
+          {ungrouped.map((article) => (
+            <ArticleCard
+              title={article.data.title}
+              date={article.data.date}
+              tags={article.data.tags}
+              collection={article.data.collection}
+              summary={article.body ?? ''}
+              url={`/articles/${article.id}`}
+            />
+          ))}
+        </div>
+      </div>
+    )}
+
+    {[...grouped.entries()].map(([collection, items]) => (
+      <div class="article-group">
+        <h2 class="collection-heading">{collection} <span class="collection-count">{items.length}</span></h2>
+        <div class="articles-list">
+          {items.map((article) => (
+            <ArticleCard
+              title={article.data.title}
+              date={article.data.date}
+              tags={article.data.tags}
+              collection={article.data.collection}
+              summary={article.body ?? ''}
+              url={`/articles/${article.id}`}
+            />
+          ))}
+        </div>
+      </div>
+    ))}
+
+    {articles.length === 0 && (
+      <p class="empty">No articles yet.</p>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .page-title {
+    margin-bottom: 2rem;
+  }
+
+  .page-count {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--text-dim);
+    margin-inline-start: 0.5rem;
+  }
+
+  .article-group {
+    margin-bottom: 2.5rem;
+  }
+
+  .collection-heading {
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-accent);
+    position: relative;
+  }
+
+  .collection-count {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--text-dim);
+    margin-inline-start: 0.5rem;
+  }
+
+  .collection-heading::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -3px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .articles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .empty {
+    color: var(--text-muted);
+    font-style: italic;
+  }
+</style>

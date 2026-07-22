@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+import { truncate } from '../../lib/utils';
+
+const projects = await getCollection('projects', ({ data }) => !data.draft);
+projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout title="Projects" description="A showcase of my work">
+  <div class="container page">
+    <h1 class="page-title">Projects <span class="page-count">{projects.length}</span></h1>
+
+    {projects.length > 0 && (
+      <div class="projects-grid">
+        {projects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            date={project.data.date}
+            type={project.data.type}
+            tags={project.data.tags}
+            summary={truncate(project.body ?? '', 120)}
+            url={`/projects/${project.id}`}
+          />
+        ))}
+      </div>
+    )}
+
+    {projects.length === 0 && (
+      <p class="empty">No projects yet.</p>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .page-title {
+    margin-bottom: 2rem;
+  }
+
+  .page-count {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--text-dim);
+    margin-inline-start: 0.5rem;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .empty {
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  @media (max-width: 640px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

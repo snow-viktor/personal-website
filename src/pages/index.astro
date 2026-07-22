@@ -1,0 +1,186 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+import { truncate } from '../lib/utils';
+
+const allArticles = await getCollection('articles', ({ data }) => !data.draft);
+allArticles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const latestArticles = allArticles.slice(0, 4);
+
+const allProjects = await getCollection('projects', ({ data }) => !data.draft);
+allProjects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const latestProjects = allProjects.slice(0, 4);
+---
+
+<BaseLayout description="Personal website">
+  <section class="hero">
+    <div class="container container--narrow">
+      <h1 class="hero-title">
+        <span class="hero-name">SnowViktor</span>
+        <span class="hero-nickname">彬彬</span>
+      </h1>
+      <p class="hero-description">
+        由於想不出好的自我介紹，所以我決定水字數，直到靈感湧現……blablabla...
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Latest Articles</h2>
+        <a href="/articles" class="section-link">View all</a>
+      </div>
+      <div class="grid-1">
+        {latestArticles.map((article) => (
+          <ArticleCard
+            title={article.data.title}
+            date={article.data.date}
+            tags={article.data.tags}
+            collection={article.data.collection}
+            summary={article.body ?? ''}
+            url={`/articles/${article.id}`}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--last">
+    <div class="container">
+      <div class="section-header">
+        <h2>Recent Projects</h2>
+        <a href="/projects" class="section-link">View all</a>
+      </div>
+      <div class="grid-2">
+        {latestProjects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            date={project.data.date}
+            type={project.data.type}
+            tags={project.data.tags}
+            summary={truncate(project.body ?? '')}
+            url={`/projects/${project.id}`}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding: 6rem 0 4rem;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-name {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-gold) 50%, var(--accent-blue) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-nickname {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--text-muted);
+  }
+
+  .hero-description {
+    font-size: 1.0625rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 36rem;
+  }
+
+  .section {
+    margin-top: 2rem;
+  }
+
+  .section + .section {
+    margin-top: 3rem;
+  }
+
+  .section--last {
+    margin-bottom: 4rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-accent);
+    position: relative;
+  }
+
+  .section-header::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -3px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .section-header h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .section-link {
+    font-size: 0.8125rem;
+    color: var(--text-dim);
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+
+  .grid-1 {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding: 4rem 0 3rem;
+    }
+
+    .hero-title {
+      font-size: 2.25rem;
+    }
+
+    .grid-2 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

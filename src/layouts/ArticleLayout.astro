@@ -1,0 +1,194 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { formatDate, stripMarkdown, truncate } from '../lib/utils';
+
+export interface Props {
+  title: string;
+  date: Date;
+  body?: string;
+  tags?: string[];
+  collection?: string;
+  readingTime?: number;
+  prev?: { title: string; url: string };
+  next?: { title: string; url: string };
+}
+
+const { title, date, body, tags = [], collection, readingTime, prev, next } = Astro.props;
+const description = body ? truncate(stripMarkdown(body)) : undefined;
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="container container--narrow page">
+    <header class="article-header">
+      <div class="article-meta">
+        <time datetime={date.toISOString()}>{formatDate(date)}</time>
+        {collection && <span class="collection-badge">{collection}</span>}
+        {readingTime && <span class="reading-time">{readingTime} min read</span>}
+      </div>
+      <h1>{title}</h1>
+      {tags.length > 0 && (
+        <div class="article-tags">
+          {tags.map((tag) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
+      )}
+    </header>
+    <div class="article-content">
+      <slot />
+    </div>
+  </article>
+  <div class="container container--narrow">
+    {prev || next ? (
+      <nav class="article-nav">
+        <div class="article-nav-prev">
+          {prev && (
+            <a href={prev.url}>
+              <span class="article-nav-label">&larr; Previous</span>
+              <span class="article-nav-title">{prev.title}</span>
+            </a>
+          )}
+        </div>
+        <div class="article-nav-next">
+          {next && (
+            <a href={next.url}>
+              <span class="article-nav-label">Next &rarr;</span>
+              <span class="article-nav-title">{next.title}</span>
+            </a>
+          )}
+        </div>
+      </nav>
+    ) : (
+      <a href="/articles" class="back-link">&larr; Back to Articles</a>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .article-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--accent-gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .collection-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--accent-green);
+    padding-left: 0.7rem;
+    text-transform: lowercase;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent-green);
+    }
+  }
+
+  .reading-time {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+
+  .reading-time::before {
+    content: '·';
+    margin-right: 0.5rem;
+  }
+
+  .article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin-top: 0.75rem;
+  }
+
+  .article-content {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+  }
+
+  .article-content :global(h2) {
+    margin-top: 2.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-accent);
+  }
+
+  .article-content :global(img) {
+    margin: 1.5rem 0;
+  }
+
+  .article-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 3rem 0 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .article-nav-prev,
+  .article-nav-next {
+    display: flex;
+    min-width: 0;
+  }
+
+  .article-nav-next {
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .article-nav a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    text-decoration: none;
+    min-width: 0;
+  }
+
+  .article-nav-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-dim);
+  }
+
+  .article-nav-title {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.2s;
+  }
+
+  .article-nav a:hover .article-nav-title {
+    color: var(--accent);
+  }
+
+  .back-link {
+    display: inline-block;
+    font-size: 0.875rem;
+    color: var(--text-dim);
+    margin-top: 1rem;
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+</style>

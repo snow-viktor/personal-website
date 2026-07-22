@@ -1,0 +1,68 @@
+---
+export interface Props {
+  title: string;
+  author: string;
+  translator?: string;
+  date?: string;
+  publisher?: string;
+  isbn?: string;
+}
+
+const { title, author, translator, date, publisher, isbn } = Astro.props;
+
+const details: string[] = [];
+if (publisher) details.push(publisher);
+if (date) details.push(date);
+if (isbn) details.push(`ISBN ${isbn}`);
+---
+
+<div class="book-info">
+  <div class="book-info-head">
+    <span class="book-info-author">{author}</span>
+    {translator && <span class="book-info-translator">譯＼{translator}</span>}
+  </div>
+  <h3 class="book-info-title">{title}</h3>
+  {details.length > 0 && (
+    <div class="book-info-details">{details.join('．')}</div>
+  )}
+</div>
+
+<style>
+  .book-info {
+    background: var(--accent-blue-muted);
+    border-left: 3px solid var(--accent-blue);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .book-info-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .book-info-author {
+    color: var(--accent-gold);
+    font-weight: 500;
+  }
+
+  .book-info-translator {
+    color: var(--text-dim);
+    font-size: 0.8125rem;
+  }
+
+  .book-info-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0.375rem 0 0.375rem;
+  }
+
+  .book-info-details {
+    font-size: 0.8125rem;
+    color: var(--text-dim);
+  }
+</style>

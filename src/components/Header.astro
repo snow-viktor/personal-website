@@ -1,0 +1,114 @@
+---
+const links = [
+  { href: '/', label: 'Home' },
+  { href: '/articles', label: 'Articles' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/search', label: 'Search', icon: 'M10.5 16.5A6 6 0 1 0 10.5 4.5a6 6 0 0 0 0 12zm5.5-.5L21 21' },
+];
+---
+
+<header class="header">
+  <nav class="container header-nav">
+    <a href="/" class="logo">SnowViktor</a>
+    <ul class="nav-links">
+      {links.map((link) => {
+        const isActive = link.href === '/'
+          ? Astro.url.pathname === '/'
+          : Astro.url.pathname.startsWith(link.href);
+        return (
+          <li>
+            <a href={link.href} class={isActive ? 'active' : ''}>
+              {link.icon ? (
+                <>
+                  <span class="nav-label">{link.label}</span>
+                  <svg class="nav-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d={link.icon} />
+                  </svg>
+                </>
+              ) : (
+                link.label
+              )}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: color-mix(in srgb, var(--bg) 50%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 2.75rem;
+    font-family: var(--font-mono);
+  }
+
+  .logo {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    line-height: 1;
+
+    &:hover {
+      color: var(--text);
+    }
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    list-style: none;
+    padding-inline-start: 1rem;
+  }
+
+  .nav-links a {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+    transition: color 0.2s;
+    line-height: 1;
+
+    &:hover,
+    &.active {
+      color: var(--text);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+      border-radius: 2px;
+    }
+  }
+
+  .nav-icon {
+    vertical-align: middle;
+  }
+
+  @media (max-width: 640px) {
+    .nav-icon {
+      display: inline;
+    }
+
+    .nav-label {
+      display: none;
+    }
+
+    .nav-links {
+      gap: 0.75rem;
+    }
+  }
+</style>
