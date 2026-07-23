@@ -35,13 +35,13 @@ function quoteMark(lang: string, side: 'open' | 'close'): string {
         </a>
       ))}
     </nav>
-    <div class="footer-quote" id="footer-quote" data-quotes={JSON.stringify(quotes).replace(/"/g, '&quot;')}>
+    <div class="footer-quote" id="footer-quote" data-quotes={JSON.stringify(quotes)}>
       <span class="quote-mark" id="quote-mark-open" set:html={quoteMark(quotes[0].lang, 'open')}></span>
       <span class="quote-text" id="quote-text" lang={quotes[0].lang}>{quotes[0].text}</span>
       <span class="quote-mark" id="quote-mark-close" set:html={quoteMark(quotes[0].lang, 'close')}></span>
       <span class="quote-author" id="quote-author">&mdash; {quotes[0].author}</span>
     </div>
-    <p class="footer-text">&copy; {new Date().getFullYear()} SnowViktor &middot; Code <a href="/LICENSE-MIT">MIT</a> &middot; Content <a href="/LICENSE-CC-BY-NC-4.0">CC BY-NC 4.0</a></p>
+    <p class="footer-text">&copy; {new Date().getFullYear()} SnowViktor &middot; Code <a href="/MIT">MIT</a> &middot; Content <a href="/CC-BY-NC-4.0">CC BY-NC 4.0</a></p>
   </div>
 </footer>
 
