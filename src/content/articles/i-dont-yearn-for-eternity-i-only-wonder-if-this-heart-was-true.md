@@ -3,8 +3,8 @@ title: 不慕天長地久，只問此心曾否
 date: 2025-10-08
 tags:
   - feeling
-  - letting-go
-  - free-verse
+  - letting go
+  - free verse
 ---
 
 我不是典型  

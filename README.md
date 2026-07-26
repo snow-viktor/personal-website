@@ -21,4 +21,4 @@ npm run preview
 ## License
 
 - Code — [MIT License](./LICENSE)
-- Content (articles, projects, text, images) — [CC BY-NC 4.0](./LICENSE-CC-BY-NC-4.0)
+- Content (articles, projects, text, images) — [CC BY-NC 4.0](./LICENSE)

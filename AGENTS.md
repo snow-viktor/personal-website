@@ -1,44 +1,38 @@
 # personal-website
 
-Astro 7 site deployed to Cloudflare Pages (`snow-viktor.pages.dev`).
+Astro 7.x site deployed to Cloudflare Pages (snow-viktor.pages.dev).
 
 ## Commands
 
-```
-npm run dev       # astro dev
-npm run build     # astro build
-npm run preview   # astro preview
-npm run astro     # passthrough
-```
+| Command | Action |
+|---------|--------|
+| `npm run dev` | dev server with HMR |
+| `npm run build` | static build to `dist/` |
+| `npm run preview` | preview the build locally |
 
-No test/lint/typecheck scripts defined. Relies on `astro/tsconfigs/strict` for type checking via editor/IDE.
+No lint, typecheck, or test commands exist. Build before preview.
 
-## Content
+## Structure
 
-Two collections defined in `src/content.config.ts`:
-- `articles` — MD/MDX in `src/content/articles/`
-- `projects` — MD/MDX in `src/content/projects/`
+- `src/content/articles/` — MD/MDX with frontmatter (title, date, tags, collection, draft)
+- `src/content/projects/` — same schema plus `type` and `links[]`
+- `src/pages/articles/[...slug].astro` — article detail; `src/pages/articles/index.astro` — grouped listing
+- `src/pages/projects/[...slug].astro` / `index.astro` — same for projects
+- `src/pages/api/search-index.json.ts` — pre-rendered JSON endpoint for client-side search
+- `src/lib/` — `utils.ts` (CJK-aware truncate, countWords, formatDate, stripMarkdown), `search.ts` (buildSearchIndex)
+- `src/components/mdx.ts` — exports `{ BookInfo, Note, PullQuote }` for use in MDX content
+- `src/layouts/BaseLayout.astro` — zh-Hant-TW, dark-only theme, fixed header, footer with cycling quotes
 
-Both use `z.coerce.date()` for `date` field. Articles use `astro:content` `glob` loader with pattern `**/*.{md,mdx}`.
+## Conventions
 
-## Config
+- Path alias `@/*` → `src/*`
+- Dark theme only via CSS custom properties in `global.css`
+- Article filenames: `YYYY-MM-DD-slug.md` (date prefix convention)
+- `draft: true` excludes from all listings but still built
+- `collection` field in article frontmatter groups articles on the listing page
+- Reading time: CJK-dominant → 500 chars/min, else → 200 words/min
+- Truncation: 125 chars for CJK-dominant text, 250 otherwise
 
-- `tsconfig.json` — path alias `@/*` → `src/*` (not used in current code; all imports are relative)
-- `astro.config.mjs` — `trailingSlash: 'never'`, MDX + sitemap integrations
-- Site language: `zh-Hant-TW`
+## Skills (`.agents/skills/`)
 
-## Style
-
-- Dark theme via CSS custom properties in `src/styles/global.css`
-- Scoped `<style>` per component (Astro convention)
-- CSS nesting used throughout
-- Content articles use `ArticleLayout`; projects use `BaseLayout`
-
-## Search
-
-Client-side search using MiniSearch. Pre-built index at `/api/search-index.json` (prerendered JSON endpoint). CJK tokenizer with `Intl.Segmenter` + bigram fallback. Triggered by `Cmd+K`/`Ctrl+K`.
-
-## License
-
-- Code: MIT (see `LICENSE` and `public/MIT`)
-- Content: CC BY-NC 4.0 (see `LICENSE-CC-BY-NC-4.0` and `public/CC-BY-NC-4.0`)
+Installed from remote sources (see `skills-lock.json`). Load via `skill()` tool when relevant to the task.
