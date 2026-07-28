@@ -14,8 +14,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           placeholder="Search articles and projects…"
           autocomplete="off"
           spellcheck="false"
+          aria-label="Search articles and projects"
         />
-        <span id="search-status" class="search-status"></span>
+        <span id="search-status" class="search-status" aria-live="polite" aria-atomic="true"></span>
       </div>
       <div id="search-results" class="search-results"></div>
     </div>
@@ -105,7 +106,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     // Fetch the pre-built index
     statusEl.textContent = 'Loading search index…';
-    const res = await fetch('/api/search-index.json');
+    const res = await fetch('/api/search-index.json/');
     const docs = await res.json();
     miniSearch.addAll(docs);
     statusEl.textContent = `${docs.length} documents indexed`;

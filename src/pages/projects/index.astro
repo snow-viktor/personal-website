@@ -21,7 +21,7 @@ projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
             type={project.data.type}
             tags={project.data.tags}
             summary={truncate(project.body ?? '', 120)}
-            url={`/projects/${project.id}`}
+            url={`/projects/${project.id}/`}
           />
         ))}
       </div>

@@ -24,7 +24,7 @@ export function buildSearchIndex(
       title: article.data.title,
       body: stripMarkdown(article.body ?? ''),
       type: 'article',
-      url: `/articles/${article.id}`,
+      url: `/articles/${article.id}/`,
       tags: article.data.tags,
       date: article.data.date.toISOString(),
     });
@@ -37,7 +37,7 @@ export function buildSearchIndex(
       title: project.data.title,
       body: stripMarkdown(project.body ?? ''),
       type: 'project',
-      url: `/projects/${project.id}`,
+      url: `/projects/${project.id}/`,
       tags: project.data.tags,
       date: project.data.date.toISOString(),
     });

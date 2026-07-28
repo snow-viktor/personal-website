@@ -1,17 +1,12 @@
 ---
-const links = [
-  { href: '/', label: 'Home' },
-  { href: '/articles', label: 'Articles' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/search', label: 'Search', icon: 'M10.5 16.5A6 6 0 1 0 10.5 4.5a6 6 0 0 0 0 12zm5.5-.5L21 21' },
-];
+import { SITE, NAV_LINKS } from '../config';
 ---
 
 <header class="header">
   <nav class="container header-nav">
-    <a href="/" class="logo">SnowViktor</a>
+    <a href="/" class="logo">{SITE.name}</a>
     <ul class="nav-links">
-      {links.map((link) => {
+      {NAV_LINKS.map((link) => {
         const isActive = link.href === '/'
           ? Astro.url.pathname === '/'
           : Astro.url.pathname.startsWith(link.href);

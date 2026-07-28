@@ -5,5 +5,8 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   integrations: [mdx(), sitemap()],
   site: 'https://snow-viktor.pages.dev',
-  trailingSlash: 'ignore',
+  trailingSlash: 'always',
+  build: {
+    format: 'directory',
+  },
 });

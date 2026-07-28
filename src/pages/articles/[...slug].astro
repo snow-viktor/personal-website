@@ -2,7 +2,7 @@
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import components from '../../components/mdx';
 import { getCollection, getEntry, render } from 'astro:content';
-import { countWords } from '../../lib/utils';
+import { countWords, isCjkChar, CJK_READING_SPEED, LATIN_READING_SPEED, CJK_THRESHOLD } from '../../lib/utils';
 
 export async function getStaticPaths() {
   const articles = await getCollection('articles', ({ data }) => !data.draft);
@@ -25,13 +25,10 @@ const stripped = bodyText
   .replace(/[#*`>|~_-]/g, '')
   .replace(/\n+/g, ' ')
   .trim();
-const cjkCount = [...stripped].filter((ch) => {
-  const c = ch.charCodeAt(0);
-  return (c >= 0x4e00 && c <= 0x9fff) || (c >= 0x3400 && c <= 0x4dbf) || (c >= 0x2e80 && c <= 0x2eff);
-}).length;
+const cjkCount = [...stripped].filter((ch) => isCjkChar(ch.charCodeAt(0))).length;
 const totalChars = stripped.replace(/\s/g, '').length || 1;
-const isCjkDominant = cjkCount / totalChars > 0.3;
-const readingTime = Math.max(1, Math.round(wordCount / (isCjkDominant ? 500 : 200)));
+const isCjkDominant = cjkCount / totalChars > CJK_THRESHOLD;
+const readingTime = Math.max(1, Math.round(wordCount / (isCjkDominant ? CJK_READING_SPEED : LATIN_READING_SPEED)));
 
 const allArticles = await getCollection('articles', ({ data }) => !data.draft);
 allArticles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -47,8 +44,8 @@ const next = currentIndex < allArticles.length - 1 ? allArticles[currentIndex + 
   tags={entry.data.tags}
   collection={entry.data.collection}
   readingTime={readingTime}
-  prev={prev ? { title: prev.data.title, url: `/articles/${prev.id}` } : undefined}
-  next={next ? { title: next.data.title, url: `/articles/${next.id}` } : undefined}
+  prev={prev ? { title: prev.data.title, url: `/articles/${prev.id}/` } : undefined}
+  next={next ? { title: next.data.title, url: `/articles/${next.id}/` } : undefined}
 >
   <Content components={components} />
 </ArticleLayout>

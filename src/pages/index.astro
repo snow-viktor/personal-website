@@ -4,6 +4,7 @@ import ArticleCard from '../components/ArticleCard.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import { getCollection } from 'astro:content';
 import { truncate } from '../lib/utils';
+import { SITE } from '../config';
 
 const allArticles = await getCollection('articles', ({ data }) => !data.draft);
 allArticles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -14,12 +15,12 @@ allProjects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 const latestProjects = allProjects.slice(0, 4);
 ---
 
-<BaseLayout description="Personal website">
+<BaseLayout description={SITE.description}>
   <section class="hero">
     <div class="container container--narrow">
       <h1 class="hero-title">
-        <span class="hero-name">SnowViktor</span>
-        <span class="hero-nickname">彬彬</span>
+        <span class="hero-name">{SITE.name}</span>
+        <span class="hero-nickname">{SITE.nickName}</span>
       </h1>
       <p class="hero-description">
         由於想不出好的自我介紹，所以我決定水字數，直到靈感湧現……blablabla...
@@ -31,7 +32,7 @@ const latestProjects = allProjects.slice(0, 4);
     <div class="container">
       <div class="section-header">
         <h2>Latest Articles</h2>
-        <a href="/articles" class="section-link">View all</a>
+        <a href="/articles/" class="section-link">View all</a>
       </div>
       <div class="grid-1">
         {latestArticles.map((article) => (
@@ -41,7 +42,7 @@ const latestProjects = allProjects.slice(0, 4);
             tags={article.data.tags}
             collection={article.data.collection}
             summary={article.body ?? ''}
-            url={`/articles/${article.id}`}
+            url={`/articles/${article.id}/`}
           />
         ))}
       </div>
@@ -52,7 +53,7 @@ const latestProjects = allProjects.slice(0, 4);
     <div class="container">
       <div class="section-header">
         <h2>Recent Projects</h2>
-        <a href="/projects" class="section-link">View all</a>
+        <a href="/projects/" class="section-link">View all</a>
       </div>
       <div class="grid-2">
         {latestProjects.map((project) => (
@@ -62,7 +63,7 @@ const latestProjects = allProjects.slice(0, 4);
             type={project.data.type}
             tags={project.data.tags}
             summary={truncate(project.body ?? '')}
-            url={`/projects/${project.id}`}
+            url={`/projects/${project.id}/`}
           />
         ))}
       </div>
