@@ -145,6 +145,40 @@ hr {
   margin: 2rem 0;
 }
 
+sup a[data-footnote-ref] {
+  color: var(--accent);
+  font-size: 0.75em;
+  vertical-align: baseline;
+  text-decoration: none;
+  &:hover { filter: brightness(1.2); }
+}
+
+section[data-footnotes] {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.875rem;
+  color: var(--text-muted);
+
+  & ol { padding-left: 1.25rem; }
+  & li { margin-bottom: 0.5rem; }
+  & p { display: inline; margin: 0; }
+
+  & a:not(.data-footnote-backref) {
+    color: inherit;
+    word-break: break-all;
+    &:hover,
+    &:focus-visible { color: var(--accent-blue); }
+  }
+}
+
+a.data-footnote-backref {
+  color: var(--accent);
+  text-decoration: none;
+  margin-left: 0.25em;
+  &:hover { filter: brightness(1.2); }
+}
+
 .container {
   max-width: var(--max-width-wide);
   margin: 0 auto;

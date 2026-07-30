@@ -106,7 +106,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     // Fetch the pre-built index
     statusEl.textContent = 'Loading search index…';
-    const res = await fetch('/api/search-index.json/');
+    const res = await fetch('/api/search-index.json');
     const docs = await res.json();
     miniSearch.addAll(docs);
     statusEl.textContent = `${docs.length} documents indexed`;
@@ -149,7 +149,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       resultsEl.innerHTML = results
         .map(
-          (r: any) => {
+          (r: import('../lib/search').SearchDoc) => {
             const snippet = extractSnippet(r.body, query);
             return `
             <a href="${r.url}" class="search-result">
