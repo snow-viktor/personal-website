@@ -36,3 +36,8 @@ No lint, typecheck, or test commands exist. Build before preview.
 - CJK detection: `isCjkChar(code)` in `utils.ts` is the single shared function. No inline CJK range checks elsewhere.
 - Site metadata (name, lang, author, URL, robots, etc.) lives in `src/config.ts` — not scattered across components or `astro.config.mjs`.
 - `astro.config.mjs` is for Astro config only (site URL for sitemap integration, integrations). Application config goes in `src/config.ts`.
+
+## Gotchas
+
+- Search results are rendered client-side via `innerHTML` in `src/pages/search.astro`, so the `.search-result*` classes live in `src/styles/global.css` (unscoped). Astro-scoped `<style>` blocks only match static template nodes — styles for injected search results never apply unless they're global.
+- `astro.config.mjs` sets `trailingSlash: 'always'`; all internal links must end with `/` (e.g. `/articles/slug/`, `/projects/slug/`).
