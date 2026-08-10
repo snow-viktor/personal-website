@@ -1,16 +1,12 @@
+import { isCjkChar } from './cjk';
+
+export { isCjkChar };
+
 export const CJK_THRESHOLD = 0.3;
 export const CJK_READING_SPEED = 500;
 export const LATIN_READING_SPEED = 200;
 export const TRUNCATE_CJK = 125;
 export const TRUNCATE_LATIN = 250;
-
-export function isCjkChar(code: number): boolean {
-  return (
-    (code >= 0x4e00 && code <= 0x9fff) ||
-    (code >= 0x3400 && code <= 0x4dbf) ||
-    (code >= 0x2e80 && code <= 0x2eff)
-  );
-}
 
 function isCjkDominant(text: string): boolean {
   let cjk = 0;
@@ -27,6 +23,17 @@ export function stripMarkdown(text: string): string {
   return text
     .replace(/^---[\s\S]*?---/, '')
     .replace(/<\/?[A-Z][A-Za-z0-9]*(?:\s[^>]*)?\s*\/?>/g, '')
+    .trim();
+}
+
+export function stripForReading(text: string): string {
+  return text
+    .replace(/^---[\s\S]*?---/, '')
+    .replace(/!\[.*?\]\(.*?\)/g, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/<\/?[A-Z][A-Za-z0-9]*(?:\s[^>]*)?\s*\/?>/g, '')
+    .replace(/[#*`>|~_-]/g, '')
+    .replace(/\n+/g, ' ')
     .trim();
 }
 
@@ -57,6 +64,15 @@ export function countWords(text: string): number {
     }
   }
   return count;
+}
+
+export function computeReadingTime(body: string): number {
+  const wordCount = countWords(body);
+  const stripped = stripForReading(body);
+  const cjkCount = [...stripped].filter((ch) => isCjkChar(ch.charCodeAt(0))).length;
+  const totalChars = stripped.replace(/\s/g, '').length || 1;
+  const isCjkDominant = cjkCount / totalChars > CJK_THRESHOLD;
+  return Math.max(1, Math.round(wordCount / (isCjkDominant ? CJK_READING_SPEED : LATIN_READING_SPEED)));
 }
 
 export function formatDate(date: Date): string {

@@ -2,16 +2,14 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import { getCollection } from 'astro:content';
+import { getPublishedArticles, getPublishedProjects } from '../lib/content';
 import { truncate } from '../lib/utils';
 import { SITE } from '../config';
 
-const allArticles = await getCollection('articles', ({ data }) => !data.draft);
-allArticles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const allArticles = await getPublishedArticles();
 const latestArticles = allArticles.slice(0, 4);
 
-const allProjects = await getCollection('projects', ({ data }) => !data.draft);
-allProjects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const allProjects = await getPublishedProjects();
 const latestProjects = allProjects.slice(0, 4);
 ---
 

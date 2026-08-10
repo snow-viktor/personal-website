@@ -1,11 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
-import { getCollection } from 'astro:content';
+import { getPublishedProjects } from '../../lib/content';
 import { truncate } from '../../lib/utils';
 
-const projects = await getCollection('projects', ({ data }) => !data.draft);
-projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const projects = await getPublishedProjects();
 ---
 
 <BaseLayout title="Projects" description="A showcase of my work">

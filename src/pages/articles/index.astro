@@ -1,23 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
-import { getCollection } from 'astro:content';
+import { getPublishedArticles, groupByCollection } from '../../lib/content';
 
-const articles = await getCollection('articles', ({ data }) => !data.draft);
-articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-
-const grouped = new Map<string, typeof articles>();
-const ungrouped: typeof articles = [];
-
-for (const article of articles) {
-  if (article.data.collection) {
-    const col = article.data.collection;
-    if (!grouped.has(col)) grouped.set(col, []);
-    grouped.get(col)!.push(article);
-  } else {
-    ungrouped.push(article);
-  }
-}
+const articles = await getPublishedArticles();
+const { grouped, ungrouped } = groupByCollection(articles);
 ---
 
 <BaseLayout title="All Articles" description="All published articles">

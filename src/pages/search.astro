@@ -24,72 +24,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <script>
+  import { tokenize, extractSnippet, escapeHtml, highlightMatches } from '../lib/search-client';
+
   async function initSearch() {
     const input = document.getElementById('search-input') as HTMLInputElement;
     const resultsEl = document.getElementById('search-results')!;
     const statusEl = document.getElementById('search-status')!;
 
     const MiniSearch = (await import('minisearch')).default;
-
-    // CJK tokenizer using Intl.Segmenter
-    const segmenter =
-      typeof Intl.Segmenter !== 'undefined'
-        ? new Intl.Segmenter('zh-CN', { granularity: 'word' })
-        : null;
-
-    function isCJK(char: string): boolean {
-      const code = char.charCodeAt(0);
-      return (
-        (code >= 0x4e00 && code <= 0x9fff) ||
-        (code >= 0x3400 && code <= 0x4dbf) ||
-        (code >= 0x2e80 && code <= 0x2eff)
-      );
-    }
-
-    function tokenize(text: string): string[] {
-      const tokens: string[] = [];
-      const chars = [...text];
-
-      let i = 0;
-      while (i < chars.length) {
-        if (isCJK(chars[i])) {
-          let j = i;
-          while (j < chars.length && isCJK(chars[j])) j++;
-          const cjkSegment = chars.slice(i, j).join('');
-
-          if (segmenter) {
-            const segments = segmenter.segment(cjkSegment);
-            for (const seg of segments) {
-              if (seg.isWordLike) {
-                tokens.push(seg.segment.toLowerCase());
-              }
-            }
-          }
-
-          // also index bigrams for CJK
-          const cjkText = cjkSegment.toLowerCase();
-          for (let k = 0; k < cjkText.length - 1; k++) {
-            tokens.push(cjkText.slice(k, k + 2));
-          }
-          // single chars too
-          if (cjkText.length === 1) tokens.push(cjkText);
-
-          i = j;
-        } else {
-          let j = i;
-          while (j < chars.length && !isCJK(chars[j]) && chars[j] !== ' ') j++;
-          if (j > i) {
-            const word = chars.slice(i, j).join('').toLowerCase();
-            tokens.push(word);
-            i = j;
-          } else {
-            i++;
-          }
-        }
-      }
-
-      return tokens;
-    }
 
     const miniSearch = new MiniSearch({
       fields: ['title', 'body'],
@@ -104,32 +46,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       },
     });
 
-    // Fetch the pre-built index
     statusEl.textContent = 'Loading search index…';
     const res = await fetch('/api/search-index.json');
     const docs = await res.json();
     miniSearch.addAll(docs);
     statusEl.textContent = `${docs.length} documents indexed`;
-
-    function extractSnippet(
-      text: string,
-      query: string,
-      contextLen: number = 60
-    ): string | null {
-      const lower = text.toLowerCase();
-      const qLower = query.toLowerCase();
-      const idx = lower.indexOf(qLower);
-      if (idx === -1) return null;
-
-      const start = Math.max(0, idx - contextLen);
-      const end = Math.min(text.length, idx + qLower.length + contextLen);
-      let snippet = text.slice(start, end);
-
-      if (start > 0) snippet = '…' + snippet;
-      if (end < text.length) snippet = snippet + '…';
-
-      return snippet;
-    }
 
     input.addEventListener('input', () => {
       const query = input.value.trim();
@@ -167,29 +88,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         .join('');
     });
 
-    function escapeHtml(text: string): string {
-      return text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-    }
-
-    function highlightMatches(text: string, query: string): string {
-      const escaped = escapeHtml(text);
-      const terms = query.split(/\s+/).filter(Boolean);
-      let result = escaped;
-      for (const term of terms) {
-        const pattern = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        result = result.replace(
-          new RegExp(`(${pattern})`, 'gi'),
-          '<mark>$1</mark>'
-        );
-      }
-      return result;
-    }
-
-    // Focus input on cmd+k or ctrl+k
     document.addEventListener('keydown', (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
