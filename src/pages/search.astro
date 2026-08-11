@@ -49,26 +49,37 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     statusEl.textContent = 'Loading search index…';
     const res = await fetch('/api/search-index.json');
     const docs = await res.json();
-    miniSearch.addAll(docs);
+
+    const CHUNK = 50;
+    for (let i = 0; i < docs.length; i += CHUNK) {
+      miniSearch.addAll(docs.slice(i, i + CHUNK));
+      if (i + CHUNK < docs.length) {
+        statusEl.textContent = `Indexing… ${Math.min(i + CHUNK, docs.length)}/${docs.length}`;
+        await new Promise<void>((r) => requestAnimationFrame(() => r()));
+      }
+    }
     statusEl.textContent = `${docs.length} documents indexed`;
 
+    let timer: ReturnType<typeof setTimeout>;
     input.addEventListener('input', () => {
-      const query = input.value.trim();
-      if (!query) {
-        resultsEl.innerHTML = '';
-        statusEl.textContent = `${docs.length} documents indexed`;
-        return;
-      }
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        const query = input.value.trim();
+        if (!query) {
+          resultsEl.innerHTML = '';
+          statusEl.textContent = `${docs.length} documents indexed`;
+          return;
+        }
 
-      const results = miniSearch.search(query);
-      statusEl.textContent = `${results.length} result${results.length === 1 ? '' : 's'}`;
+        const results = miniSearch.search(query);
+        statusEl.textContent = `${results.length} result${results.length === 1 ? '' : 's'}`;
 
-      if (results.length === 0) {
-        resultsEl.innerHTML = `<p class="no-results">No results for "${query}"</p>`;
-        return;
-      }
+        if (results.length === 0) {
+          resultsEl.innerHTML = `<p class="no-results">No results for "${query}"</p>`;
+          return;
+        }
 
-      resultsEl.innerHTML = results
+        resultsEl.innerHTML = results
         .map(
           (r: import('../lib/search').SearchDoc) => {
             const snippet = extractSnippet(r.body, query);
@@ -86,6 +97,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           }
         )
         .join('');
+      }, 250);
     });
 
     document.addEventListener('keydown', (e) => {

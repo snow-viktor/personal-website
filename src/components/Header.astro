@@ -12,7 +12,7 @@ import { SITE, NAV_LINKS } from '../config';
           : Astro.url.pathname.startsWith(link.href);
         return (
           <li>
-            <a href={link.href} class={isActive ? 'active' : ''}>
+            <a href={link.href} class={isActive ? 'active' : ''} data-astro-prefetch>
               {link.icon ? (
                 <>
                   <span class="nav-label">{link.label}</span>
