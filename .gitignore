@@ -3,3 +3,6 @@ dist/
 .astro/
 *.local
 .env
+
+# Agent skills (restore via `npx skills experimental_install` from skills-lock.json)
+.agents/skills/

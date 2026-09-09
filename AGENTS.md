@@ -15,6 +15,7 @@ No lint, typecheck, or test commands exist. Build before preview.
 ## Structure
 
 - `src/config.ts` — single source of truth for site metadata (`SITE`), nav links (`NAV_LINKS`), social links (`SOCIAL_LINKS`), and footer quotes (`QUOTES`). Import from here in any component or layout instead of hardcoding strings.
+- `src/content.config.ts` — Zod schemas for both collections (article fields: title, date, tags, collection, draft; project fields: title, date, type, tags, links, draft)
 - `src/content/articles/` — MD/MDX with frontmatter (title, date, tags, collection, draft)
 - `src/content/projects/` — same schema plus `type` and `links[]`
 - `src/pages/articles/[...slug].astro` — article detail; `src/pages/articles/index.astro` — grouped listing
@@ -46,6 +47,12 @@ No lint, typecheck, or test commands exist. Build before preview.
 - `search-client.ts` is a client-side module (runs in browser). It imports `isCjkChar` from `cjk.ts`, which works because Vite bundles it. Don't import server-only modules from client-side `<script>` blocks.
 
 ## Agent skills
+
+Skills are gitignored (`.agents/skills/`). Restore via:
+
+```sh
+npx skills experimental_install
+```
 
 ### Issue tracker
 
