@@ -1,6 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import { formatDate, stripMarkdown, truncate } from '../lib/utils';
+import { formatDate, truncate } from '../lib/utils';
 import { SITE } from '../config';
 
 export interface Props {
@@ -15,7 +15,7 @@ export interface Props {
 }
 
 const { title, date, body, tags = [], collection, readingTime, prev, next } = Astro.props;
-const description = body ? truncate(stripMarkdown(body)) : undefined;
+const description = body ? truncate(body) : undefined;
 
 const articleJsonLd = {
   '@context': 'https://schema.org',

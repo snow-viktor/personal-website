@@ -1,6 +1,6 @@
 {
   "name": "personal-website",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "type": "module",
   "scripts": {
     "dev": "astro dev",
@@ -9,10 +9,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^7.0.5",
+    "@astrojs/mdx": "^8.0.1",
     "@astrojs/sitemap": "^3.7.3",
     "astro": "^7.1.6",
-    "minisearch": "^7.2.0"
+    "astro-mermaid": "^2.1.0",
+    "mermaid": "^11.17.2",
+    "minisearch": "^7.2.0",
+    "temml": "^0.13.5"
   },
   "allowScripts": {
     "esbuild@0.28.2": true

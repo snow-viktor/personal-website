@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="404">
+<BaseLayout title="404" description="找不到這個頁面。">
   <div class="not-found">
     <h1 class="not-found-code">404</h1>
     <p class="not-found-message">This page wandered into the wrong repository.</p>
@@ -32,27 +32,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     line-height: 1;
     letter-spacing: -0.04em;
     margin: 0 0 1rem;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-gold) 50%, var(--accent-blue) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    background-size: 200% 200%;
+    color: var(--text);
   }
 
   @media (prefers-reduced-motion: no-preference) {
     .not-found-code {
-      animation: float-404 4s ease-in-out infinite, hero-shift 4s ease-in-out infinite alternate;
+      animation: float-404 4s ease-in-out infinite;
     }
   }
 
   @keyframes float-404 {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-6px); }
-  }
-
-  @keyframes hero-shift {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 100% 50%; }
   }
 
   .not-found-message {

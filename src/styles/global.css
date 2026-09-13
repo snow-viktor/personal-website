@@ -1,4 +1,7 @@
+@import './temml-latin-modern.css';
+
 :root {
+  color-scheme: dark;
   --bg: #0f0f11;
   --bg-surface: #131316;
   --bg-card: #17171b;
@@ -25,6 +28,7 @@
   --font: 'Noto Sans', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif;
   --font-heading: 'Noto Serif CJK TC', 'Noto Serif TC', serif;
   --font-mono: 'Cascadia Mono', monospace;
+  --font-math: 'Latin Modern Math', 'Temml', math;
   --line-height: 1.7;
 }
 
@@ -133,10 +137,75 @@ p, ul, ol {
 }
 
 blockquote {
-  border-left: 3px solid var(--accent-gold);
-  padding-left: 1rem;
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 0 0 0 1.25rem;
   color: var(--text-muted);
   font-style: italic;
+}
+
+blockquote::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.25rem;
+  bottom: 0.25rem;
+  width: 2px;
+  background: var(--accent-gold);
+}
+
+/* GitHub-style alerts (`> [!NOTE]` … `> [!CAUTION]`, built by src/lib/alerts.ts).
+   Semantic <aside role="note"> callouts — never a one-sided accent bar. */
+.markdown-alert {
+  border: 1px solid;
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+.markdown-alert-title {
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-alert p:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-alert-note,
+.markdown-alert-important {
+  border-color: color-mix(in srgb, var(--accent-blue) 35%, transparent);
+  background: var(--accent-blue-muted);
+}
+
+.markdown-alert-note > .markdown-alert-title,
+.markdown-alert-important > .markdown-alert-title {
+  color: var(--accent-blue);
+}
+
+.markdown-alert-tip {
+  border-color: color-mix(in srgb, var(--accent-gold) 35%, transparent);
+  background: var(--accent-gold-muted);
+}
+
+.markdown-alert-tip > .markdown-alert-title {
+  color: var(--accent-gold);
+}
+
+.markdown-alert-warning,
+.markdown-alert-caution {
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  background: var(--accent-muted);
+}
+
+.markdown-alert-warning > .markdown-alert-title,
+.markdown-alert-caution > .markdown-alert-title {
+  color: var(--accent);
 }
 
 hr {
@@ -264,33 +333,52 @@ main > .page {
 .search-results {
   display: flex;
   flex-direction: column;
+  gap: 0.75rem;
 }
 
 .search-result {
   display: block;
-  padding: 1rem 0;
+  padding: 1.25rem;
   color: inherit;
-  border-bottom: 1px solid var(--border-accent);
-  border-radius: 4px;
-  transition: background 0.2s ease;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 
-  &:last-child {
-    border-bottom: none;
-  }
-
-  &:hover,
-  &:focus-visible {
+  &:hover {
     color: inherit;
-    background: var(--accent-muted);
-
-    .search-result-title {
-      color: var(--accent);
-    }
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   }
 
   &:focus-visible {
     outline: 2px solid var(--accent);
-    outline-offset: -2px;
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .search-result {
+    animation: search-reveal 250ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  }
+
+  .search-result:nth-child(2) { animation-delay: 30ms; }
+  .search-result:nth-child(3) { animation-delay: 60ms; }
+  .search-result:nth-child(4) { animation-delay: 90ms; }
+  .search-result:nth-child(5) { animation-delay: 120ms; }
+  .search-result:nth-child(6) { animation-delay: 150ms; }
+  .search-result:nth-child(n+7) { animation-delay: 180ms; }
+
+  @keyframes search-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
 
@@ -300,7 +388,7 @@ main > .page {
   gap: 0.5rem;
   font-size: 0.8125rem;
   color: var(--accent-gold);
-  margin-bottom: 0.375rem;
+  margin-bottom: 0.5rem;
 }
 
 .search-result-date {
@@ -311,9 +399,8 @@ main > .page {
 
 .search-result-title {
   font-family: var(--font-heading);
-  font-size: 1.0625rem;
-  margin: 0 0 0.375rem;
-  transition: color 0.2s ease;
+  font-size: 1.125rem;
+  margin: 0 0 0.5rem;
 }
 
 .search-result-snippet {
@@ -332,7 +419,61 @@ main > .page {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.search-empty,
+.search-no-results {
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+}
+
+.search-empty-icon {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: var(--text-dim);
+  margin-bottom: 0.75rem;
+}
+
+.search-empty-title {
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  margin: 0 0 0.5rem;
+}
+
+.search-empty-text,
+.search-no-results-text {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.search-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.search-skeleton-card {
+  height: 7.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .search-skeleton-card {
+    animation: search-skeleton-pulse 1.2s ease-in-out infinite alternate;
+  }
+
+  @keyframes search-skeleton-pulse {
+    from { opacity: 0.55; }
+    to { opacity: 1; }
+  }
 }
 
 .no-results {
@@ -352,10 +493,52 @@ main > .page {
   border: 0;
 }
 
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100%;
+  z-index: 200;
+  padding: 0.5rem 1rem;
+  background: var(--text);
+  color: var(--bg);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  transition: top 0.2s ease;
+
+  &:hover {
+    color: var(--bg);
+  }
+
+  &:focus-visible {
+    top: 0.5rem;
+  }
+}
+
 mark {
   background: var(--accent-blue-muted);
   color: #d6e4ef;
   padding: 0.1em 0.2em;
+  border-radius: var(--radius-sm);
+}
+
+math {
+  font-family: var(--font-math);
+  font-size: 1.02em;
+}
+
+math[display='block'] {
+  display: block;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.math-fallback {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  padding: 0.125em 0.375em;
+  background: var(--bg-surface);
+  color: var(--accent);
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
 }
 
@@ -377,7 +560,7 @@ textarea:not([rows]) {
 
 ::-webkit-scrollbar-thumb {
   background: var(--border);
-  border-radius: 3px;
+  border-radius: var(--radius-sm);
 }
 
 ::-webkit-scrollbar-thumb:hover {

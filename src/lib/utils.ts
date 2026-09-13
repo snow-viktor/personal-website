@@ -19,26 +19,70 @@ function isCjkDominant(text: string): boolean {
   return total > 0 && cjk / total > CJK_THRESHOLD;
 }
 
-export function stripMarkdown(text: string): string {
+function stripMath(text: string): string {
   return text
-    .replace(/^---[\s\S]*?---/, '')
-    .replace(/<\/?[A-Z][A-Za-z0-9]*(?:\s[^>]*)?\s*\/?>/g, '')
+    .replace(/\$\$[\s\S]*?\$\$/g, ' ')
+    .replace(/(?<!\$)\$(?!\$)([^$\n]+?)(?<!\$)\$(?!\$)/g, ' ');
+}
+
+function stripFrontmatter(text: string): string {
+  return text.replace(/^---\s*\n[\s\S]*?\n---\s*\n?/, '');
+}
+
+function stripFencedBlocks(text: string): string {
+  return text
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/~~~[\s\S]*?~~~/g, ' ');
+}
+
+function stripHtml(text: string): string {
+  return text
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<\/?[A-Za-z][^<>]*?\/?>/g, ' ');
+}
+
+export function stripMarkdown(text: string): string {
+  const withoutAutolink = stripFencedBlocks(stripFrontmatter(stripMath(text))).replace(
+    /<(https?:[^>\s]+)>/g,
+    '$1'
+  );
+  return stripHtml(withoutAutolink)
+    .replace(/^\s{0,3}import\s.+$/gm, '')
+    .replace(/^\s{0,3}export\s.+$/gm, '')
+    .replace(/^(\s{0,3}\[[^\]]+\]:\s*\S+.*)$/gm, '')
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1')
+    .replace(/!\[([^\]]*)\]\[[^\]]*\]/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/\[([^\]]+)\]\[[^\]]*\]/g, '$1')
+    .replace(/\[!(?:NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/gi, '')
+    .replace(/^\s{0,3}>\s?/gm, '')
+    .replace(/^\s{0,3}#{1,6}\s+/gm, '')
+    .replace(/^\s*[-|*_: \t]+$/gm, '')
+    .replace(/^\s{0,3}(?:[-*+]|\d+[.)])\s+(?:\[[ xX]\]\s*)?/gm, '')
+    .replace(/`([^`]*)`/g, '$1')
+    .replace(/`+/g, '')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/__([^_]+)__/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/(?<!\w)_([^_]+)_(?!\w)/g, '$1')
+    .replace(/~~([^~]+)~~/g, '$1')
+    .replace(/==([^=]+)==/g, '$1')
+    .replace(/\[\^[^\]]*\]/g, '')
+    .replace(/\|/g, ' ')
+    .split('\n')
+    .map((line) => line.replace(/[ \t\u3000]+/g, ' ').trim())
+    .filter(Boolean)
+    .join(' ')
+    .replace(/\s+/g, ' ')
     .trim();
 }
 
 export function stripForReading(text: string): string {
-  return text
-    .replace(/^---[\s\S]*?---/, '')
-    .replace(/!\[.*?\]\(.*?\)/g, '')
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-    .replace(/<\/?[A-Z][A-Za-z0-9]*(?:\s[^>]*)?\s*\/?>/g, '')
-    .replace(/[#*`>|~_-]/g, '')
-    .replace(/\n+/g, ' ')
-    .trim();
+  return stripMarkdown(text);
 }
 
 export function truncate(text: string, length?: number): string {
-  const stripped = stripMarkdown(text).replace(/\n{2,}/g, ' ');
+  const stripped = stripMarkdown(text);
   const limit = length ?? (isCjkDominant(stripped) ? TRUNCATE_CJK : TRUNCATE_LATIN);
   if (stripped.length <= limit) return stripped;
   return stripped.slice(0, limit) + '…';
@@ -76,8 +120,11 @@ export function computeReadingTime(body: string): number {
 }
 
 export function formatDate(date: Date): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, '0');
-  const d = String(date.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
+  return dateFormatter.format(date);
 }
+
+const dateFormatter = new Intl.DateTimeFormat('zh-TW', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});

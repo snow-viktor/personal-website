@@ -5,14 +5,38 @@ import { getPublishedArticles, groupByCollection } from '../../lib/content';
 
 const articles = await getPublishedArticles();
 const { grouped, ungrouped } = groupByCollection(articles);
+
+const slugify = (name: string) => `collection-${name.toLowerCase().replace(/\s+/g, '-')}`;
+const UNGROUPED_ID = 'collection-ungrouped';
+const UNGROUPED_LABEL = '未分類';
+
+const navItems = [
+  ...(ungrouped.length > 0
+    ? [{ id: UNGROUPED_ID, label: UNGROUPED_LABEL, count: ungrouped.length }]
+    : []),
+  ...[...grouped.entries()].map(([collection, items]) => ({
+    id: slugify(collection),
+    label: collection,
+    count: items.length,
+  })),
+];
 ---
 
 <BaseLayout title="All Articles" description="All published articles">
-  <div class="container container--narrow page">
+  <div class="container container--narrow page" id="top">
     <h1 class="page-title">All Articles <span class="page-count">{articles.length}</span></h1>
 
+    <nav class="collection-nav" aria-label="文章分類">
+      {navItems.map((item) => (
+        <a href={`#${item.id}`} class="collection-chip" data-target={item.id}>
+          {item.label} <span class="collection-chip-count">{item.count}</span>
+        </a>
+      ))}
+    </nav>
+
     {ungrouped.length > 0 && (
-      <div class="article-group">
+      <div class="article-group" id={UNGROUPED_ID}>
+        <h2 class="collection-heading">{UNGROUPED_LABEL} <span class="collection-count">{ungrouped.length}</span></h2>
         <div class="articles-list">
           {ungrouped.map((article) => (
             <ArticleCard
@@ -29,7 +53,7 @@ const { grouped, ungrouped } = groupByCollection(articles);
     )}
 
     {[...grouped.entries()].map(([collection, items]) => (
-      <div class="article-group">
+      <div class="article-group" id={slugify(collection)}>
         <h2 class="collection-heading">{collection} <span class="collection-count">{items.length}</span></h2>
         <div class="articles-list">
           {items.map((article) => (
@@ -66,6 +90,7 @@ const { grouped, ungrouped } = groupByCollection(articles);
 
   .article-group {
     margin-bottom: 2.5rem;
+    scroll-margin-top: calc(2.75rem + 4rem);
   }
 
   .collection-heading {
@@ -98,6 +123,73 @@ const { grouped, ungrouped } = groupByCollection(articles);
     background: var(--accent);
   }
 
+  .collection-nav {
+    position: sticky;
+    top: 2.75rem;
+    z-index: 50;
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 0.75rem 0;
+    margin-bottom: 1.5rem;
+    background: color-mix(in srgb, var(--bg) 50%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border-subtle);
+    scrollbar-width: none;
+  }
+
+  .collection-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .collection-chip {
+    flex-shrink: 0;
+    position: relative;
+    font-size: 0.875rem;
+    line-height: 1;
+    color: var(--text-muted);
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    transition: color 0.2s, background 0.2s;
+
+    &:hover {
+      color: var(--text);
+      background: color-mix(in srgb, var(--text) 8%, transparent);
+    }
+
+    &.active {
+      color: var(--accent-green);
+    }
+
+    &.active::after {
+      content: '';
+      position: absolute;
+      left: 0.75rem;
+      right: 0.75rem;
+      bottom: 0.15rem;
+      height: 2px;
+      border-radius: var(--radius-sm);
+      background: var(--accent-green);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+      border-radius: var(--radius-sm);
+    }
+  }
+
+  .collection-chip-count {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-inline-start: 0.25rem;
+  }
+
+  .collection-chip.active .collection-chip-count {
+    color: var(--accent-green);
+  }
+
   .articles-list {
     display: flex;
     flex-direction: column;
@@ -109,3 +201,35 @@ const { grouped, ungrouped } = groupByCollection(articles);
     font-style: italic;
   }
 </style>
+
+<script>
+  const chips = [...document.querySelectorAll<HTMLAnchorElement>('.collection-chip')];
+
+  function setActive(id: string | null) {
+    for (const chip of chips) {
+      chip.classList.toggle('active', chip.dataset.target === id);
+    }
+  }
+
+  // The title stands for "no section"; each group stands in for its chip.
+  // No-JS fallback: the chips are plain anchor links and still jump correctly.
+  const targets = [
+    ...document.querySelectorAll<HTMLElement>('.page-title'),
+    ...document.querySelectorAll<HTMLElement>('.article-group'),
+  ];
+
+  if ('IntersectionObserver' in window && targets.length > 0) {
+    const idFor = (el: HTMLElement) =>
+      el.classList.contains('page-title') ? null : el.id || null;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible.length > 0) setActive(idFor(visible[0].target as HTMLElement));
+      },
+      { rootMargin: '-30% 0px -60% 0px' }
+    );
+    for (const target of targets) observer.observe(target);
+  }
+</script>

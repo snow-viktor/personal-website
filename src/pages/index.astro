@@ -11,17 +11,31 @@ const latestArticles = allArticles.slice(0, 4);
 
 const allProjects = await getPublishedProjects();
 const latestProjects = allProjects.slice(0, 4);
+
+const heroName = SITE.name;
+const heroSplitAt = 4;
+const heroHead = heroName.slice(0, heroSplitAt);
+const heroTail = heroName.slice(heroSplitAt);
 ---
 
 <BaseLayout description={SITE.description}>
   <section class="hero">
     <div class="container container--narrow">
       <h1 class="hero-title">
-        <span class="hero-name">{SITE.name}</span>
+        <span class="hero-name">
+          {Array.from(heroHead).map((ch, i) => (
+            <span class="hero-letter" style={`--i: ${i};`}>{ch}</span>
+          ))}
+          <span class="hero-mark">
+            {Array.from(heroTail).map((ch, i) => (
+              <span class="hero-letter" style={`--i: ${i + heroSplitAt};`}>{ch}</span>
+            ))}
+          </span>
+        </span>
         <span class="hero-nickname">{SITE.nickName}</span>
       </h1>
       <p class="hero-description">
-        由於想不出好的自我介紹，所以我決定水字數，直到靈感湧現……blablabla...
+        I <em>will</em> become a smart and special person.
       </p>
     </div>
   </section>
@@ -71,26 +85,70 @@ const latestProjects = allProjects.slice(0, 4);
 
 <style>
   .hero {
-    padding: 6rem 0 4rem;
+    position: relative;
+    overflow: clip;
+    /* Stretch under the fixed header so the glow meets the nav's bottom edge. */
+    margin-top: calc(-2.75rem - 1rem);
+    padding: calc(6rem + 2.75rem + 1rem) 0 6rem;
+  }
+
+  /* Ambient hero glow: layered brand-hue radials, text stays solid. */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(48rem 26rem at 14% -6%, rgba(228, 138, 74, 0.28), transparent 70%),
+      radial-gradient(36rem 22rem at 88% 4%, rgba(122, 158, 192, 0.2), transparent 70%),
+      radial-gradient(30rem 20rem at 60% 108%, rgba(212, 160, 96, 0.15), transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero > div {
+    position: relative;
   }
 
   .hero-title {
-    font-size: 3rem;
+    font-size: clamp(2.5rem, 1rem + 8vw, 4.5rem);
     font-weight: 700;
     letter-spacing: -0.03em;
-    line-height: 1.1;
+    line-height: 1.05;
     margin-bottom: 1rem;
     display: flex;
     align-items: baseline;
-    gap: 0.5rem;
+    justify-content: center;
+    text-align: center;
+    gap: 0.5rem 0.75rem;
     flex-wrap: wrap;
   }
 
   .hero-name {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-gold) 50%, var(--accent-blue) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .hero-letter {
+    display: inline-block;
+  }
+
+  /* Hand-marker sweep behind the tail of the name — highlight, not type. */
+  .hero-mark {
+    background: linear-gradient(to top, rgba(228, 138, 74, 0.32) 0 32%, transparent 32% 100%);
+    padding-bottom: 0.04em;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-letter {
+      animation: hero-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-delay: calc(var(--i) * 45ms + 100ms);
+    }
+  }
+
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(0.35em);
+    }
   }
 
   .hero-nickname {
@@ -104,6 +162,8 @@ const latestProjects = allProjects.slice(0, 4);
     color: var(--text-muted);
     line-height: 1.7;
     max-width: 36rem;
+    margin-inline: auto;
+    text-align: center;
   }
 
   .section {
@@ -171,11 +231,15 @@ const latestProjects = allProjects.slice(0, 4);
 
   @media (max-width: 640px) {
     .hero {
-      padding: 4rem 0 3rem;
+      padding: calc(4rem + 2.75rem + 1rem) 0 4rem;
+    }
+
+    .hero::before {
+      opacity: 0.7;
     }
 
     .hero-title {
-      font-size: 2.25rem;
+      gap: 0.25rem 0.5rem;
     }
 
     .grid-2 {

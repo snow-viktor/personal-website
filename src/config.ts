@@ -4,7 +4,7 @@ export const SITE = {
   url: 'https://snow-viktor.pages.dev',
   lang: 'zh-Hant-TW',
   locale: 'zh-TW',
-  description: 'Personal website',
+  description: "SnowViktor's Personal website",
   author: 'SnowViktor',
   robots: 'index, follow',
   twitterCard: 'summary',
@@ -44,3 +44,18 @@ export const QUOTES = [
   { text: 'The best way to predict the future is to invent it.', author: 'Alan Kay', lang: 'en' },
   { text: 'Make it work, make it right, make it fast.', author: 'Kent Beck', lang: 'en' },
 ] as const;
+
+// Site type stacks, mirrored from src/styles/global.css custom properties.
+// Canvas/SVG renderers (mermaid via astro.config.mjs) can't read CSS vars,
+// so they consume these literals instead — keep both in sync.
+export const FONTS = {
+  sans: `'Noto Sans', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif`,
+} as const;
+
+// Build-time math rendering (Temml → native MathML, zero client JS).
+// Consumed by src/lib/mathml.ts; keep renderer options here, not in astro.config.mjs.
+export const MATH = {
+  annotate: true,
+  throwOnError: false,
+  trust: false,
+} as const;

@@ -1,0 +1,101 @@
+---
+title: 加法交換律
+date: 2026-03-31
+type: math
+tags:
+  - addition
+  - commutative property
+  - Peano axioms
+  - Mathematical induction
+---
+
+> [!IMPORTANT]
+> 根據皮亞諾公理（Peano axioms），$S$ 為後繼函數（Successor function），加法定義如下：  
+> A1: $a + 0 = a$  
+> A2: $a + S(b) = S(a + b)$
+
+> [!NOTE]
+> 數學歸納法：Mathematical induction, MI  
+> 歸納假設：Inductive hypothesis, IH
+
+## 引理（Lemmas）
+
+### L1: $0 + n = n$
+
+- 當 $n = 0$ 時  
+  $0 + 0 \overset{\text{A1}}{=} 0$，成立
+- 設 $n = k$ 時  
+  $0 + k = k$，成立
+- 則 $n = S(k)$ 時  
+  $0 + S(k) \overset{\text{A2}}{=} S(0 + k) \overset{\text{IH}}{=} S(k)$，成立
+- 由MI可知  
+  $0 + n = n \quad \forall n \in \mathbb{N}_0$
+
+### L2: $S(m) + n = S(m + n)$
+
+固定 $m$，對 $n$ 作歸納：
+
+- 當 $n = 0$ 時  
+  $S(m) + 0 \overset{\text{A1}}{=} S(m) \overset{\text{A1}}{=} S(m + 0)$，成立
+- 設 $n = k$ 時  
+  $S(m) + k = S(m + k)$，成立
+- 則 $n = S(k)$ 時  
+  $S(m) + S(k) \overset{\text{A2}}{=} S(S(m) + k) \overset{\text{IH}}{=} S(S(m + k)) \overset{\text{A2}}{=} S(m + S(k))$，成立
+- 由MI可知  
+  $S(m) + n = S(m + n) \quad \forall m, n \in \mathbb{N}_0$
+
+## 加法交換律（Commutative property of addition）
+
+- 當 $n = 0$ 時  
+  $m + 0 = 0 + m$，成立
+  - 當 $m = 0$ 時  
+    $0 + 0 \overset{\text{A1}}{=} 0 \overset{\text{L1}}{=} 0 + 0$，成立
+  - 設 $m = l$ 時  
+    $l + 0 = 0 + l$，成立
+  - 則 $m = S(l)$ 時  
+    $S(l) + 0 \overset{\text{L2}}{=} S(l + 0) \overset{\text{IH}}{=} S(0 + l) \overset{\text{A2}}{=} 0 + S(l)$，成立
+  - 由MI可知  
+    $m + 0 = 0 + m \quad \forall m \in \mathbb{N}_0$
+- 設 $n = k$ 時  
+  $m + k = k + m$，成立
+- 則 $n = S(k)$ 時  
+  $m + S(k) \overset{\text{A2}}{=} S(m + k) \overset{\text{IH}}{=} S(k + m) \overset{\text{L2}}{=} S(k) + m$，成立
+- 由MI可知  
+  $m + n = n + m \quad \forall m, n \in \mathbb{N}_0$
+
+```mermaid
+---
+title: 證明依賴關係
+---
+flowchart TD
+	subgraph Axioms["公理"]
+	    A1["A1: a + 0 = a"]
+	    A2["A2: a + S(b) = S(a + b)"]
+	end
+
+	subgraph Lemmas["引理"]
+	    L1["L1: 0 + n = n"]
+	    L2["L2: S(m) + n = S(m + n)"]
+	end
+
+	subgraph Theorem["定理"]
+	    T["加法交換律：m + n = n + m"]
+	end
+
+	Axioms --> Lemmas
+	Axioms --> Theorem
+	Lemmas --> Theorem
+
+	classDef axiom fill:#d4a0601f,stroke:#d4a060,stroke-width:1px,color:#ededf0;
+	classDef lemma fill:#7a9ec01f,stroke:#7a9ec0,stroke-width:1px,color:#ededf0;
+	classDef theorem fill:#e48a4a24,stroke:#e48a4a,stroke-width:1.5px,color:#ededf0;
+	class A1,A2 axiom;
+	class L1,L2 lemma;
+	class T theorem;
+
+	style Axioms fill:transparent,stroke:#d4a060,stroke-width:1px,stroke-dasharray:6 4,color:#aeaeba;
+	style Lemmas fill:transparent,stroke:#7a9ec0,stroke-width:1px,stroke-dasharray:6 4,color:#aeaeba;
+	style Theorem fill:transparent,stroke:#e48a4a,stroke-width:1px,stroke-dasharray:6 4,color:#aeaeba;
+
+	linkStyle default stroke:#7e7e8b,stroke-width:1.5px;
+```
