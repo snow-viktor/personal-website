@@ -110,6 +110,12 @@ typography:
   math:
     fontFamily: "'Latin Modern Math', 'Temml', math"
     fontSize: "1.02em"
+  verse:
+    fontFamily: "'Iansui', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
+    fontSize: "1.125rem"
+    fontWeight: 400
+    lineHeight: 2
+    letterSpacing: "0.02em"
 rounded:
   sm: "4px"
   md: "8px"
@@ -189,6 +195,7 @@ Warm dark neutrals carry the page; three muted accents mark meaning (links/actio
 **Display Font:** Noto Serif CJK TC (with Noto Serif TC fallback)
 **Body Font:** Noto Sans (with Noto Sans CJK TC fallback)
 **Label/Mono Font:** Cascadia Mono — navigation, logo-adjacent chrome, code only.
+**Verse Font:** Iansui — `free verse`-tagged article bodies only.
 
 **Character:** Editorial serif for headings and quotes; calm high-legibility sans for body at a relaxed 1.7–1.8 line height suited to long CJK reading.
 
@@ -226,7 +233,7 @@ Gently rounded rects: 8px cards and inputs, 4px code and small elements, pills (
 - **Motion:** Scroll-linked `card-reveal` (opacity/translate, `animation-timeline: view()`), guarded by `prefers-reduced-motion`.
 
 ### Tags / Type badges
-- **Tags:** Pill, neutral border-color fill, gold text, 0.75rem. Max 4 per card.
+- **Tags:** Pill, neutral border-color fill, gold text, 0.75rem. All tags shown per card, wrapping to multiple lines.
 - **Type badges:** Pill, green tint fill, 1px green-mix border, uppercase 0.6875rem.
 
 ### Blockquote
@@ -244,9 +251,14 @@ Gently rounded rects: 8px cards and inputs, 4px code and small elements, pills (
 - **Character:** Pre-rendered Temml MathML (zero client JS), inherits body text color so the dark theme is free.
 - **Style:** Latin Modern Math (`--font-math`) at 1.02em for optical match to body; `Temml.woff2` covers `\mathscr` + prime alignment. Structural correction rules vendored in `src/styles/temml-latin-modern.css` (loaded via `@import` in `global.css`); fonts self-hosted in `public/fonts/`. Display math scrolls horizontally on overflow.
 
-### Diagrams (mermaid)
-- **Character:** Client-rendered SVG figures; quiet like everything else.
-- **Style:** Global `base` theme from `astro.config.mjs` — transparent ground, body sans (`FONTS.sans` in `src/config.ts`, mirrors `--font`), paper text, dim edges. Per-diagram accent colors stay in that diagram's `classDef`/`style` lines.
+### Verse
+- **Character:** Handwritten voice for `free verse`-tagged articles; body only.
+- **Style:** Self-hosted Iansui Regular (`--font-verse`, OFL-1.1) at 1.125rem with a relaxed 2.0 line height. Headings and metadata keep their existing faces (Serif Voice rule still holds).
+
+### Diagrams
+- **Character:** Hand-authored static SVG figures, inlined at build time with zero client JS (mermaid removed 2026-09: its dynamic-import chunks 409'd after deploys and renders stalled mid view-transition).
+- **Convention:** `.svg` files live in `src/assets/` and are used as components via direct MDX import (`import DepsDiagram from '../../assets/x.svg'` + `<DepsDiagram />` inside `<figure class="diagram">`) — no wrapper component, no `mdx.ts` registration. Photos (when they appear) go the same folder but render via `<Image />` from `astro:assets` for build-time optimization.
+- **Style:** Transparent ground, body sans text in paper, dim edges; per-diagram accent colors live in that figure's own fills/strokes. Vertical flow only, `max-width: 100%` so narrow screens never overflow. Each figure carries `role="img"` + `<title>`, with the dependency statement repeated as prose below for readers and search.
 
 ### Navigation
 - **Header:** Fixed, 2.75rem, 50%-transparent bg blur over hairline bottom border; mono type; muted links, full-text on hover/active. Mobile collapses Search to icon-only (label hidden, icon retained with `aria-label` intact on the link text).

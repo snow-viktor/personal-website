@@ -23,7 +23,7 @@ const { title, date, type, tags, summary, url } = Astro.props;
     <p class="project-card-summary">{summary}</p>
     {tags.length > 0 && (
       <div class="project-card-tags">
-        {tags.slice(0, 3).map((tag) => (
+        {tags.map((tag) => (
           <span class="tag">{tag}</span>
         ))}
       </div>

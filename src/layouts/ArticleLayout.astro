@@ -10,11 +10,12 @@ export interface Props {
   tags?: string[];
   collection?: string;
   readingTime?: number;
+  isVerse?: boolean;
   prev?: { title: string; url: string };
   next?: { title: string; url: string };
 }
 
-const { title, date, body, tags = [], collection, readingTime, prev, next } = Astro.props;
+const { title, date, body, tags = [], collection, readingTime, isVerse = false, prev, next } = Astro.props;
 const description = body ? truncate(body) : undefined;
 
 const articleJsonLd = {
@@ -71,7 +72,7 @@ const articleJsonLd = {
         </div>
       )}
     </header>
-    <div class="article-content">
+    <div class:list={['article-content', { 'is-verse': isVerse }]}>
       <slot />
     </div>
   </article>
@@ -156,6 +157,14 @@ const articleJsonLd = {
   .article-content {
     font-size: 1.0625rem;
     line-height: 1.8;
+  }
+
+  /* `free verse` tag: handwritten voice, body only — headings/meta stay put. */
+  .article-content.is-verse {
+    font-family: var(--font-verse);
+    font-size: 1.125rem;
+    line-height: 2;
+    letter-spacing: 0.02em;
   }
 
   .article-content :global(h2) {

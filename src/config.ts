@@ -46,10 +46,10 @@ export const QUOTES = [
 ] as const;
 
 // Site type stacks, mirrored from src/styles/global.css custom properties.
-// Canvas/SVG renderers (mermaid via astro.config.mjs) can't read CSS vars,
-// so they consume these literals instead — keep both in sync.
+// Keep both in sync.
 export const FONTS = {
   sans: `'Noto Sans', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif`,
+  verse: `'Iansui', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif`,
 } as const;
 
 // Build-time math rendering (Temml → native MathML, zero client JS).

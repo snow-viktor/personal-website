@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 392" role="img" aria-labelledby="dep-title" font-family="'Noto Sans', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif">
+  <title id="dep-title">證明依賴關係：公理A1、A2推得引理L1、L2，引理與公理共同推得加法交換律</title>
+  <defs>
+    <marker id="dep-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#7e7e8b" stroke-width="1.5" />
+    </marker>
+  </defs>
+  <g>
+    <rect x="20" y="8" width="360" height="118" rx="8" fill="transparent" stroke="#d4a060" stroke-width="1" stroke-dasharray="6 4" />
+    <text x="34" y="30" font-size="12" fill="#aeaeba">公理</text>
+    <rect x="40" y="40" width="320" height="36" rx="8" fill="#d4a0601f" stroke="#d4a060" stroke-width="1" />
+    <text x="200" y="59" text-anchor="middle" dominant-baseline="central" font-size="13" fill="#ededf0">A1: a + 0 = a</text>
+    <rect x="40" y="82" width="320" height="36" rx="8" fill="#d4a0601f" stroke="#d4a060" stroke-width="1" />
+    <text x="200" y="101" text-anchor="middle" dominant-baseline="central" font-size="13" fill="#ededf0">A2: a + S(b) = S(a + b)</text>
+  </g>
+  <line x1="200" y1="126" x2="200" y2="150" stroke="#7e7e8b" stroke-width="1.5" marker-end="url(#dep-arrow)" />
+  <g>
+    <rect x="20" y="152" width="360" height="118" rx="8" fill="transparent" stroke="#7a9ec0" stroke-width="1" stroke-dasharray="6 4" />
+    <text x="34" y="174" font-size="12" fill="#aeaeba">引理</text>
+    <rect x="40" y="184" width="320" height="36" rx="8" fill="#7a9ec01f" stroke="#7a9ec0" stroke-width="1" />
+    <text x="200" y="203" text-anchor="middle" dominant-baseline="central" font-size="13" fill="#ededf0">L1: 0 + n = n</text>
+    <rect x="40" y="226" width="320" height="36" rx="8" fill="#7a9ec01f" stroke="#7a9ec0" stroke-width="1" />
+    <text x="200" y="245" text-anchor="middle" dominant-baseline="central" font-size="13" fill="#ededf0">L2: S(m) + n = S(m + n)</text>
+  </g>
+  <line x1="200" y1="270" x2="200" y2="294" stroke="#7e7e8b" stroke-width="1.5" marker-end="url(#dep-arrow)" />
+  <g>
+    <rect x="20" y="296" width="360" height="82" rx="8" fill="transparent" stroke="#e48a4a" stroke-width="1" stroke-dasharray="6 4" />
+    <text x="34" y="318" font-size="12" fill="#aeaeba">定理</text>
+    <rect x="40" y="328" width="320" height="36" rx="8" fill="#e48a4a24" stroke="#e48a4a" stroke-width="1.5" />
+    <text x="200" y="347" text-anchor="middle" dominant-baseline="central" font-size="13" fill="#ededf0">加法交換律：m + n = n + m</text>
+  </g>
+  <path d="M 384 70 C 398 160, 398 250, 384 330" fill="none" stroke="#7e7e8b" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#dep-arrow)" />
+</svg>

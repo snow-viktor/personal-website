@@ -9,6 +9,8 @@ tags:
   - Mathematical induction
 ---
 
+import DepsDiagram from '../../assets/commutative-property-of-addition-deps.svg';
+
 > [!IMPORTANT]
 > 根據皮亞諾公理（Peano axioms），$S$ 為後繼函數（Successor function），加法定義如下：  
 > A1: $a + 0 = a$  
@@ -63,39 +65,8 @@ tags:
 - 由MI可知  
   $m + n = n + m \quad \forall m, n \in \mathbb{N}_0$
 
-```mermaid
----
-title: 證明依賴關係
----
-flowchart TD
-	subgraph Axioms["公理"]
-	    A1["A1: a + 0 = a"]
-	    A2["A2: a + S(b) = S(a + b)"]
-	end
+## 證明依賴關係
 
-	subgraph Lemmas["引理"]
-	    L1["L1: 0 + n = n"]
-	    L2["L2: S(m) + n = S(m + n)"]
-	end
-
-	subgraph Theorem["定理"]
-	    T["加法交換律：m + n = n + m"]
-	end
-
-	Axioms --> Lemmas
-	Axioms --> Theorem
-	Lemmas --> Theorem
-
-	classDef axiom fill:#d4a0601f,stroke:#d4a060,stroke-width:1px,color:#ededf0;
-	classDef lemma fill:#7a9ec01f,stroke:#7a9ec0,stroke-width:1px,color:#ededf0;
-	classDef theorem fill:#e48a4a24,stroke:#e48a4a,stroke-width:1.5px,color:#ededf0;
-	class A1,A2 axiom;
-	class L1,L2 lemma;
-	class T theorem;
-
-	style Axioms fill:transparent,stroke:#d4a060,stroke-width:1px,stroke-dasharray:6 4,color:#aeaeba;
-	style Lemmas fill:transparent,stroke:#7a9ec0,stroke-width:1px,stroke-dasharray:6 4,color:#aeaeba;
-	style Theorem fill:transparent,stroke:#e48a4a,stroke-width:1px,stroke-dasharray:6 4,color:#aeaeba;
-
-	linkStyle default stroke:#7e7e8b,stroke-width:1.5px;
-```
+<figure class="diagram">
+  <DepsDiagram />
+</figure>

@@ -19,6 +19,8 @@ const { Content } = await render(entry);
 
 const readingTime = computeReadingTime(entry.body ?? '');
 
+const isVerse = entry.data.tags?.includes('free verse') ?? false;
+
 const currentIndex = allArticles.findIndex((a) => a.id === id);
 const prev = currentIndex > 0 ? allArticles[currentIndex - 1] : null;
 const next = currentIndex < allArticles.length - 1 ? allArticles[currentIndex + 1] : null;
@@ -31,6 +33,7 @@ const next = currentIndex < allArticles.length - 1 ? allArticles[currentIndex + 
   tags={entry.data.tags}
   collection={entry.data.collection}
   readingTime={readingTime}
+  isVerse={isVerse}
   prev={prev ? { title: prev.data.title, url: `/articles/${prev.id}/` } : undefined}
   next={next ? { title: next.data.title, url: `/articles/${next.id}/` } : undefined}
 >
