@@ -32,8 +32,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <script>
-  import { tokenize, extractSnippet, escapeHtml, highlightMatches } from '../lib/search-client';
+  import {
+    tokenize,
+    escapeHtml,
+    getQueryTerms,
+    buildHighlightPattern,
+    highlightWithPattern,
+    extractSnippetForTerms,
+  } from '../lib/search-client';
   import type { SearchDoc } from '../lib/search';
+
+  // INP budget guard: one giant innerHTML for every match (plus dozens of
+  // animated cards) blocks the main thread on each keystroke. Paint the first
+  // batch synchronously for a fast next paint, then stream the rest in
+  // background chunks — all results are shown, none dropped.
+  const RENDER_BATCH = 25;
+  // Small index chunks + a real task yield between them keep each block under
+  // ~50ms so typing/clicking during load stays responsive.
+  const INDEX_CHUNK = 8;
 
   const dateFormatter = new Intl.DateTimeFormat('zh-TW', {
     year: 'numeric',
@@ -47,6 +63,36 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     return { text: dateFormatter.format(d), datetime: d.toISOString() };
   }
 
+  // Per-doc work done ONCE after fetch (escape, lowercase, date) instead of
+  // once per result per keystroke inside renderResults.
+  interface PreparedDoc extends SearchDoc {
+    bodyLower: string;
+    dateText: string;
+    dateTime: string;
+    titleHtml: string;
+    tagsHtml: string;
+  }
+
+  function prepareDoc(doc: SearchDoc): PreparedDoc {
+    const { text, datetime } = formatDate(doc.date);
+    return {
+      ...doc,
+      bodyLower: doc.body.toLowerCase(),
+      dateText: text,
+      dateTime: datetime,
+      titleHtml: escapeHtml(doc.title),
+      tagsHtml: doc.tags?.length
+        ? `<div class="search-result-tags">${doc.tags.map((t: string) => `<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>`
+        : '',
+    };
+  }
+
+  // setTimeout(0) yields to pending input/paint; rAF alone can starve behind
+  // continuous frame callbacks while indexing saturates the main thread.
+  function yieldToMain(): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, 0));
+  }
+
   async function initSearch() {
     const input = document.getElementById('search-input') as HTMLInputElement;
     const resultsEl = document.getElementById('search-results')!;
@@ -58,20 +104,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       kbdEl.textContent = '⌘K';
     }
 
-    const MiniSearch = (await import('minisearch')).default;
-
-    const miniSearch = new MiniSearch({
-      fields: ['title', 'body'],
-      storeFields: ['title', 'url', 'type', 'tags', 'date', 'body'],
-      tokenize,
-      processTerm: (term: string) => (term.length > 0 ? term : null),
-      searchOptions: {
-        boost: { title: 3, body: 1 },
-        prefix: true,
-        fuzzy: 0.15,
-        combineWith: 'AND',
-      },
-    });
+    const docsById = new Map<string, PreparedDoc>();
+    let docs: PreparedDoc[] = [];
+    let ready = false;
+    // Bumped on every new search so a stale background stream aborts instead
+    // of appending cards for a superseded query.
+    let renderGen = 0;
+    // Deep-link support (?q=), matching the SearchAction URL in BaseLayout.
+    // Stashed early so keystrokes typed while the index loads aren't dropped.
+    let pendingQuery = new URLSearchParams(window.location.search).get('q') ?? '';
 
     const renderEmpty = () => {
       resultsEl.innerHTML = `
@@ -82,11 +123,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>`;
     };
 
-    const renderResults = (query: string, results: SearchDoc[]) => {
-      statusEl.textContent = `${results.length} result${results.length === 1 ? '' : 's'}`;
-      countEl.textContent = `${results.length}`;
+    // miniSearch is assigned after the dynamic import below; runSearch only
+    // touches it once `ready` is true.
+    let miniSearch: { search: (q: string) => { id: string }[]; addAll: (d: SearchDoc[]) => void } | null = null;
 
-      if (results.length === 0) {
+    const renderResults = (query: string, matches: { id: string }[]) => {
+      const gen = ++renderGen;
+      const total = matches.length;
+      statusEl.textContent = `${total} result${total === 1 ? '' : 's'}`;
+      countEl.textContent = `${total}`;
+
+      if (total === 0) {
         resultsEl.innerHTML = `
           <div class="search-no-results">
             <p class="search-no-results-text">揣無「${escapeHtml(query)}」</p>
@@ -94,79 +141,82 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         return;
       }
 
-      resultsEl.innerHTML = results
-        .map((r) => {
-          const snippet = extractSnippet(r.body, query);
-          const { text, datetime } = formatDate(r.date);
-          return `
+      // Tokenize + compile the highlight pattern once per search, not once
+      // per rendered card.
+      const terms = getQueryTerms(query);
+      const lowerTerms = terms.map((t) => t.toLowerCase());
+      const pattern = buildHighlightPattern(terms);
+
+      const cardHtml = ({ id }: { id: string }): string => {
+        const r = docsById.get(id)!;
+        const snippet = extractSnippetForTerms(r.body, r.bodyLower, lowerTerms);
+        return `
           <a href="${r.url}" class="search-result">
             <div class="search-result-header">
               <span class="type-badge">${escapeHtml(r.type)}</span>
-              <time class="search-result-date" datetime="${escapeHtml(datetime)}">${escapeHtml(text)}</time>
+              <time class="search-result-date" datetime="${escapeHtml(r.dateTime)}">${escapeHtml(r.dateText)}</time>
             </div>
-            <h2 class="search-result-title">${highlightMatches(r.title, query)}</h2>
-            ${snippet ? `<p class="search-result-snippet">${highlightMatches(snippet, query)}</p>` : ''}
-            ${r.tags?.length ? `<div class="search-result-tags">${r.tags.map((t: string) => `<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>` : ''}
+            <h2 class="search-result-title">${highlightWithPattern(r.titleHtml, pattern)}</h2>
+            ${snippet ? `<p class="search-result-snippet">${highlightWithPattern(escapeHtml(snippet), pattern)}</p>` : ''}
+            ${r.tagsHtml}
           </a>`;
-        })
-        .join('');
+      };
+
+      // First batch paints synchronously (fast next paint); the remainder
+      // streams in without blocking typing, clicking, or scrolling.
+      // The status keeps the final total throughout so the aria-live region
+      // isn't spammed once per chunk.
+      const first = matches.slice(0, RENDER_BATCH);
+      resultsEl.innerHTML = first.map(cardHtml).join('');
+      let rendered = first.length;
+
+      const appendNext = (): void => {
+        if (gen !== renderGen) return;
+        const next = matches.slice(rendered, rendered + RENDER_BATCH);
+        if (next.length === 0) return;
+        resultsEl.insertAdjacentHTML('beforeend', next.map(cardHtml).join(''));
+        rendered += next.length;
+        if (rendered < total) void yieldToMain().then(appendNext);
+      };
+
+      if (rendered < total) void yieldToMain().then(appendNext);
     };
-
-    let docs: SearchDoc[] = [];
-    try {
-      statusEl.textContent = 'Loading search index…';
-      resultsEl.innerHTML = `<div class="search-skeleton" aria-hidden="true"><div class="search-skeleton-card"></div><div class="search-skeleton-card"></div><div class="search-skeleton-card"></div></div>`;
-      const res = await fetch('/api/search-index.json');
-      docs = await res.json();
-
-      const CHUNK = 50;
-      for (let i = 0; i < docs.length; i += CHUNK) {
-        miniSearch.addAll(docs.slice(i, i + CHUNK));
-        if (i + CHUNK < docs.length) {
-          statusEl.textContent = `Indexing… ${Math.min(i + CHUNK, docs.length)}/${docs.length}`;
-          await new Promise<void>((r) => requestAnimationFrame(() => r()));
-        }
-      }
-    } catch {
-      statusEl.textContent = 'Search index failed to load';
-      resultsEl.innerHTML = `
-        <div class="search-no-results">
-          <p class="search-no-results-text">搜尋索引載入失敗 — 請重新整理再試一次。</p>
-        </div>`;
-      return;
-    }
-
-    statusEl.textContent = `${docs.length} documents indexed`;
-    countEl.textContent = `${docs.length}`;
 
     const runSearch = (raw: string, { syncUrl = true } = {}) => {
       const query = raw.trim();
       clearBtn.hidden = query.length === 0;
+      // Cancel any in-flight background stream from the previous query.
+      renderGen++;
       if (syncUrl) {
         const url = new URL(window.location.href);
         if (query) url.searchParams.set('q', query);
         else url.searchParams.delete('q');
         history.replaceState(null, '', url);
       }
+      if (!ready || !miniSearch) {
+        pendingQuery = query;
+        return;
+      }
       if (!query) {
+        pendingQuery = '';
         statusEl.textContent = `${docs.length} documents indexed`;
         countEl.textContent = `${docs.length}`;
         renderEmpty();
         return;
       }
-      renderResults(query, miniSearch.search(query) as unknown as SearchDoc[]);
+      pendingQuery = '';
+      renderResults(query, miniSearch.search(query));
     };
 
-    // Deep-link support (?q=), matching the SearchAction URL in BaseLayout.
-    const initialQuery = new URLSearchParams(window.location.search).get('q') ?? '';
-    if (initialQuery) input.value = initialQuery;
-    renderEmpty();
-    if (initialQuery) runSearch(initialQuery, { syncUrl: false });
-
+    // Attach listeners BEFORE the index loads so the field stays responsive
+    // (and keystrokes aren't dropped) while indexing yields in the background.
     let timer: ReturnType<typeof setTimeout>;
     input.addEventListener('input', () => {
       clearTimeout(timer);
-      timer = setTimeout(() => runSearch(input.value), 250);
+      const value = input.value;
+      // Keep the clear button in sync immediately; the heavy search stays debounced.
+      clearBtn.hidden = value.trim().length === 0;
+      timer = setTimeout(() => runSearch(value), 250);
     });
 
     clearBtn.addEventListener('click', () => {
@@ -181,6 +231,62 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         input.focus();
       }
     });
+
+    if (pendingQuery) input.value = pendingQuery;
+    renderEmpty();
+
+    const MiniSearch = (await import('minisearch')).default;
+
+    miniSearch = new MiniSearch({
+      fields: ['title', 'body'],
+      // Body is looked up from docsById for snippets; excluding it from stored
+      // fields keeps every result object small.
+      storeFields: ['title', 'url', 'type', 'tags', 'date'],
+      tokenize,
+      processTerm: (term: string) => (term.length > 0 ? term : null),
+      searchOptions: {
+        boost: { title: 3, body: 1 },
+        prefix: true,
+        fuzzy: 0.15,
+        combineWith: 'AND',
+      },
+    });
+
+    try {
+      statusEl.textContent = 'Loading search index…';
+      resultsEl.innerHTML = `<div class="search-skeleton" aria-hidden="true"><div class="search-skeleton-card"></div><div class="search-skeleton-card"></div><div class="search-skeleton-card"></div></div>`;
+      const res = await fetch('/api/search-index.json');
+      const rawDocs = (await res.json()) as SearchDoc[];
+
+      for (let i = 0; i < rawDocs.length; i += INDEX_CHUNK) {
+        const slice = rawDocs.slice(i, i + INDEX_CHUNK);
+        miniSearch.addAll(slice);
+        for (const d of slice) {
+          const prepared = prepareDoc(d);
+          docs.push(prepared);
+          docsById.set(d.id, prepared);
+        }
+        if (i + INDEX_CHUNK < rawDocs.length) await yieldToMain();
+      }
+    } catch {
+      statusEl.textContent = 'Search index failed to load';
+      resultsEl.innerHTML = `
+        <div class="search-no-results">
+          <p class="search-no-results-text">搜尋索引載入失敗 — 請重新整理再試一次。</p>
+        </div>`;
+      return;
+    }
+
+    ready = true;
+    statusEl.textContent = `${docs.length} documents indexed`;
+    countEl.textContent = `${docs.length}`;
+
+    renderEmpty();
+    const initialQuery = pendingQuery || input.value.trim();
+    if (initialQuery) {
+      input.value = initialQuery;
+      runSearch(initialQuery, { syncUrl: false });
+    }
   }
 
   initSearch();

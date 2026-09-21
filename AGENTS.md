@@ -1,6 +1,6 @@
 # personal-website
 
-Astro 7.x static site, deployed to Cloudflare Pages (snow-viktor.pages.dev). Scripts are only `dev` / `build` / `preview` / `astro` — no lint, typecheck, or tests.
+Astro 7.x static site, deployed to Cloudflare Pages (snow-viktor.pages.dev). Scripts are only `dev` / `build` / `preview` / `astro` — no lint, typecheck, or tests. No CI workflows, no `opencode.json`.
 
 ## Skills (load before coding, most specific first)
 
@@ -50,7 +50,7 @@ Verify UI edits with the detector (must return `[]`):
 - `draft: true` excludes everywhere — listings, detail `getStaticPaths` (no draft routes built), search index.
 - Design system mirrors `DESIGN.md` (enforced by `detect`): no gradient text; no one-sided accent bars (full 1px tinted border); orange = actions/links, gold = metadata, green = collection, blue = book-note context; gradients in ambient surfaces only.
 - Anchored groups need `scroll-margin-top` clearing both sticky bars (header + collection nav).
-- `search-client.ts` runs in the browser (may import `cjk.ts` only). Never import server-only modules from client `<script>` blocks.
+- `src/lib/search-client.ts` runs in the browser (may import `cjk.ts` only). Never import server-only modules from client `<script>` blocks.
 
 ## Gotchas
 
