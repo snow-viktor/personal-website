@@ -21,25 +21,25 @@ colors:
   hover-shadow: "rgba(0, 0, 0, 0.3)"
 typography:
   display:
-    fontFamily: "'Noto Serif CJK TC', 'Noto Serif TC', serif"
+    fontFamily: "'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
     fontSize: "clamp(2.5rem, 1rem + 8vw, 4.5rem)"
     fontWeight: 700
     lineHeight: 1.05
     letterSpacing: "-0.03em"
   display-404:
-    fontFamily: "'Noto Serif CJK TC', 'Noto Serif TC', serif"
+    fontFamily: "'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
     fontSize: "6rem"
     fontWeight: 800
     lineHeight: 1
     letterSpacing: "-0.04em"
   headline:
-    fontFamily: "'Noto Serif CJK TC', 'Noto Serif TC', serif"
+    fontFamily: "'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
     fontSize: "2.25rem"
     fontWeight: 600
     lineHeight: 1.3
     letterSpacing: "-0.02em"
   title:
-    fontFamily: "'Noto Serif CJK TC', 'Noto Serif TC', serif"
+    fontFamily: "'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
     fontSize: "1.125rem"
     fontWeight: 600
     lineHeight: 1.3
@@ -80,27 +80,27 @@ typography:
     fontSize: "1rem"
     fontWeight: 400
   quote:
-    fontFamily: "'Noto Serif CJK TC', 'Noto Serif TC', serif"
+    fontFamily: "'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
     fontSize: "1.125rem"
     fontWeight: 400
     lineHeight: 1.7
   quote-mark:
-    fontFamily: "'Noto Serif CJK TC', 'Noto Serif TC', serif"
+    fontFamily: "'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
     fontSize: "3rem"
     fontWeight: 400
     lineHeight: 1
   section:
-    fontFamily: "'Noto Serif CJK TC', 'Noto Serif TC', serif"
+    fontFamily: "'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
     fontSize: "1.5rem"
     fontWeight: 600
     lineHeight: 1.3
   section-sm:
-    fontFamily: "'Noto Serif CJK TC', 'Noto Serif TC', serif"
+    fontFamily: "'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
     fontSize: "1.25rem"
     fontWeight: 600
     lineHeight: 1.3
   headline-sm:
-    fontFamily: "'Noto Serif CJK TC', 'Noto Serif TC', serif"
+    fontFamily: "'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
     fontSize: "1.75rem"
     fontWeight: 600
     lineHeight: 1.3
@@ -116,6 +116,8 @@ typography:
     fontWeight: 400
     lineHeight: 2
     letterSpacing: "0.02em"
+  ja:
+    fontFamily: "'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', YuGothic, 'Meiryo', 'Noto Sans JP', 'Noto Sans CJK JP', 'Noto Sans CJK TC', sans-serif"
 rounded:
   sm: "4px"
   md: "8px"
@@ -192,10 +194,11 @@ Warm dark neutrals carry the page; three muted accents mark meaning (links/actio
 
 ## Typography
 
-**Display Font:** Noto Serif CJK TC (with Noto Serif TC fallback)
+**Display Font:** Noto Serif (with Noto Serif CJK TC fallback)
 **Body Font:** Noto Sans (with Noto Sans CJK TC fallback)
 **Label/Mono Font:** Cascadia Mono — navigation, logo-adjacent chrome, code only.
 **Verse Font:** Iansui — `free verse`-tagged article bodies only.
+**JA Font:** Platform JP system fonts (Hiragino / Yu Gothic / Meiryo / Noto JP) — `lang="ja"` passages only.
 
 **Character:** Editorial serif for headings and quotes; calm high-legibility sans for body at a relaxed 1.7–1.8 line height suited to long CJK reading.
 
@@ -254,6 +257,10 @@ Gently rounded rects: 8px cards and inputs, 4px code and small elements, pills (
 ### Verse
 - **Character:** Handwritten voice for `free verse`-tagged articles; body only.
 - **Style:** Self-hosted Iansui Regular (`--font-verse`, OFL-1.1) at 1.125rem with a relaxed 2.0 line height. Headings and metadata keep their existing faces (Serif Voice rule still holds).
+
+### Japanese
+- **Character:** Japanese passages are rare; they get their own stack, never the global one.
+- **Style:** Wrap the passage in `<div lang="ja">` — `:lang(ja)` applies `--font-ja` (platform system fonts, so kanji take Japanese shapes via `locl`). Furigana uses `<ruby>base<rt>reading</rt></ruby>`, never parenthesised readings.
 
 ### Diagrams
 - **Character:** Hand-authored static SVG figures, inlined at build time with zero client JS (mermaid removed 2026-09: its dynamic-import chunks 409'd after deploys and renders stalled mid view-transition).

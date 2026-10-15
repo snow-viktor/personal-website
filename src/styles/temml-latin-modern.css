@@ -1,5 +1,5 @@
 /*
-Vendored from temml@0.13.5 dist/Temml-Latin-Modern.css — structural MathML
+Vendored from temml@0.14.0 dist/Temml-Latin-Modern.css — structural MathML
 correction rules kept intact; only the font URLs below point at self-hosted
 files in public/fonts/ (Cloudflare Pages, zero client JS; math is pre-rendered
 at build time via temml.renderToString in src/lib/mathml.ts).

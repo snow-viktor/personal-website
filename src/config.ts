@@ -49,7 +49,11 @@ export const QUOTES = [
 // Keep both in sync.
 export const FONTS = {
   sans: `'Noto Sans', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif`,
+  heading: `'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif`,
+  mono: `'Cascadia Mono', monospace`,
+  math: `'Latin Modern Math', 'Temml', math`,
   verse: `'Iansui', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif`,
+  ja: `'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', YuGothic, 'Meiryo', 'Noto Sans JP', 'Noto Sans CJK JP', 'Noto Sans CJK TC', sans-serif`,
 } as const;
 
 // Build-time math rendering (Temml → native MathML, zero client JS).

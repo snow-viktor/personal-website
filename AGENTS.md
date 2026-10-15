@@ -16,7 +16,7 @@ Skills live in `.agents/skills/` (gitignored; restore with `npx skills experimen
 
 ## Context files (read before UI work)
 
-- `PRODUCT.md` — product truth (audience, archive-first principles). Don't invent bio/credentials/testimonials. Note: its filename (`YYYY-MM-DD-slug`) and `draft` ("still builds") claims are stale — see Structure/Gotchas below.
+- `PRODUCT.md` — product truth (audience, archive-first principles). Don't invent bio/credentials/testimonials.
 - `DESIGN.md` — normative tokens + named rules (Solid Text, Atmosphere, Marker, One Accent, Serif Voice, Flat-By-Default). Update it when adding tokens/sizes.
 
 ## Commands
@@ -39,7 +39,7 @@ Verify UI edits with the detector (must return `[]`):
 
 ## Structure
 
-- `src/config.ts` — single source of truth for `SITE`, `NAV_LINKS`, `SOCIAL_LINKS`, `QUOTES`, `FONTS`, `MATH`. Never hardcode these elsewhere; `astro.config.mjs` holds Astro-only settings (`site`, plugins, integrations).
+- `src/config.ts` — single source of truth for `SITE`, `NAV_LINKS`, `SOCIAL_LINKS`, `QUOTES`, `MATH`. `FONTS` only mirrors the `--font-*` vars in `global.css` (nothing imports it — CSS is authoritative, keep both in sync); `astro.config.mjs` holds Astro-only settings (`site`, plugins, integrations).
 - `src/content.config.ts` — Zod schemas: articles (title, date, tags, `collection?`, draft), projects (+ `type`, `links[]` — no `collection`).
 - `src/content/articles/` — flat files, mostly `YYYY-MM-DD.md` plus slug-named `.md`/`.mdx`; filename minus extension is the route slug (`article.id` in `[...slug].astro`). `src/content/projects/` — slug filenames (e.g. `wall-e.md`).
 - Articles index groups by `collection` with a sticky category nav (scroll-spy via IntersectionObserver, text links never pills, ungrouped first, nav order mirrors section order). Projects index is a flat ungrouped grid.
@@ -47,7 +47,8 @@ Verify UI edits with the detector (must return `[]`):
 - `src/lib/content.ts` is the only content entrypoint (`getPublishedArticles()`, `getPublishedProjects()`, `groupByCollection()`). Exception: `src/pages/api/search-index.json.ts` calls `getCollection` directly; draft filtering lives inside `buildSearchIndex` (`src/lib/search.ts`).
 - `src/lib/utils.ts` + `cjk.ts` — `isCjkChar()` is the only CJK detector; `computeReadingTime()`, `truncate()`, `stripMarkdown()` / `stripForReading()`, `formatDate()` (`Intl.DateTimeFormat('zh-TW')`, ISO in `datetime`). Never strip inline with ad-hoc regexes.
 - Alerts (`src/lib/alerts.ts`), math (`src/lib/mathml.ts`) are build-time mdast plugins (wired in `astro.config.mjs` via satteri `mdastPlugins`), zero client JS. Alert styles (`.markdown-alert*`) and search-result styles (`.search-result*`, injected via `innerHTML`) must live in `src/styles/global.css` (global, unscoped).
-- Math styles vendored in `src/styles/temml-latin-modern.css` (`@import`ed by `global.css`); fonts self-hosted in `public/fonts/`. To update Temml, re-copy `node_modules/temml/dist/Temml-Latin-Modern.css` and re-apply the two `/fonts/` URL rewrites.
+- Fonts: Noto Sans/Serif (+ CJK TC) and Cascadia Mono are system fonts (no `@font-face`, no webfont links — don't add any). Only Iansui (`free verse` articles) and Math (Latin Modern Math + Temml) are self-hosted in `public/fonts/` and download lazily, only on pages that use them. Japanese passages use `<div lang="ja">` + `<ruby>` for furigana; `:lang(ja)` applies `--font-ja` (platform JP system fonts).
+- Math styles vendored in `src/styles/temml-latin-modern.css` (`@import`ed by `global.css`, currently temml@0.14.0). To update Temml, re-copy `node_modules/temml/dist/Temml-Latin-Modern.css`, re-apply the two `/fonts/` URL rewrites, and bump the version in the header + `.impeccable/config.json` waiver reason.
 - Diagrams are hand-authored `.svg` in `src/assets/`, imported directly in MDX inside `<figure class="diagram">` (`role="img"` + `<title>`, vertical flow only, dependency restated as prose below). No wrapper component, no `mdx.ts` registration. Photos go in the same folder but render via `<Image />` from `astro:assets`.
 - `src/components/mdx.ts` default-exports `{ BookInfo }` for MDX; `src/layouts/BaseLayout.astro` owns lang (`zh-Hant-TW`), dark-only chrome, and all metadata from `SITE`.
 
