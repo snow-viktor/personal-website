@@ -371,6 +371,39 @@ main > .page {
   gap: 0.75rem;
 }
 
+/* MIDI piano-roll notes are injected by JS at runtime, so these must live
+   here (global, unscoped) — same reason as the search-result styles.
+   CSS fill beats the inline fill attribute, surviving redraws.
+   data-instrument is 0-based over non-empty tracks: 0 violin (melody),
+   3 alto sax, 2 strings, 1 guitar / 4 bass, 5-7 pianos (dim base). */
+.midi-player midi-visualizer svg rect.note {
+  fill: var(--note-fill, var(--text-dim));
+}
+
+.midi-player midi-visualizer svg rect.note[data-instrument="0"] {
+  --note-fill: var(--accent);
+}
+
+.midi-player midi-visualizer svg rect.note[data-instrument="3"] {
+  --note-fill: var(--accent-blue);
+}
+
+.midi-player midi-visualizer svg rect.note[data-instrument="2"] {
+  --note-fill: color-mix(in srgb, var(--accent-gold) 55%, var(--text-dim));
+}
+
+.midi-player midi-visualizer svg rect.note[data-instrument="1"],
+.midi-player midi-visualizer svg rect.note[data-instrument="4"] {
+  --note-fill: color-mix(in srgb, var(--accent-green) 45%, var(--text-dim));
+}
+
+/* Sounding notes keep their instrument color with a paper outline —
+   the inverse of the light-background example's black outline. */
+.midi-player midi-visualizer svg rect.note.active {
+  fill: var(--note-fill, var(--text-dim));
+  stroke: var(--text);
+}
+
 .search-result {
   display: block;
   padding: 1.25rem;

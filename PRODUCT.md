@@ -12,7 +12,7 @@ Personal website of SnowViktor (彬彬). Readers are people interested in the au
 
 ## Product Purpose
 
-A long-running personal archive and public notebook. The author writes regularly (73 articles, 2023–2025) in Traditional Chinese (zh-Hant-TW). Success means the writing stays readable, findable (client-side search), and preserved as a coherent body of work — not traffic growth.
+A long-running personal archive and public notebook. The author writes regularly (75 articles, 2023–2026) in Traditional Chinese (zh-Hant-TW). Success means the writing stays readable, findable (client-side search), and preserved as a coherent body of work — not traffic growth.
 
 ## Positioning
 
@@ -20,7 +20,7 @@ A student's homework-diary-turned-personal-site: the core collection「聯絡簿
 
 ## Operating Context
 
-- Content is Markdown/MDX in `src/content/articles/` (file name `YYYY-MM-DD-slug`), one project in `src/content/projects/`.
+- Content is Markdown/MDX in `src/content/articles/` (mostly `YYYY-MM-DD.md`, plus slug-named `.md`/`.mdx`) and `src/content/projects/` (3 projects, slug filenames).
 - Readers browse latest → collections → article, or use `/search/` (MiniSearch over a pre-rendered JSON index).
 - Deployed as a static build to Cloudflare Pages (`https://snow-viktor.pages.dev`).
 
@@ -28,7 +28,7 @@ A student's homework-diary-turned-personal-site: the core collection「聯絡簿
 
 - Static Astro 7.x build; no backend, no auth, no comments.
 - Dark-only theme; Traditional Chinese primary, some English-quoted material.
-- `draft: true` excludes from listings but still builds.
+- `draft: true` excludes everywhere: listings, detail routes (never built), and search index.
 - `trailingSlash: 'always'` — internal links end with `/`, except static files in `public/` which resolve without one.
 - Open decisions: whether the author wants an audience-facing bio/about page; whether article images need build-time sizing.
 
@@ -40,7 +40,7 @@ A student's homework-diary-turned-personal-site: the core collection「聯絡簿
 
 ## Evidence on Hand
 
-- 73 published articles (`src/content/articles/`), 1 project (`wall-e`), site copy in `src/pages/` and `src/config.ts`.
+- 75 published articles (`src/content/articles/`), 3 projects (`src/content/projects/`), site copy in `src/pages/` and `src/config.ts`.
 - No analytics, no Search Console access, no stated SEO targets.
 
 ## Product Principles

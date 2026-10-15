@@ -1,6 +1,6 @@
 # personal-website
 
-Astro 7.x static site, deployed to Cloudflare Pages (snow-viktor.pages.dev). Scripts are only `dev` / `build` / `preview` / `astro` — no lint, typecheck, or tests. No CI workflows, no `opencode.json`.
+Astro 7.x static site (`format: 'directory'`, no adapter), deployed to Cloudflare Pages (snow-viktor.pages.dev). Scripts are only `dev` / `build` / `preview` / `astro` — no lint, typecheck, or tests. No CI workflows, no `opencode.json`.
 
 ## Skills (load before coding, most specific first)
 
@@ -50,7 +50,7 @@ Verify UI edits with the detector (must return `[]`):
 - Fonts: Noto Sans/Serif (+ CJK TC) and Cascadia Mono are system fonts (no `@font-face`, no webfont links — don't add any). Only Iansui (`free verse` articles) and Math (Latin Modern Math + Temml) are self-hosted in `public/fonts/` and download lazily, only on pages that use them. Japanese passages use `<div lang="ja">` + `<ruby>` for furigana; `:lang(ja)` applies `--font-ja` (platform JP system fonts).
 - Math styles vendored in `src/styles/temml-latin-modern.css` (`@import`ed by `global.css`, currently temml@0.14.0). To update Temml, re-copy `node_modules/temml/dist/Temml-Latin-Modern.css`, re-apply the two `/fonts/` URL rewrites, and bump the version in the header + `.impeccable/config.json` waiver reason.
 - Diagrams are hand-authored `.svg` in `src/assets/`, imported directly in MDX inside `<figure class="diagram">` (`role="img"` + `<title>`, vertical flow only, dependency restated as prose below). No wrapper component, no `mdx.ts` registration. Photos go in the same folder but render via `<Image />` from `astro:assets`.
-- `src/components/mdx.ts` default-exports `{ BookInfo }` for MDX; `src/layouts/BaseLayout.astro` owns lang (`zh-Hant-TW`), dark-only chrome, and all metadata from `SITE`.
+- `src/components/mdx.ts` default-exports `{ BookInfo, MidiPlayer }` for MDX; `src/layouts/BaseLayout.astro` owns lang (`zh-Hant-TW`), dark-only chrome, and all metadata from `SITE`.
 
 ## Conventions
 

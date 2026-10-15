@@ -29,29 +29,40 @@ function quoteMark(lang: string, side: 'open' | 'close'): string {
 </footer>
 
 <script>
-  const container = document.getElementById('footer-quote')!;
-  const quotes = JSON.parse(container.dataset.quotes ?? '[]');
+  interface FooterQuote {
+    text: string;
+    author: string;
+    lang: string;
+  }
 
-  function quoteMark(lang, side) {
+  type QuoteMarkSide = 'open' | 'close';
+
+  const container = document.getElementById('footer-quote')!;
+  const quotes = JSON.parse(container.dataset.quotes ?? '[]') as FooterQuote[];
+
+  function quoteMark(lang: string, side: QuoteMarkSide): string {
     if (lang === 'zh') return side === 'open' ? '\u300C' : '\u300D';
     return side === 'open' ? '\u201C' : '\u201D';
   }
 
   let index = 0;
-  const textEl = document.getElementById('quote-text');
-  const authorEl = document.getElementById('quote-author');
-  const openMark = document.getElementById('quote-mark-open');
-  const closeMark = document.getElementById('quote-mark-close');
+  const textEl = document.getElementById('quote-text')!;
+  const authorEl = document.getElementById('quote-author')!;
+  const openMark = document.getElementById('quote-mark-open')!;
+  const closeMark = document.getElementById('quote-mark-close')!;
 
-  function cycleQuote() {
+  function cycleQuote(): void {
+    if (quotes.length === 0) return;
     index = (index + 1) % quotes.length;
+    const quote = quotes[index];
+    if (!quote) return;
     container.classList.add('fade');
     setTimeout(() => {
-      textEl.textContent = quotes[index].text;
-      textEl.lang = quotes[index].lang;
-      authorEl.innerHTML = '\u2014 ' + quotes[index].author;
-      openMark.textContent = quoteMark(quotes[index].lang, 'open');
-      closeMark.textContent = quoteMark(quotes[index].lang, 'close');
+      textEl.textContent = quote.text;
+      textEl.lang = quote.lang;
+      authorEl.innerHTML = '\u2014 ' + quote.author;
+      openMark.textContent = quoteMark(quote.lang, 'open');
+      closeMark.textContent = quoteMark(quote.lang, 'close');
       container.classList.remove('fade');
     }, 400);
   }
@@ -59,7 +70,7 @@ function quoteMark(lang: string, side: 'open' | 'close'): string {
   // Auto-cycling motion: off under reduced-motion, pausable on hover/focus.
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!reduceMotion && quotes.length > 1) {
-    let timer = setInterval(cycleQuote, 10000);
+    let timer: ReturnType<typeof setInterval> = setInterval(cycleQuote, 10000);
     const pause = () => clearInterval(timer);
     const resume = () => {
       pause();

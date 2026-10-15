@@ -1,0 +1,83 @@
+---
+interface Props {
+  /** Public URL of the MIDI file, e.g. `/audio/anthem.mid`. */
+  src: string;
+  /** Element id for the visualizer (must be unique per page). */
+  visualizerId?: string;
+}
+
+const { src, visualizerId = 'midi-visualizer' } = Astro.props;
+---
+
+<figure class="midi-player">
+  <midi-player src={src} sound-font=""></midi-player>
+  <midi-visualizer type="piano-roll" id={visualizerId} src={src}></midi-visualizer>
+</figure>
+
+<script>
+  import 'html-midi-player';
+
+  // Bind explicitly: with bundled ESM the player element upgrades before
+  // the visualizer is defined, so the `visualizer` selector attribute
+  // would match an unresolved element and warn. addVisualizer is the
+  // documented equivalent and runs after both classes are registered.
+  const player = /** @type {any} */ (document.querySelector('midi-player'));
+  const visualizer = /** @type {any} */ (document.querySelector('midi-visualizer'));
+  if (player && visualizer) {
+    player.addVisualizer(visualizer);
+    // Quiet notes, orange active note — matches the site accents.
+    visualizer.config = {
+      noteRGB: '126, 126, 139',
+      activeNoteRGB: '228, 138, 74',
+    };
+  }
+</script>
+
+<style>
+  .midi-player {
+    margin: 1.5rem 0;
+    padding: 1.25rem;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+  }
+
+  .midi-player midi-player {
+    width: 100%;
+    font-family: var(--font);
+  }
+
+  /* Shadow-DOM controls: flat dark surface, orange action, gold time. */
+  .midi-player midi-player::part(control-panel) {
+    background: transparent;
+    border-radius: 0;
+  }
+
+  .midi-player midi-player::part(play-button) {
+    color: var(--accent);
+  }
+
+  .midi-player midi-player::part(seek-bar) {
+    accent-color: var(--accent);
+  }
+
+  .midi-player midi-player::part(time) {
+    color: var(--accent-gold);
+  }
+
+  /* Flat loading state instead of the default shimmer gradient. */
+  .midi-player midi-player::part(loading-overlay) {
+    background: var(--bg-card);
+    animation: none;
+  }
+
+  .midi-player midi-visualizer {
+    display: block;
+    width: 100%;
+    margin-top: 0.75rem;
+  }
+
+  /* Per-instrument note colors live in global.css (JS-injected SVG needs
+     unscoped selectors). This component is exempt from the One Accent
+     Rule — see DESIGN.md. */
+</style>
