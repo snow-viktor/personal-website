@@ -12,11 +12,11 @@ Personal website of SnowViktor (彬彬). Readers are people interested in the au
 
 ## Product Purpose
 
-A long-running personal archive and public notebook. The author writes regularly (75 articles, 2023–2026) in Traditional Chinese (zh-Hant-TW). Success means the writing stays readable, findable (client-side search), and preserved as a coherent body of work — not traffic growth.
+A long-running personal archive and public notebook. The author writes regularly (75 articles, 2014–2026) in Traditional Chinese (zh-Hant-TW). Success means the writing stays readable, findable (client-side search), and preserved as a coherent body of work — not traffic growth.
 
 ## Positioning
 
-A student's homework-diary-turned-personal-site: the core collection「聯絡簿日記」 (contact-book diary) plus book notes with structured bibliographic headers (`BookInfo`) and GitHub-style alert callouts (`> [!NOTE]` … `> [!CAUTION]`). The differentiator is the archive itself — dated, tagged, collection-grouped writing — not tooling.
+A student's homework-diary-turned-personal-site: the core collection「聯絡簿日記」(contact-book diary) holds the daily entries,「閱讀心得」(reading notes) holds book notes with structured bibliographic headers (`BookInfo`), and standalone essays stay ungrouped. GitHub-style alert callouts (`> [!NOTE]` … `> [!CAUTION]`) appear throughout. The differentiator is the archive itself — dated, tagged, collection-grouped writing — not tooling.
 
 ## Operating Context
 
@@ -27,10 +27,11 @@ A student's homework-diary-turned-personal-site: the core collection「聯絡簿
 ## Capabilities and Constraints
 
 - Static Astro 7.x build; no backend, no auth, no comments.
-- Dark-only theme; Traditional Chinese primary, some English-quoted material.
+- Dark-only theme; Traditional Chinese primary, some English-quoted material, occasional Japanese passages (furigana via `<ruby>`, tagged `lang="ja"`).
+- Rich content types beyond plain Markdown: build-time Temml MathML (zero client JS), GitHub-style alert callouts, hand-authored SVG diagrams, structured book-note headers (`BookInfo`), and self-hosted MIDI playback (school-anthem project).
 - `draft: true` excludes everywhere: listings, detail routes (never built), and search index.
 - `trailingSlash: 'always'` — internal links end with `/`, except static files in `public/` which resolve without one.
-- Open decisions: whether the author wants an audience-facing bio/about page; whether article images need build-time sizing.
+- Open decisions: whether the author wants an audience-facing bio/about page; whether article images need build-time sizing (no article carries an image today).
 
 ## Brand Commitments
 
@@ -40,7 +41,7 @@ A student's homework-diary-turned-personal-site: the core collection「聯絡簿
 
 ## Evidence on Hand
 
-- 75 published articles (`src/content/articles/`), 3 projects (`src/content/projects/`), site copy in `src/pages/` and `src/config.ts`.
+- 75 published articles (`src/content/articles/`, dated 2014–2026: 61 in「聯絡簿日記」, 5 in「閱讀心得」, 9 ungrouped), 3 projects (`src/content/projects/`), site copy in `src/pages/` and `src/config.ts`.
 - No analytics, no Search Console access, no stated SEO targets.
 
 ## Product Principles
@@ -52,4 +53,4 @@ A student's homework-diary-turned-personal-site: the core collection「聯絡簿
 
 ## Accessibility & Inclusion
 
-No author-stated standard. Baseline applied in this repo: keyboard-reachable content with visible focus, skip link, `prefers-reduced-motion` respected for auto-motion, zh-Hant-TW lang tagging.
+No author-stated standard. Baseline applied in this repo: keyboard-reachable content with visible focus, skip link, `prefers-reduced-motion` respected for auto-motion, `zh-Hant-TW` document lang with `lang="ja"` on Japanese passages.

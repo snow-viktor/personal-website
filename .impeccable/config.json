@@ -10,7 +10,7 @@
           "src/styles/temml-latin-modern.css"
         ],
         "createdAt": "2026-09-12T14:19:35.835Z",
-        "reason": "Vendored temml@0.14.0 structural CSS; fallback stacks (.special-fraction etc.) are upstream, not a brand font addition"
+        "reason": "Vendored temml@0.14.0 structural CSS; no font URLs inside (math @font-face lives in global.css) and fallback stacks (.special-fraction etc.) are upstream, not a brand font addition"
       }
     ]
   }

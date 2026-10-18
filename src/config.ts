@@ -58,14 +58,16 @@ export const QUOTES = [
 ] as const;
 
 // Site type stacks, mirrored from src/styles/global.css custom properties.
-// Keep both in sync.
+// Keep both in sync. Webfonts come from Fontsource packages imported in
+// BaseLayout.astro (Iansui in ArticleLayout.astro, Noto Sans JP in the page
+// using lang="ja").
 export const FONTS = {
-  sans: `'Noto Sans', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif`,
-  heading: `'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif`,
+  sans: `'Noto Sans TC Variable', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif`,
+  heading: `'Noto Serif TC Variable', 'Noto Serif CJK TC', 'Noto Serif TC', serif`,
   mono: `'Cascadia Mono', monospace`,
   math: `'Latin Modern Math', 'Temml', math`,
-  verse: `'Iansui', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif`,
-  ja: `'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', YuGothic, 'Meiryo', 'Noto Sans JP', 'Noto Sans CJK JP', 'Noto Sans CJK TC', sans-serif`,
+  verse: `'Iansui', 'Noto Sans TC Variable', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif`,
+  ja: `'Noto Sans JP Variable', 'Noto Sans CJK JP', 'Noto Sans JP', sans-serif`,
 } as const;
 
 // Build-time math rendering (Temml → native MathML, zero client JS).

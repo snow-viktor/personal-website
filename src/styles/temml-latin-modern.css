@@ -1,34 +1,15 @@
 /*
 Vendored from temml@0.14.0 dist/Temml-Latin-Modern.css — structural MathML
-correction rules kept intact; only the font URLs below point at self-hosted
-files in public/fonts/ (Cloudflare Pages, zero client JS; math is pre-rendered
-at build time via temml.renderToString in src/lib/mathml.ts).
+correction rules kept intact. Contains NO font URLs by design: the two
+@font-face declarations (Latin Modern Math, Temml) live in global.css and
+point at self-hosted files in public/fonts/ (Cloudflare Pages, zero client
+JS; math is pre-rendered at build time via temml.renderToString in
+src/lib/mathml.ts).
 
-Fonts:
-- latinmodernmath.woff2 (388 KB): Latin Modern Math, GUST font license
-  (≈ LaTeX Project Public License). Source:
-  https://fred-wang.github.io/MathFonts/LatinModern/latinmodern-math.woff2
-  (upstream: http://www.gust.org.pl/projects/e-foundry/).
-- Temml.woff2 (10 KB): ships with the temml npm package (MIT), provides
-  \mathscr glyphs + prime alignment in Chromium/Edge.
-
-To update Temml, re-copy dist/Temml-Latin-Modern.css and re-apply the two
-url() rewrites below.
+To update Temml: re-copy dist/Temml-Latin-Modern.css over this file as-is —
+no url() rewrites needed. Current fonts: latinmodernmath.woff2 (388 KB,
+GUST font license) + Temml.woff2 (10 KB, temml MIT) in public/fonts/.
 */
-
-@font-face {
-  font-family: 'Temml';
-  src: url('/fonts/Temml.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: Latin Modern Math;
-  src: url('/fonts/latinmodernmath.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}
 
 math {
   font-style: normal;

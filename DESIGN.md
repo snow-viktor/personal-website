@@ -10,9 +10,13 @@ colors:
   text-dim: "#7e7e8b"
   accent: "#e48a4a"
   accent-hover: "#ea944e"
+  accent-muted: "rgba(228, 138, 74, 0.12)"
   accent-gold: "#d4a060"
+  accent-gold-muted: "rgba(212, 160, 96, 0.12)"
   accent-blue: "#7a9ec0"
+  accent-blue-muted: "rgba(122, 158, 192, 0.15)"
   accent-green: "#7aaa7a"
+  accent-green-muted: "rgba(122, 170, 122, 0.15)"
   text-code: "#b4d4ac"
   border: "#363640"
   border-subtle: "#2a2a32"
@@ -21,86 +25,86 @@ colors:
   hover-shadow: "rgba(0, 0, 0, 0.3)"
 typography:
   display:
-    fontFamily: "'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
+    fontFamily: "'Noto Serif TC Variable', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
     fontSize: "clamp(2.5rem, 1rem + 8vw, 4.5rem)"
     fontWeight: 700
     lineHeight: 1.05
     letterSpacing: "-0.03em"
   display-404:
-    fontFamily: "'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
+    fontFamily: "'Noto Serif TC Variable', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
     fontSize: "6rem"
     fontWeight: 800
     lineHeight: 1
     letterSpacing: "-0.04em"
   headline:
-    fontFamily: "'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
+    fontFamily: "'Noto Serif TC Variable', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
     fontSize: "2.25rem"
     fontWeight: 600
     lineHeight: 1.3
     letterSpacing: "-0.02em"
   title:
-    fontFamily: "'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
+    fontFamily: "'Noto Serif TC Variable', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
     fontSize: "1.125rem"
     fontWeight: 600
     lineHeight: 1.3
   body:
-    fontFamily: "'Noto Sans', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
+    fontFamily: "'Noto Sans TC Variable', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
     fontSize: "1.0625rem"
     fontWeight: 400
     lineHeight: 1.8
   label:
-    fontFamily: "'Noto Sans', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
+    fontFamily: "'Noto Sans TC Variable', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
     fontSize: "0.75rem"
     fontWeight: 600
     letterSpacing: "0.05em"
   caption:
-    fontFamily: "'Noto Sans', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
+    fontFamily: "'Noto Sans TC Variable', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
     fontSize: "0.625rem"
     fontWeight: 700
     letterSpacing: "0.08em"
   badge:
-    fontFamily: "'Noto Sans', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
+    fontFamily: "'Noto Sans TC Variable', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
     fontSize: "0.6875rem"
     fontWeight: 500
     letterSpacing: "0.05em"
   meta:
-    fontFamily: "'Noto Sans', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
+    fontFamily: "'Noto Sans TC Variable', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
     fontSize: "0.8125rem"
     fontWeight: 400
   small:
-    fontFamily: "'Noto Sans', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
+    fontFamily: "'Noto Sans TC Variable', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
     fontSize: "0.875rem"
     fontWeight: 400
   note:
-    fontFamily: "'Noto Sans', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
+    fontFamily: "'Noto Sans TC Variable', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
     fontSize: "0.9375rem"
     fontWeight: 400
   base:
-    fontFamily: "'Noto Sans', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
+    fontFamily: "'Noto Sans TC Variable', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
     fontSize: "1rem"
     fontWeight: 400
   quote:
-    fontFamily: "'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
+    fontFamily: "'Noto Serif TC Variable', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
     fontSize: "1.125rem"
     fontWeight: 400
     lineHeight: 1.7
   quote-mark:
-    fontFamily: "'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
+    fontFamily: "'Noto Serif TC Variable', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
     fontSize: "3rem"
     fontWeight: 400
     lineHeight: 1
   section:
-    fontFamily: "'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
+    fontFamily: "'Noto Serif TC Variable', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
     fontSize: "1.5rem"
     fontWeight: 600
     lineHeight: 1.3
   section-sm:
-    fontFamily: "'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
+    fontFamily: "'Noto Serif TC Variable', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
     fontSize: "1.25rem"
     fontWeight: 600
     lineHeight: 1.3
   headline-sm:
-    fontFamily: "'Noto Serif', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
+    fontFamily: "'Noto Serif TC Variable', 'Noto Serif CJK TC', 'Noto Serif TC', serif"
     fontSize: "1.75rem"
     fontWeight: 600
     lineHeight: 1.3
@@ -111,13 +115,13 @@ typography:
     fontFamily: "'Latin Modern Math', 'Temml', math"
     fontSize: "1.02em"
   verse:
-    fontFamily: "'Iansui', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
+    fontFamily: "'Iansui', 'Noto Sans TC Variable', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif"
     fontSize: "1.125rem"
     fontWeight: 400
     lineHeight: 2
     letterSpacing: "0.02em"
   ja:
-    fontFamily: "'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', YuGothic, 'Meiryo', 'Noto Sans JP', 'Noto Sans CJK JP', 'Noto Sans CJK TC', sans-serif"
+    fontFamily: "'Noto Sans JP Variable', 'Noto Sans CJK JP', 'Noto Sans JP', sans-serif"
 rounded:
   sm: "4px"
   md: "8px"
@@ -137,7 +141,7 @@ components:
     textColor: "{colors.accent-gold}"
     rounded: "{rounded.pill}"
   type-badge:
-    backgroundColor: "{colors.accent-green}"
+    backgroundColor: "{colors.accent-green-muted}"
     textColor: "{colors.accent-green}"
     rounded: "{rounded.pill}"
   search-input:
@@ -148,11 +152,15 @@ components:
     backgroundColor: "{colors.text}"
     textColor: "{colors.bg}"
     rounded: "{rounded.sm}"
+  mark:
+    backgroundColor: "{colors.accent-blue-muted}"
+    textColor: "{colors.mark-text}"
+    rounded: "{rounded.sm}"
 ---
 
 # Design System: SnowViktor personal website
 
-<!-- SCAN: extracted from src/styles/global.css, components, and pages after the 2026-09 polish pass. Qualitative names are descriptive, not user-confirmed. -->
+<!-- SCAN: refreshed 2026-10-18 from src/styles/global.css, components, and pages (Fontsource self-hosted webfonts; muted tints and <mark> highlight added to frontmatter). Qualitative names are descriptive, not user-confirmed. -->
 
 ## Overview
 
@@ -186,6 +194,9 @@ Warm dark neutrals carry the page; three muted accents mark meaning (links/actio
 - **Dim Text** (#7e7e8b): Tertiary labels, placeholders, footer.
 - **Hairlines** (#363640 borders, #2a2a32 subtle, #42424d accent): Structure only, never decoration.
 
+### Tints
+Each accent has one muted companion (12–15% alpha) used as a fill behind full-strength borders or text: orange = WARNING/CAUTION alerts, blue = NOTE/IMPORTANT alerts, BookInfo, and `<mark>` search highlights, gold = TIP alerts, green = type-badge fill. Tints are fills only — never text, never borders.
+
 ### Named Rules
 **The Solid Text Rule.** No gradient text anywhere; emphasis comes from weight or size. (Settled in the 2026-09 de-slop pass.)
 **The One Accent Rule.** One accent per element: an orange link never also carries a gold underline; metadata picks gold *or* green, not both.
@@ -194,11 +205,11 @@ Warm dark neutrals carry the page; three muted accents mark meaning (links/actio
 
 ## Typography
 
-**Display Font:** Noto Serif (with Noto Serif CJK TC fallback)
-**Body Font:** Noto Sans (with Noto Sans CJK TC fallback)
-**Label/Mono Font:** Cascadia Mono — navigation, logo-adjacent chrome, code only.
-**Verse Font:** Iansui — `free verse`-tagged article bodies only.
-**JA Font:** Platform JP system fonts (Hiragino / Yu Gothic / Meiryo / Noto JP) — `lang="ja"` passages only.
+**Display Font:** Noto Serif TC Variable (self-hosted via Fontsource; system Noto Serif CJK TC fallback)
+**Body Font:** Noto Sans TC Variable (self-hosted via Fontsource; system Noto Sans CJK TC fallback)
+**Label/Mono Font:** Cascadia Mono (self-hosted via Fontsource) — navigation, logo-adjacent chrome, code only.
+**Verse Font:** Iansui (self-hosted via Fontsource) — `free verse`-tagged article bodies only.
+**JA Font:** Noto Sans JP Variable (self-hosted via Fontsource; Noto CJK JP siblings then generic `sans-serif` fallback, no platform JP system fonts) — `lang="ja"` passages only.
 
 **Character:** Editorial serif for headings and quotes; calm high-legibility sans for body at a relaxed 1.7–1.8 line height suited to long CJK reading.
 
@@ -252,15 +263,15 @@ Gently rounded rects: 8px cards and inputs, 4px code and small elements, pills (
 
 ### Math
 - **Character:** Pre-rendered Temml MathML (zero client JS), inherits body text color so the dark theme is free.
-- **Style:** Latin Modern Math (`--font-math`) at 1.02em for optical match to body; `Temml.woff2` covers `\mathscr` + prime alignment. Structural correction rules vendored in `src/styles/temml-latin-modern.css` (loaded via `@import` in `global.css`); fonts self-hosted in `public/fonts/`. Display math scrolls horizontally on overflow.
+- **Style:** Latin Modern Math (`--font-math`) at 1.02em for optical match to body; `Temml.woff2` covers `\mathscr` + prime alignment. Structural correction rules vendored in `src/styles/temml-latin-modern.css` (loaded via `@import` in `global.css`, no font URLs inside — its `@font-face` declarations live in `global.css`); fonts self-hosted in `public/fonts/`. Display math scrolls horizontally on overflow.
 
 ### Verse
 - **Character:** Handwritten voice for `free verse`-tagged articles; body only.
-- **Style:** Self-hosted Iansui Regular (`--font-verse`, OFL-1.1) at 1.125rem with a relaxed 2.0 line height. Headings and metadata keep their existing faces (Serif Voice rule still holds).
+- **Style:** Self-hosted Iansui Regular (`--font-verse`, OFL-1.1, Fontsource package imported in `ArticleLayout.astro`) at 1.125rem with a relaxed 2.0 line height. Headings and metadata keep their existing faces (Serif Voice rule still holds).
 
 ### Japanese
 - **Character:** Japanese passages are rare; they get their own stack, never the global one.
-- **Style:** Wrap the passage in `<div lang="ja">` — `:lang(ja)` applies `--font-ja` (platform system fonts, so kanji take Japanese shapes via `locl`). Furigana uses `<ruby>base<rt>reading</rt></ruby>`, never parenthesised readings.
+- **Style:** Wrap the passage in `<div lang="ja">` — `:lang(ja)` applies `--font-ja` (mirrors `--font` with TC → JP: Noto Sans JP webfont so every platform renders identically; Noto CJK JP siblings then generic `sans-serif`, no platform JP system fonts). The page/layout must `import '@fontsource-variable/noto-sans-jp'`. Furigana uses `<ruby>base<rt>reading</rt></ruby>`, never parenthesised readings.
 
 ### Diagrams
 - **Character:** Hand-authored static SVG figures, inlined at build time with zero client JS (mermaid removed 2026-09: its dynamic-import chunks 409'd after deploys and renders stalled mid view-transition).
@@ -284,6 +295,7 @@ Gently rounded rects: 8px cards and inputs, 4px code and small elements, pills (
 ### Search input
 - **Style:** Card-surface fill, 1px border, 8px radius; placeholder ends with `…`, `autocomplete="off"`, `spellcheck="false"`, `aria-label` + polite live status line.
 - **Focus:** Accent border plus 2px accent `:focus-visible` outline (never `outline: none` alone).
+- **Match highlight:** Query matches in results wrap in `<mark>` — blue tint fill (`#d6e4ef` text, 4px radius, small padding); the highlight sits behind the text and never recolors it with the accent.
 
 ## Do's and Don'ts
 

@@ -1,0 +1,280 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-18T00:00:00+08:00",
+  "title": "Design System: SnowViktor personal website",
+  "extensions": {
+    "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "Burnt Orange",
+        "canonical": "oklch(68% 0.11 55)",
+        "tonalRamp": [
+          "oklch(15% 0.04 55)",
+          "oklch(25% 0.07 55)",
+          "oklch(35% 0.09 55)",
+          "oklch(45% 0.10 55)",
+          "oklch(55% 0.11 55)",
+          "oklch(68% 0.11 55)",
+          "oklch(80% 0.09 55)",
+          "oklch(92% 0.05 55)"
+        ]
+      },
+      "accent-gold": {
+        "role": "secondary",
+        "displayName": "Muted Gold",
+        "canonical": "oklch(73% 0.09 75)",
+        "tonalRamp": [
+          "oklch(15% 0.03 75)",
+          "oklch(25% 0.05 75)",
+          "oklch(35% 0.07 75)",
+          "oklch(45% 0.08 75)",
+          "oklch(58% 0.09 75)",
+          "oklch(73% 0.09 75)",
+          "oklch(85% 0.07 75)",
+          "oklch(93% 0.04 75)"
+        ]
+      },
+      "accent-blue": {
+        "role": "tertiary",
+        "displayName": "Dusty Blue",
+        "canonical": "oklch(66% 0.055 245)",
+        "tonalRamp": [
+          "oklch(15% 0.02 245)",
+          "oklch(25% 0.03 245)",
+          "oklch(35% 0.04 245)",
+          "oklch(45% 0.05 245)",
+          "oklch(55% 0.055 245)",
+          "oklch(66% 0.055 245)",
+          "oklch(80% 0.045 245)",
+          "oklch(92% 0.025 245)"
+        ]
+      },
+      "accent-green": {
+        "role": "tertiary",
+        "displayName": "Sage Green",
+        "canonical": "oklch(66% 0.075 145)",
+        "tonalRamp": [
+          "oklch(15% 0.025 145)",
+          "oklch(25% 0.04 145)",
+          "oklch(35% 0.055 145)",
+          "oklch(45% 0.065 145)",
+          "oklch(55% 0.07 145)",
+          "oklch(66% 0.075 145)",
+          "oklch(80% 0.06 145)",
+          "oklch(92% 0.035 145)"
+        ]
+      },
+      "bg": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(16% 0.005 270)",
+        "tonalRamp": [
+          "oklch(16% 0.005 270)",
+          "oklch(22% 0.006 270)",
+          "oklch(30% 0.007 270)",
+          "oklch(40% 0.008 270)",
+          "oklch(52% 0.008 270)",
+          "oklch(66% 0.007 270)",
+          "oklch(80% 0.005 270)",
+          "oklch(93% 0.003 270)"
+        ]
+      },
+      "bg-card": {
+        "role": "neutral",
+        "displayName": "Card Surface",
+        "canonical": "oklch(20% 0.006 270)",
+        "tonalRamp": [
+          "oklch(16% 0.005 270)",
+          "oklch(20% 0.006 270)",
+          "oklch(28% 0.007 270)",
+          "oklch(38% 0.008 270)",
+          "oklch(50% 0.008 270)",
+          "oklch(64% 0.007 270)",
+          "oklch(79% 0.005 270)",
+          "oklch(92% 0.003 270)"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Paper Text",
+        "canonical": "oklch(93% 0.003 270)",
+        "tonalRamp": [
+          "oklch(15% 0.004 270)",
+          "oklch(25% 0.005 270)",
+          "oklch(38% 0.005 270)",
+          "oklch(50% 0.005 270)",
+          "oklch(62% 0.004 270)",
+          "oklch(75% 0.004 270)",
+          "oklch(85% 0.003 270)",
+          "oklch(93% 0.003 270)"
+        ]
+      },
+      "text-muted": {
+        "role": "neutral",
+        "displayName": "Muted Text",
+        "canonical": "oklch(75% 0.015 265)",
+        "tonalRamp": [
+          "oklch(15% 0.006 265)",
+          "oklch(25% 0.008 265)",
+          "oklch(38% 0.011 265)",
+          "oklch(50% 0.013 265)",
+          "oklch(62% 0.014 265)",
+          "oklch(75% 0.015 265)",
+          "oklch(85% 0.012 265)",
+          "oklch(94% 0.006 265)"
+        ]
+      },
+      "text-dim": {
+        "role": "neutral",
+        "displayName": "Dim Text",
+        "canonical": "oklch(55% 0.012 270)",
+        "tonalRamp": [
+          "oklch(15% 0.006 270)",
+          "oklch(25% 0.008 270)",
+          "oklch(38% 0.010 270)",
+          "oklch(55% 0.012 270)",
+          "oklch(66% 0.012 270)",
+          "oklch(76% 0.011 270)",
+          "oklch(86% 0.008 270)",
+          "oklch(94% 0.004 270)"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "oklch(27% 0.01 270)",
+        "tonalRamp": [
+          "oklch(15% 0.006 270)",
+          "oklch(22% 0.008 270)",
+          "oklch(27% 0.01 270)",
+          "oklch(38% 0.011 270)",
+          "oklch(50% 0.011 270)",
+          "oklch(64% 0.010 270)",
+          "oklch(79% 0.007 270)",
+          "oklch(92% 0.004 270)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Homepage hero name and 404 code only." },
+      "headline": { "displayName": "Headline", "purpose": "Page and article h1." },
+      "title": { "displayName": "Title", "purpose": "Card titles, h3, search-result titles." },
+      "body": { "displayName": "Body", "purpose": "Article and summary text; relaxed 1.8 line height for long CJK reading." },
+      "label": { "displayName": "Label", "purpose": "Section headers, badges, alert labels, nav active states." },
+      "mono": { "displayName": "Mono", "purpose": "Navigation chrome, logo-adjacent chrome, code only." },
+      "verse": { "displayName": "Verse", "purpose": "Iansui handwritten face for `free verse`-tagged article bodies only." },
+      "ja": { "displayName": "Japanese", "purpose": "Noto Sans JP for lang=\"ja\" passages only; never the global stack." }
+    },
+    "shadows": [
+      {
+        "name": "hover-lift",
+        "value": "0 4px 20px rgba(0, 0, 0, 0.3)",
+        "purpose": "Card/search-result hover lift response. The only shadow in the system — surfaces are flat at rest (Flat-By-Default Rule)."
+      }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "0.2s ease", "purpose": "Default transition for color, border, transform state changes." },
+      { "name": "card-reveal", "value": "opacity/translateY(0.5rem→0), animation-timeline: view()", "purpose": "Scroll-linked card entrance on listing pages; guarded by prefers-reduced-motion." },
+      { "name": "search-reveal", "value": "250ms cubic-bezier(0.23, 1, 0.32, 1), 30ms stagger per result", "purpose": "Search-result entrance cascade; guarded by prefers-reduced-motion." },
+      { "name": "quote-rotate", "value": "10s interval", "purpose": "Footer quote cycling; pauses on hover/focus, static under reduced-motion." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Article Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Quiet listing card for articles and projects; content is typeset, not decorated. Hover lifts 2px with accent border.",
+      "html": "<a href=\"/articles/example/\" class=\"ds-card\"><span class=\"ds-card-meta\">2026/01/01</span><span class=\"ds-card-title\">範例文章標題</span><span class=\"ds-card-summary\">兩行摘要文字，說明這篇文章在寫什麼。</span><span class=\"ds-card-tags\"><span class=\"ds-tag\">日記</span><span class=\"ds-tag\">生活</span></span></a>",
+      "css": ".ds-card { display: block; padding: 1.25rem; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 8px; color: var(--text); text-decoration: none; transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; } .ds-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); color: var(--text); } .ds-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; } .ds-card-meta { display: block; font-family: var(--font); font-size: 0.8125rem; color: var(--accent-gold); margin-bottom: 0.5rem; } .ds-card-title { display: block; font-family: var(--font-heading); font-size: 1.125rem; font-weight: 600; line-height: 1.3; margin-bottom: 0.5rem; } .ds-card-summary { display: block; font-family: var(--font); font-size: 0.875rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 0; } .ds-card-tags { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-top: 0.75rem; }"
+    },
+    {
+      "name": "Tag",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Pill-shaped article tag; neutral fill with gold text. All tags shown per card, wrapping to multiple lines.",
+      "html": "<span class=\"ds-tag\">閱讀心得</span>",
+      "css": ".ds-tag { display: inline-block; font-family: var(--font); font-size: 0.75rem; line-height: 1.4; padding: 0.15em 0.5em; background: var(--border); color: var(--accent-gold); border-radius: 100px; white-space: nowrap; }"
+    },
+    {
+      "name": "Type Badge",
+      "kind": "chip",
+      "refersTo": "type-badge",
+      "description": "Project type marker; green tint fill with matching border, uppercase tracked label.",
+      "html": "<span class=\"ds-type-badge\">Project</span>",
+      "css": ".ds-type-badge { display: inline-block; font-family: var(--font); font-size: 0.6875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.4; padding: 0.2em 0.6em; border-radius: 100px; background: var(--accent-green-muted, rgba(122, 170, 122, 0.15)); color: var(--accent-green); border: 1px solid color-mix(in srgb, var(--accent-green) 30%, transparent); }"
+    },
+    {
+      "name": "Search Input",
+      "kind": "input",
+      "refersTo": "search-input",
+      "description": "Search page query field; card-surface fill, accent focus treatment.",
+      "html": "<input class=\"ds-input-search\" type=\"search\" placeholder=\"Search articles and projects…\" aria-label=\"Search\" autocomplete=\"off\" spellcheck=\"false\">",
+      "css": ".ds-input-search { width: 100%; box-sizing: border-box; padding: 0.75rem 1rem; font-family: var(--font); font-size: 1rem; color: var(--text); background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; transition: border-color 0.2s ease; } .ds-input-search::placeholder { color: var(--text-dim); } .ds-input-search:focus { border-color: var(--accent); } .ds-input-search:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }"
+    },
+    {
+      "name": "Skip Link",
+      "kind": "custom",
+      "refersTo": "skip-link",
+      "description": "Off-canvas accessibility skip link; paper-on-ink pill appears top-left on keyboard focus.",
+      "html": "<a class=\"ds-skip-link\" href=\"#main\">Skip to content</a>",
+      "css": ".ds-skip-link { position: absolute; left: 1rem; top: -100%; z-index: 200; padding: 0.5rem 1rem; background: var(--text); color: var(--bg); border-radius: 4px; font-family: var(--font); font-size: 0.875rem; text-decoration: none; transition: top 0.2s ease; } .ds-skip-link:hover, .ds-skip-link:focus { color: var(--bg); } .ds-skip-link:focus-visible { top: 0.5rem; outline: 2px solid var(--accent); outline-offset: 2px; }"
+    },
+    {
+      "name": "Markdown Alert (NOTE)",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "GitHub-style `> [!NOTE]` callout, built at build time into a semantic aside. Full 1px tinted border on muted tint fill — never a one-sided accent bar. TIP is gold; WARNING/CAUTION share caution-orange.",
+      "html": "<aside class=\"ds-alert\" role=\"note\"><span class=\"ds-alert-title\">Note</span><p>補充說明的文字內容。</p></aside>",
+      "css": ".ds-alert { border: 1px solid color-mix(in srgb, var(--accent-blue) 35%, transparent); background: var(--accent-blue-muted, rgba(122, 158, 192, 0.15)); border-radius: 8px; padding: 1rem 1.25rem; font-family: var(--font); font-size: 0.9375rem; line-height: 1.7; color: var(--text); } .ds-alert-title { display: block; font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-blue); margin-bottom: 0.5rem; } .ds-alert p { margin: 0; }"
+    },
+    {
+      "name": "BookInfo",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Structured bibliographic header for reading-note articles; dusty-blue tint panel, gold author, serif title.",
+      "html": "<div class=\"ds-book-info\"><div class=\"ds-book-info-head\"><span class=\"ds-book-info-author\">作者名</span></div><span class=\"ds-book-info-title\">書名</span><div class=\"ds-book-info-details\">出版社．2026/01/01．ISBN 978-0-00-000000-0</div></div>",
+      "css": ".ds-book-info { background: var(--accent-blue-muted, rgba(122, 158, 192, 0.15)); border: 1px solid color-mix(in srgb, var(--accent-blue) 35%, transparent); border-radius: 8px; padding: 1.25rem 1.5rem; font-family: var(--font); color: var(--text); } .ds-book-info-head { font-size: 0.875rem; margin-bottom: 0.25rem; } .ds-book-info-author { color: var(--accent-gold); font-weight: 500; } .ds-book-info-title { display: block; font-family: var(--font-heading); font-size: 1rem; font-weight: 600; line-height: 1.3; margin: 0.375rem 0; } .ds-book-info-details { font-size: 0.8125rem; color: var(--text-dim); }"
+    },
+    {
+      "name": "Header Navigation",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Fixed hairline header; 50%-transparent ink with 6px backdrop blur, monospace chrome, muted links going to full text on hover/active. Search collapses to icon-only under 640px.",
+      "html": "<header class=\"ds-nav\"><a href=\"/\" class=\"ds-nav-logo\">SnowViktor</a><ul class=\"ds-nav-links\"><li><a href=\"/articles/\" class=\"active\">Articles</a></li><li><a href=\"/projects/\">Projects</a></li></ul></header>",
+      "css": ".ds-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; height: 2.75rem; padding: 0 1.5rem; box-sizing: border-box; background: color-mix(in srgb, var(--bg) 50%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); font-family: var(--font-mono); } .ds-nav-logo { font-size: 1.125rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1; color: var(--text); text-decoration: none; } .ds-nav-links { display: flex; align-items: center; gap: 1rem; list-style: none; margin: 0; padding: 0; } .ds-nav-links a { font-size: 0.9375rem; line-height: 1; color: var(--text-muted); text-decoration: none; transition: color 0.2s; } .ds-nav-links a:hover, .ds-nav-links a.active { color: var(--text); } .ds-nav-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Warm Dark Notebook",
+    "overview": "A quiet, warm-dark reading surface where student-notebook writing is the entire point. Chrome recedes: one fixed hairline header, borderless text-first cards, and three amber-family accents used sparingly as metadata color, never as decoration. Serif CJK headings over a neutral sans body give the diary/essay content an editorial voice; monospace is reserved for navigation chrome and code. Playful details (WALL-E robots.txt, footer quote rotation, rickroll 404) are part of the identity — preserve them.",
+    "keyCharacteristics": [
+      "Dark-only, warm neutrals with amber/orange/gold/blue-green accents.",
+      "Text-first cards; depth on hover only (lift + border shift).",
+      "Serif display + sans body + mono chrome."
+    ],
+    "rules": [
+      { "name": "The Solid Text Rule", "body": "No gradient text anywhere; emphasis comes from weight or size. (Settled in the 2026-09 de-slop pass.)", "section": "colors" },
+      { "name": "The One Accent Rule", "body": "One accent per element: an orange link never also carries a gold underline; metadata picks gold *or* green, not both.", "section": "colors" },
+      { "name": "The Atmosphere Rule", "body": "Gradients live in ambient surfaces only — currently the homepage hero glow (three layered brand-hue radials: orange 28%, blue 20%, gold 15%, all fading to transparent). The hero stretches under the fixed header so the glow meets the nav's bottom edge through its translucent blur. Never on type, never page-wide, never animated.", "section": "colors" },
+      { "name": "The Marker Rule", "body": "The hero name's tail (\"Viktor\") carries a hand-marker highlight sweep (accent orange at 32%, hard stop, bottom third only). Highlights sit *behind* type; they never recolor it.", "section": "colors" },
+      { "name": "The Serif Voice Rule", "body": "Headings, quotes, and result titles are always serif; UI chrome and metadata are never serif.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Shadows appear only on hover/focus. Never a resting shadow under a border.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep new surfaces to the three accents with their fixed meanings (orange = action, gold = metadata, blue/green = context).",
+      "Do use `src/lib/content.ts` + `isCjkChar()`-based helpers for any listing, date, or reading-time work.",
+      "Do put styles for JS-injected nodes (search results) in `src/styles/global.css`, unscoped.",
+      "Do end internal links with `/`, except `public/` static files."
+    ],
+    "donts": [
+      "Don't use gradient text, one-sided accent bars, kickers/eyebrows, or hard offset shadows — removed deliberately in 2026-09.",
+      "Don't add resting shadows, nested cards, or a second breakpoint without a measured reason.",
+      "Don't invent author biography, credentials, or testimonials in copy.",
+      "Don't import server-only modules into client `<script>` blocks."
+    ]
+  }
+}

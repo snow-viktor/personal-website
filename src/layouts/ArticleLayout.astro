@@ -1,5 +1,8 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+// Handwritten CJK face for `free verse` bodies; article-scoped so only
+// article pages pay for its unicode-range CSS.
+import '@fontsource/iansui';
 import { formatDate, truncate } from '../lib/utils';
 import { SITE } from '../config';
 
