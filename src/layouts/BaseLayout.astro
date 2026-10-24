@@ -1,7 +1,11 @@
 ---
 import '../styles/global.css';
 // Fontsource self-hosted webfonts (unicode-range slices, bundled by Vite).
-// Variable packages: one slice set covers every weight.
+// Variable packages: one slice set covers every weight. Latin Noto Sans/Serif
+// (system name then Fontsource Variable) lead the sans/heading stacks; the
+// CJK TC slices and system Noto CJK/TC entries cover han glyphs.
+import '@fontsource-variable/noto-sans';
+import '@fontsource-variable/noto-serif';
 import '@fontsource-variable/noto-sans-tc';
 import '@fontsource-variable/noto-serif-tc';
 import '@fontsource/cascadia-mono/400.css';

@@ -46,12 +46,12 @@
   --radius-sm: 4px;
   --max-width: 720px;
   --max-width-wide: 960px;
-  --font: 'Noto Sans TC Variable', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif;
-  --font-heading: 'Noto Serif TC Variable', 'Noto Serif CJK TC', 'Noto Serif TC', serif;
+  --font: 'Noto Sans', 'Noto Sans Variable', 'Noto Sans CJK TC', 'Noto Sans TC', 'Noto Sans TC Variable', sans-serif;
+  --font-heading: 'Noto Serif', 'Noto Serif Variable', 'Noto Serif CJK TC', 'Noto Serif TC', 'Noto Serif TC Variable', serif;
   --font-mono: 'Cascadia Mono', monospace;
   --font-math: 'Latin Modern Math', 'Temml', math;
-  --font-verse: 'Iansui', 'Noto Sans TC Variable', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif;
-  --font-ja: 'Noto Sans JP Variable', 'Noto Sans CJK JP', 'Noto Sans JP', sans-serif;
+  --font-verse: 'Iansui', 'Noto Sans', 'Noto Sans Variable', 'Noto Sans CJK TC', 'Noto Sans TC', 'Noto Sans TC Variable', sans-serif;
+  --font-ja: 'Noto Sans', 'Noto Sans Variable', 'Noto Sans CJK JP', 'Noto Sans JP', 'Noto Sans JP Variable', sans-serif;
   --line-height: 1.7;
 }
 
@@ -591,10 +591,12 @@ math[display='block'] {
   margin: 1rem 0;
 }
 
-/* Japanese passages (`<div lang="ja">`): Noto Sans JP webfont first so kanji
-   render identically on every platform; system-installed Noto CJK JP siblings
-   then generic sans-serif — no platform JP fonts. Lazy by nature — the stack
-   only resolves on elements actually tagged lang="ja", and the importing
+/* Japanese passages (`<div lang="ja">`): Latin Noto Sans leads its stack —
+   system install first, Fontsource Variable webfont next (unicode-range keeps
+   it scoped to Latin codepoints) — then locally installed Noto CJK JP
+   siblings, Noto Sans JP Variable webfont as the cross-platform fallback, and
+   generic sans-serif last — no non-Noto platform JP fonts. Stacks resolve
+   lazily — only on elements actually tagged lang="ja", and the importing
    page/layout must import '@fontsource-variable/noto-sans-jp'. */
 :lang(ja) {
   font-family: var(--font-ja);

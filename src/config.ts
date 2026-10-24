@@ -59,15 +59,16 @@ export const QUOTES = [
 
 // Site type stacks, mirrored from src/styles/global.css custom properties.
 // Keep both in sync. Webfonts come from Fontsource packages imported in
-// BaseLayout.astro (Iansui in ArticleLayout.astro, Noto Sans JP in the page
-// using lang="ja").
+// BaseLayout.astro — CJK TC slices, Latin Noto Sans/Variable and
+// Noto Serif/Variable; Iansui in ArticleLayout.astro, Noto Sans JP in the
+// page using lang="ja".
 export const FONTS = {
-  sans: `'Noto Sans TC Variable', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif`,
-  heading: `'Noto Serif TC Variable', 'Noto Serif CJK TC', 'Noto Serif TC', serif`,
+  sans: `'Noto Sans', 'Noto Sans Variable', 'Noto Sans CJK TC', 'Noto Sans TC', 'Noto Sans TC Variable', sans-serif`,
+  heading: `'Noto Serif', 'Noto Serif Variable', 'Noto Serif CJK TC', 'Noto Serif TC', 'Noto Serif TC Variable', serif`,
   mono: `'Cascadia Mono', monospace`,
   math: `'Latin Modern Math', 'Temml', math`,
-  verse: `'Iansui', 'Noto Sans TC Variable', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif`,
-  ja: `'Noto Sans JP Variable', 'Noto Sans CJK JP', 'Noto Sans JP', sans-serif`,
+  verse: `'Iansui', 'Noto Sans', 'Noto Sans Variable', 'Noto Sans CJK TC', 'Noto Sans TC', 'Noto Sans TC Variable', sans-serif`,
+  ja: `'Noto Sans', 'Noto Sans Variable', 'Noto Sans CJK JP', 'Noto Sans JP', 'Noto Sans JP Variable', sans-serif`,
 } as const;
 
 // Build-time math rendering (Temml → native MathML, zero client JS).
