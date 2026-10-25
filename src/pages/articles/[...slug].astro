@@ -5,25 +5,31 @@ import { getEntry, render } from 'astro:content';
 import { getPublishedArticles } from '../../lib/content';
 import { computeReadingTime } from '../../lib/utils';
 
+// Neighbor calculation happens here, not at render time: the base path never
+// varies per query, and we avoid shipping every other article's body through
+// each page's props just to find its neighbors.
 export async function getStaticPaths() {
   const articles = await getPublishedArticles();
-  return articles.map((article) => ({
+  return articles.map((article, index) => ({
     params: { slug: article.id },
-    props: { id: article.id, allArticles: articles },
+    props: {
+      id: article.id,
+      prev: index > 0 ? { title: articles[index - 1].data.title, url: `/articles/${articles[index - 1].id}/` } : undefined,
+      next:
+        index < articles.length - 1
+          ? { title: articles[index + 1].data.title, url: `/articles/${articles[index + 1].id}/` }
+          : undefined,
+    },
   }));
 }
 
-const { id, allArticles } = Astro.props;
+const { id, prev, next } = Astro.props;
 const entry = await getEntry('articles', id);
 const { Content } = await render(entry);
 
 const readingTime = computeReadingTime(entry.body ?? '');
 
 const isVerse = entry.data.tags?.includes('free verse') ?? false;
-
-const currentIndex = allArticles.findIndex((a) => a.id === id);
-const prev = currentIndex > 0 ? allArticles[currentIndex - 1] : null;
-const next = currentIndex < allArticles.length - 1 ? allArticles[currentIndex + 1] : null;
 ---
 
 <ArticleLayout
@@ -34,8 +40,8 @@ const next = currentIndex < allArticles.length - 1 ? allArticles[currentIndex + 
   collection={entry.data.collection}
   readingTime={readingTime}
   isVerse={isVerse}
-  prev={prev ? { title: prev.data.title, url: `/articles/${prev.id}/` } : undefined}
-  next={next ? { title: next.data.title, url: `/articles/${next.id}/` } : undefined}
+  prev={prev}
+  next={next}
 >
   <Content components={components} />
 </ArticleLayout>

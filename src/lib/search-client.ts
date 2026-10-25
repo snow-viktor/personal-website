@@ -71,10 +71,6 @@ export function escapeHtml(text: string): string {
     .replace(/"/g, '&quot;');
 }
 
-export function highlightMatches(text: string, query: string): string {
-  return highlightWithPattern(escapeHtml(text), buildHighlightPattern(getQueryTerms(query)));
-}
-
 // Split a raw query once so per-result work reuses the same terms instead of
 // re-splitting for every rendered card.
 export function getQueryTerms(query: string): string[] {
@@ -98,14 +94,6 @@ export function buildHighlightPattern(terms: string[]): RegExp | null {
 export function highlightWithPattern(escapedText: string, pattern: RegExp | null): string {
   if (!pattern) return escapedText;
   return escapedText.replace(pattern, '<mark>$1</mark>');
-}
-
-export function extractSnippet(
-  text: string,
-  query: string,
-  contextLen: number = 60
-): string | null {
-  return extractSnippetForTerms(text, text.toLowerCase(), getQueryTerms(query).map((t) => t.toLowerCase()), contextLen);
 }
 
 // Earliest match of ANY query term, so multi-term / CJK queries still get a

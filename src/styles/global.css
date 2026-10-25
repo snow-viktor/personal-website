@@ -535,12 +535,6 @@ main > .page {
   }
 }
 
-.no-results {
-  color: var(--text-muted);
-  font-style: italic;
-  padding: 1rem 0;
-}
-
 .sr-only {
   position: absolute;
   width: 1px;

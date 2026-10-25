@@ -3,7 +3,7 @@ import { SITE, NAV_LINKS } from '../config';
 ---
 
 <header class="header">
-  <nav class="container header-nav">
+  <nav class="container header-nav" aria-label="主選單">
     <a href="/" class="logo">{SITE.name}</a>
     <ul class="nav-links">
       {NAV_LINKS.map((link) => {
@@ -12,7 +12,13 @@ import { SITE, NAV_LINKS } from '../config';
           : Astro.url.pathname.startsWith(link.href);
         return (
           <li>
-            <a href={link.href} class={isActive ? 'active' : ''} data-astro-prefetch>
+            <a
+              href={link.href}
+              class={isActive ? 'active' : ''}
+              aria-current={isActive ? 'page' : undefined}
+              aria-label={link.icon ? link.label : undefined}
+              data-astro-prefetch
+            >
               {link.icon ? (
                 <>
                   <span class="nav-label">{link.label}</span>
@@ -94,10 +100,6 @@ import { SITE, NAV_LINKS } from '../config';
   }
 
   @media (max-width: 640px) {
-    .nav-icon {
-      display: inline;
-    }
-
     .nav-label {
       display: none;
     }

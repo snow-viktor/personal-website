@@ -15,21 +15,61 @@ const { src, visualizerId = 'midi-visualizer' } = Astro.props;
 </figure>
 
 <script>
-  import 'html-midi-player';
+  // Loaded from jsDelivr as a classic script when the figure approaches the
+  // viewport — keeps the ~1.3 MB html-midi-player + @magenta/music bundle off
+  // the page payload (the soundfont already comes from a CDN at playback
+  // time, so CDN use is not new). The combine URL is the loader documented in
+  // html-midi-player's README: Tone and Magenta's core must exist as globals
+  // (window.Tone, window.core) before dist/midi-player.js runs.
+  // Custom-element binding runs on the injected script's `load` event — i.e.
+  // after both element classes are registered — so addVisualizer matches
+  // upgraded elements instead of an unresolved `<midi-visualizer>`.
+  const CDN_SRC =
+    'https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/@magenta/music@1.23.1/es6/core.js,npm/html-midi-player@1.6.0';
 
-  // Bind explicitly: with bundled ESM the player element upgrades before
-  // the visualizer is defined, so the `visualizer` selector attribute
-  // would match an unresolved element and warn. addVisualizer is the
-  // documented equivalent and runs after both classes are registered.
-  const player = /** @type {any} */ (document.querySelector('midi-player'));
-  const visualizer = /** @type {any} */ (document.querySelector('midi-visualizer'));
-  if (player && visualizer) {
+  const bind = (player, visualizer) => {
     player.addVisualizer(visualizer);
     // Quiet notes, orange active note — matches the site accents.
     visualizer.config = {
       noteRGB: '126, 126, 139',
       activeNoteRGB: '228, 138, 74',
     };
+  };
+
+  const load = (figure: Element) => {
+    // Both elements are looked up within their own figure so each instance of
+    // the component binds itself — page-wide tag selector was the only working
+    // choice while the figure was assumed unique per page.
+    const player = /** @type {any} */ (figure.querySelector('midi-player'));
+    const visualizer = /** @type {any} */ (figure.querySelector('midi-visualizer'));
+    if (!player || !visualizer) return;
+
+    if (customElements.get('midi-player') && customElements.get('midi-visualizer')) {
+      bind(player, visualizer);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = CDN_SRC;
+    script.addEventListener('load', () => bind(player, visualizer));
+    script.addEventListener('error', () =>
+      console.error('midi-player: failed to load html-midi-player from jsDelivr'),
+    );
+    document.head.appendChild(script);
+  };
+
+  for (const figure of document.querySelectorAll('figure.midi-player')) {
+    // Fire slightly before the figure scrolls into view so the controls are
+    // ready (or nearly ready) by the time the user reaches the player.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          observer.disconnect();
+          load(figure);
+        }
+      },
+      { rootMargin: '200px 0px' },
+    );
+    observer.observe(figure);
   }
 </script>
 

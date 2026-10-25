@@ -67,7 +67,9 @@ function quoteMark(lang: string, side: 'open' | 'close'): string {
     }, 400);
   }
 
-  // Auto-cycling motion: off under reduced-motion, pausable on hover/focus.
+  // Auto-cycling motion: off under reduced-motion, paused while hovered.
+  // focusin/focusout were no-ops here — the quote container has no focusable
+  // children, so events never fired; removed rather than left pretending.
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!reduceMotion && quotes.length > 1) {
     let timer: ReturnType<typeof setInterval> = setInterval(cycleQuote, 10000);
@@ -78,8 +80,6 @@ function quoteMark(lang: string, side: 'open' | 'close'): string {
     };
     container.addEventListener('mouseenter', pause);
     container.addEventListener('mouseleave', resume);
-    container.addEventListener('focusin', pause);
-    container.addEventListener('focusout', resume);
   }
 </script>
 
@@ -172,19 +172,6 @@ function quoteMark(lang: string, side: 'open' | 'close'): string {
   }
 
   .footer-text a:hover {
-    color: var(--accent);
-    text-decoration-color: var(--accent);
-  }
-
-  .footer-text-link {
-    color: var(--text-dim);
-    text-decoration: underline;
-    text-decoration-color: var(--border);
-    text-underline-offset: 3px;
-    transition: color 0.2s, text-decoration-color 0.2s;
-  }
-
-  .footer-text-link:hover {
     color: var(--accent);
     text-decoration-color: var(--accent);
   }

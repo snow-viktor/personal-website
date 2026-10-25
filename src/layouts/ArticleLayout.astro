@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import PrevNext from '../components/PrevNext.astro';
 // Handwritten CJK face for `free verse` bodies; article-scoped so only
 // article pages pay for its unicode-range CSS.
 import '@fontsource/iansui';
@@ -79,30 +80,7 @@ const articleJsonLd = {
       <slot />
     </div>
   </article>
-  <div class="container container--narrow">
-    {prev || next ? (
-      <nav class="article-nav">
-        <div class="article-nav-prev">
-          {prev && (
-            <a href={prev.url}>
-              <span class="article-nav-label">&larr; Previous</span>
-              <span class="article-nav-title">{prev.title}</span>
-            </a>
-          )}
-        </div>
-        <div class="article-nav-next">
-          {next && (
-            <a href={next.url}>
-              <span class="article-nav-label">Next &rarr;</span>
-              <span class="article-nav-title">{next.title}</span>
-            </a>
-          )}
-        </div>
-      </nav>
-    ) : (
-      <a href="/articles/" class="back-link">&larr; Back to Articles</a>
-    )}
-  </div>
+  <PrevNext prev={prev} next={next} ariaLabel="文章切換" />
 </BaseLayout>
 
 <style>
@@ -178,66 +156,5 @@ const articleJsonLd = {
 
   .article-content :global(img) {
     margin: 1.5rem 0;
-  }
-
-  .article-nav {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin: 3rem 0 1rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .article-nav-prev,
-  .article-nav-next {
-    display: flex;
-    min-width: 0;
-  }
-
-  .article-nav-next {
-    justify-content: flex-end;
-    text-align: right;
-  }
-
-  .article-nav a {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    text-decoration: none;
-    min-width: 0;
-  }
-
-  .article-nav-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-dim);
-  }
-
-  .article-nav-title {
-    font-size: 0.875rem;
-    color: var(--text-muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    transition: color 0.2s;
-  }
-
-  .article-nav a:hover .article-nav-title {
-    color: var(--accent);
-  }
-
-  .back-link {
-    display: inline-block;
-    font-size: 0.875rem;
-    color: var(--text-dim);
-    margin-top: 1rem;
-    transition: color 0.2s;
-
-    &:hover {
-      color: var(--accent);
-    }
   }
 </style>

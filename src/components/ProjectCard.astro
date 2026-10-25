@@ -14,37 +14,25 @@ const { title, date, type, tags, summary, url } = Astro.props;
 ---
 
 <article class="card project-card">
-  <a href={url} class="project-card-link">
-    <div class="project-card-header">
-      <span class="type-badge">{type}</span>
-      <time datetime={date.toISOString()}>{formatDate(date)}</time>
+  <div class="project-card-header">
+    <span class="type-badge">{type}</span>
+    <time datetime={date.toISOString()}>{formatDate(date)}</time>
+  </div>
+  <h2 class="project-card-title"><a href={url}>{title}</a></h2>
+  <p class="project-card-summary">{summary}</p>
+  {tags.length > 0 && (
+    <div class="project-card-tags">
+      {tags.map((tag) => (
+        <span class="tag">{tag}</span>
+      ))}
     </div>
-    <h2 class="project-card-title">{title}</h2>
-    <p class="project-card-summary">{summary}</p>
-    {tags.length > 0 && (
-      <div class="project-card-tags">
-        {tags.map((tag) => (
-          <span class="tag">{tag}</span>
-        ))}
-      </div>
-    )}
-  </a>
+  )}
 </article>
 
 <style>
   .project-card {
+    position: relative;
     padding: 1.25rem;
-  }
-
-  .project-card-link {
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-
-    &:hover {
-      color: inherit;
-    }
   }
 
   .project-card-header {
@@ -53,11 +41,41 @@ const { title, date, type, tags, summary, url } = Astro.props;
     justify-content: space-between;
     font-size: 0.8125rem;
     color: var(--accent-gold);
+    margin-bottom: 0.5rem;
   }
 
   .project-card-title {
     font-size: 1.125rem;
     margin: 0;
+  }
+
+  /* Stretched link: the accessible name is the title alone (not meta +
+     summary + every tag), while the hit area stays the whole card. */
+  .project-card-title a {
+    color: var(--text);
+    transition: color 0.2s ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+    }
+
+    &:hover {
+      color: var(--accent);
+    }
+
+    /* The ::after ring mirrors the real click target; the anchor's own
+       ring is suppressed only because this one replaces it. */
+    &:focus-visible {
+      outline: none;
+
+      &::after {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+    }
   }
 
   .project-card-summary {
@@ -75,5 +93,6 @@ const { title, date, type, tags, summary, url } = Astro.props;
     display: flex;
     flex-wrap: wrap;
     gap: 0.25rem;
+    margin-top: 0.5rem;
   }
 </style>

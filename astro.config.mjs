@@ -24,5 +24,7 @@ export default defineConfig({
       mdastPlugins: [mathMlPlugin(), alertsPlugin()],
     })
   },
+  // No `lastmod` option: the schema has no `updated` field yet, so any value
+  // would just be build time for every page. Revisit when `updated` exists.
   integrations: [mdx(), sitemap()],
 });

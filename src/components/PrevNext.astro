@@ -1,0 +1,101 @@
+---
+export interface Props {
+  prev?: { title: string; url: string };
+  next?: { title: string; url: string };
+  /** Accessible name for the nav landmark (detail pages render one each). */
+  ariaLabel: string;
+  /** Fallback shown when neither neighbor exists, e.g. a single-entry collection. */
+  back?: { href: string; label: string };
+}
+
+const { prev, next, ariaLabel, back } = Astro.props;
+---
+
+<div class="container container--narrow">
+  {prev || next ? (
+    <nav class="prevnext" aria-label={ariaLabel}>
+      <div class="prevnext-prev">
+        {prev && (
+          <a href={prev.url}>
+            <span class="prevnext-label">&larr; Previous</span>
+            <span class="prevnext-title">{prev.title}</span>
+          </a>
+        )}
+      </div>
+      <div class="prevnext-next">
+        {next && (
+          <a href={next.url}>
+            <span class="prevnext-label">Next &rarr;</span>
+            <span class="prevnext-title">{next.title}</span>
+          </a>
+        )}
+      </div>
+    </nav>
+  ) : (
+    back && <a href={back.href} class="back-link">{back.label}</a>
+  )}
+</div>
+
+
+<style>
+  .prevnext {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 3rem 0 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .prevnext-prev,
+  .prevnext-next {
+    display: flex;
+    min-width: 0;
+  }
+
+  .prevnext-next {
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .prevnext a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    text-decoration: none;
+    min-width: 0;
+  }
+
+  .prevnext-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-dim);
+  }
+
+  .prevnext-title {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.2s;
+  }
+
+  .prevnext a:hover .prevnext-title {
+    color: var(--accent);
+  }
+
+  .back-link {
+    display: inline-block;
+    font-size: 0.875rem;
+    color: var(--text-dim);
+    margin-top: 1rem;
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+</style>

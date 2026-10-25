@@ -1,28 +1,35 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PrevNext from '../../components/PrevNext.astro';
 import components from '../../components/mdx';
 import { getEntry, render } from 'astro:content';
 import { getPublishedProjects } from '../../lib/content';
 import { formatDate, truncate } from '../../lib/utils';
 import { SITE } from '../../config';
 
+// Neighbor calculation happens here, not at render time: the base path never
+// varies per query, and we avoid shipping every other project's body through
+// each page's props just to find its neighbors.
 export async function getStaticPaths() {
   const projects = await getPublishedProjects();
-  return projects.map((project) => ({
+  return projects.map((project, index) => ({
     params: { slug: project.id },
-    props: { id: project.id, allProjects: projects },
+    props: {
+      id: project.id,
+      prev: index > 0 ? { title: projects[index - 1].data.title, url: `/projects/${projects[index - 1].id}/` } : undefined,
+      next:
+        index < projects.length - 1
+          ? { title: projects[index + 1].data.title, url: `/projects/${projects[index + 1].id}/` }
+          : undefined,
+    },
   }));
 }
 
-const { id, allProjects } = Astro.props;
+const { id, prev, next } = Astro.props;
 const entry = await getEntry('projects', id);
 const { Content } = await render(entry);
 
 const description = entry.body ? truncate(entry.body) : entry.data.title;
-
-const currentIndex = allProjects.findIndex((p) => p.id === id);
-const prev = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
-const next = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null;
 
 const projectJsonLd = {
   '@context': 'https://schema.org',
@@ -73,30 +80,12 @@ const projectJsonLd = {
       <Content components={components} />
     </div>
   </article>
-  <div class="container container--narrow">
-    {prev || next ? (
-      <nav class="project-nav">
-        <div class="project-nav-prev">
-          {prev && (
-            <a href={`/projects/${prev.id}/`}>
-              <span class="project-nav-label">&larr; Previous</span>
-              <span class="project-nav-title">{prev.data.title}</span>
-            </a>
-          )}
-        </div>
-        <div class="project-nav-next">
-          {next && (
-            <a href={`/projects/${next.id}/`}>
-              <span class="project-nav-label">Next &rarr;</span>
-              <span class="project-nav-title">{next.data.title}</span>
-            </a>
-          )}
-        </div>
-      </nav>
-    ) : (
-      <a href="/projects/" class="back-link">&larr; Back to Projects</a>
-    )}
-  </div>
+  <PrevNext
+    prev={prev}
+    next={next}
+    ariaLabel="專案切換"
+    back={{ href: '/projects/', label: '← Back to Projects' }}
+  />
 </BaseLayout>
 
 <style>
@@ -149,66 +138,5 @@ const projectJsonLd = {
     margin-top: 2.5rem;
     padding-bottom: 0.5rem;
     border-bottom: 1px solid var(--border-accent);
-  }
-
-  .back-link {
-    display: inline-block;
-    font-size: 0.875rem;
-    color: var(--text-dim);
-    margin-top: 1rem;
-    transition: color 0.2s;
-
-    &:hover {
-      color: var(--accent);
-    }
-  }
-
-  .project-nav {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin: 3rem 0 1rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .project-nav-prev,
-  .project-nav-next {
-    display: flex;
-    min-width: 0;
-  }
-
-  .project-nav-next {
-    justify-content: flex-end;
-    text-align: right;
-  }
-
-  .project-nav a {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    text-decoration: none;
-    min-width: 0;
-  }
-
-  .project-nav-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-dim);
-  }
-
-  .project-nav-title {
-    font-size: 0.875rem;
-    color: var(--text-muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    transition: color 0.2s;
-  }
-
-  .project-nav a:hover .project-nav-title {
-    color: var(--accent);
   }
 </style>
