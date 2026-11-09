@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getQuoteCategories } from '../../lib/content';
+
+const categories = await getQuoteCategories();
+const total = categories.reduce((sum, category) => sum + category.quotes.length, 0);
+
+const slugify = (name: string) => `quote-${name.toLowerCase().replace(/\s+/g, '-')}`;
+---
+
+<BaseLayout title="Quotes" description="All collected quotes">
+  <div class="container container--narrow page" id="top">
+    <h1 class="page-title">Quotes <span class="page-count">{total}</span></h1>
+
+    {categories.map((category) => (
+      <div class="quote-group" id={slugify(category.name)}>
+        <h2 class="quote-heading">{category.name} <span class="quote-count">{category.quotes.length}</span></h2>
+        <ul class="quotes-list">
+          {category.quotes.map((quote) => (
+            <li class="quote-item">
+              <p class="quote-text" lang={quote.lang}>{quote.text}</p>
+              {quote.source && <span class="quote-source">&mdash; {quote.source}</span>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+
+    {total === 0 && (
+      <p class="empty">No quotes yet.</p>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .page-title {
+    margin-bottom: 2rem;
+  }
+
+  .page-count {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--text-dim);
+    margin-inline-start: 0.5rem;
+  }
+
+  .quote-group {
+    margin-bottom: 2.5rem;
+    scroll-margin-top: 3.5rem;
+  }
+
+  .quote-heading {
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-accent);
+    position: relative;
+  }
+
+  .quote-count {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--text-dim);
+    margin-inline-start: 0.5rem;
+  }
+
+  .quote-heading::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -3px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .quotes-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .quote-text {
+    margin: 0;
+    line-height: 1.8;
+    color: var(--text);
+  }
+
+  .quote-text[lang="en"] {
+    font-style: italic;
+  }
+
+  .quote-source {
+    font-size: 0.8125rem;
+    color: var(--text-dim);
+  }
+
+  .empty {
+    color: var(--text-muted);
+    font-style: italic;
+  }
+</style>

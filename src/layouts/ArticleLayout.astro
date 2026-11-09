@@ -36,9 +36,11 @@ const articleJsonLd = {
   publisher: {
     '@type': 'Organization',
     name: SITE.name,
+    // Rasterized favicon — SVG logos are rejected by most structured-data
+    // consumers; regenerated alongside the OG card by scripts/generate-og.mjs.
     logo: {
       '@type': 'ImageObject',
-      url: new URL('/favicon.svg', import.meta.env.SITE).href,
+      url: new URL('/logo-512.png', import.meta.env.SITE).href,
     },
   },
   mainEntityOfPage: {
@@ -131,7 +133,8 @@ const articleJsonLd = {
   .article-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.375rem;
+    column-gap: 0.75rem;
+    row-gap: 0.35rem;
     margin-top: 0.75rem;
   }
 

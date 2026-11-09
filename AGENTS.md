@@ -1,6 +1,6 @@
 # personal-website
 
-Astro 7.x static site (`format: 'directory'`, no adapter), deployed to Cloudflare Pages (snow-viktor.pages.dev). Node is pinned via `.node-version` (24). Scripts are only `dev` / `build` / `preview` / `astro` — no lint, typecheck, or tests (`astro check` would prompt to install `@astrojs/check` + `typescript`, neither is a dependency). No CI workflows, no `opencode.json`.
+Astro 7.x static site (`format: 'directory'`, no adapter), deployed to Cloudflare Pages (snow-viktor.pages.dev). Node is pinned via `.node-version` (currently 26 — don't run with a different Node). Scripts are only `dev` / `build` / `preview` / `astro` — no lint, typecheck, or tests (`astro check` would prompt to install `@astrojs/check` + `typescript`, neither is a dependency). No CI workflows, no `opencode.json`.
 
 ## Skills (load before coding, most specific first)
 
@@ -17,7 +17,7 @@ Skills live in `.agents/skills/` (gitignored; restore with `npx skills experimen
 ## Context files (read before UI work)
 
 - `PRODUCT.md` — product truth (audience, archive-first principles). Don't invent bio/credentials/testimonials.
-- `DESIGN.md` — normative tokens + named rules (Solid Text, Atmosphere, Marker, One Accent, Serif Voice, Flat-By-Default). Update it when adding tokens/sizes.
+- `DESIGN.md` — normative tokens + named rules (Solid Text, Atmosphere, Marker, One Accent, Serif Voice, Flat-By-Default). Update it when adding tokens/sizes — and regenerate its machine-readable sidecar `.impeccable/design.json` (token metadata, component snippets, narrative) in the same change, or the panel renders stale values.
 
 ## Commands
 
@@ -43,7 +43,8 @@ No test suite exists — a clean `npm run build` is the only correctness check, 
 
 ### Config & content
 
-- `src/config.ts` — single source of truth for `SITE`, `NAV_LINKS`, `SOCIAL_LINKS`, `QUOTES`, `MATH`. `FONTS` only mirrors the `--font-*` vars in `global.css` (nothing imports it — CSS is authoritative, keep both in sync). `astro.config.mjs` holds Astro-only settings (`site`, integrations, markdown processor).
+- `src/config.ts` — single source of truth for `SITE`, `NAV_LINKS`, `SOCIAL_LINKS`, `MATH`. `FONTS` only mirrors the `--font-*` vars in `global.css` (nothing imports it — CSS is authoritative, keep both in sync). `astro.config.mjs` holds Astro-only settings (`site`, integrations, markdown processor).
+- `src/content/quotes.yaml` — quote archive (`quotes` collection via `file()` loader; schema in `content.config.ts`). Structure is `categories[]` → `name` + `quotes[]` (`text`, `source?`, `lang?`, `footer?`, `draft?`; `source` covers person/book/other attribution and is simply omitted when there is none); display order = YAML authoring order, no per-quote ids (the file loader requires ids only for array-root files). `footer: true` opts a short quote into the footer rotation (Footer reads it at build; falls back to all quotes if none flagged). The `/quotes/` index lists the categories inline from `getQuoteCategories()` in `src/lib/content.ts` (the single entrypoint) — no category nav; groups keep anchor ids for deep links.
 - `src/content.config.ts` — Zod schemas: articles (title, date, tags, `collection?`, draft), projects (+ `type`, `links[]` — no `collection`).
 - `src/content/articles/` — flat files, mostly `YYYY-MM-DD.md` plus slug-named `.md`/`.mdx`; filename minus extension is the route slug (`article.id` in `[...slug].astro`). `src/content/projects/` — slug filenames (e.g. `wall-e.md`).
 
@@ -52,10 +53,11 @@ No test suite exists — a clean `npm run build` is the only correctness check, 
 - Articles index groups by `collection` with a sticky category nav (scroll-spy via IntersectionObserver, text links never pills, ungrouped first, nav order mirrors section order). Projects index is a flat ungrouped grid.
 - Detail prev/next: both `[...slug].astro` routes build only published entries via `getPublished*()` and pass the full date-desc list (`allArticles` / `allProjects`) through `getStaticPaths` props.
 - Search is fully client-side: `/search/` fetches the prerendered `/api/search-index.json` and lazy-imports MiniSearch in a `<script>`.
+- Feed `/rss.xml` is prerendered via `@astrojs/rss` (`src/pages/rss.xml.ts`); it reuses `getPublishedArticles()` + `truncate()` — keep new article pre/post-sync there, don't grow a separate excerpt pipeline.
 
 ### Lib
 
-- `src/lib/content.ts` is the only content entrypoint (`getPublishedArticles()`, `getPublishedProjects()`, `groupByCollection()`). Exception: `src/pages/api/search-index.json.ts` calls `getCollection` directly; draft filtering lives inside `buildSearchIndex` (`src/lib/search.ts`).
+- `src/lib/content.ts` is the only content entrypoint (`getPublishedArticles()`, `getPublishedProjects()`, `getQuoteCategories()`, `groupByCollection()`). Exception: `src/pages/api/search-index.json.ts` calls `getCollection` directly; draft filtering lives inside `buildSearchIndex` (`src/lib/search.ts`).
 - `src/lib/utils.ts` + `cjk.ts` — `isCjkChar()` is the only CJK detector; `computeReadingTime()`, `truncate()`, `stripMarkdown()` / `stripForReading()`, `formatDate()` (`Intl.DateTimeFormat('zh-TW')`, ISO in `datetime`). Never strip markdown inline with ad-hoc regexes.
 - `src/lib/search-client.ts` runs in the browser (may import `cjk.ts` only). Never import server-only modules from client `<script>` blocks — `search.astro`'s `import type { SearchDoc } from '../lib/search'` is type-only (erased at build), not a violation.
 
@@ -76,6 +78,7 @@ No test suite exists — a clean `npm run build` is the only correctness check, 
 
 - Diagrams are hand-authored `.svg` in `src/assets/`, imported directly in MDX inside `<figure class="diagram">` (vertical flow only; the dependency is restated as prose below the figure). Accessibility (`role="img"` + `<title>` via `aria-labelledby`) lives inside the SVG source itself, not on the figure — new diagrams must set it there. No wrapper component, no `mdx.ts` registration. Photos go in the same folder but render via `<Image />` from `astro:assets`.
 - `src/components/mdx.ts` default-exports `{ BookInfo, MidiPlayer }` for MDX; `src/layouts/BaseLayout.astro` owns lang (`zh-Hant-TW`), dark-only chrome, and all metadata from `SITE`.
+- The social preview card (`public/og.png`, 1200×630) and `public/logo-512.png` (rasterized favicon for JSON-LD) come from `scripts/generate-og.mjs` + `scripts/og-base.svg` — regeneration is `node scripts/generate-og.mjs` (needs network: it glyph-subsets webfonts); commit the outputs after any design change. Head tags live in `BaseLayout.astro`.
 
 ## Conventions
 

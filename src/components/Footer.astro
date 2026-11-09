@@ -1,10 +1,20 @@
 ---
-import { SITE, SOCIAL_LINKS, QUOTES } from '../config';
+import { SITE, SOCIAL_LINKS } from '../config';
+import { getQuoteCategories } from '../lib/content';
 
 function quoteMark(lang: string, side: 'open' | 'close'): string {
   if (lang === 'zh') return side === 'open' ? '「' : '」';
   return side === 'open' ? '&ldquo;' : '&rdquo;';
 }
+
+const categories = await getQuoteCategories();
+const flat = categories.flatMap((category) => category.quotes);
+const flagged = flat.filter((quote) => quote.footer);
+const quotes = (flagged.length > 0 ? flagged : flat).map(({ text, source, lang }) => ({
+  text,
+  source: source ?? '',
+  lang,
+}));
 ---
 
 <footer class="footer">
@@ -18,12 +28,13 @@ function quoteMark(lang: string, side: 'open' | 'close'): string {
         </a>
       ))}
     </nav>
-    <div class="footer-quote" id="footer-quote" data-quotes={JSON.stringify(QUOTES)}>
-      <span class="quote-mark" id="quote-mark-open" set:html={quoteMark(QUOTES[0].lang, 'open')}></span>
-      <span class="quote-text" id="quote-text" lang={QUOTES[0].lang}>{QUOTES[0].text}</span>
-      <span class="quote-mark" id="quote-mark-close" set:html={quoteMark(QUOTES[0].lang, 'close')}></span>
-      <span class="quote-author" id="quote-author">&mdash; {QUOTES[0].author}</span>
+    <div class="footer-quote" id="footer-quote" data-quotes={JSON.stringify(quotes)}>
+      <span class="quote-mark" id="quote-mark-open" set:html={quoteMark(quotes[0].lang, 'open')}></span>
+      <span class="quote-text" id="quote-text" lang={quotes[0].lang}>{quotes[0].text}</span>
+      <span class="quote-mark" id="quote-mark-close" set:html={quoteMark(quotes[0].lang, 'close')}></span>
+      <span class="quote-source" id="quote-source">&mdash; {quotes[0].source}</span>
     </div>
+    <a href="/quotes/" class="footer-quotes-link">Quotes</a>
     <p class="footer-text">&copy; {new Date().getFullYear()} {SITE.name} &middot; Code <a href="/MIT.txt" class="footer-text-link">MIT</a> &middot; Content <a href="/CC-BY-NC-4.0.txt" class="footer-text-link">CC BY-NC 4.0</a></p>
   </div>
 </footer>
@@ -31,7 +42,7 @@ function quoteMark(lang: string, side: 'open' | 'close'): string {
 <script>
   interface FooterQuote {
     text: string;
-    author: string;
+    source: string;
     lang: string;
   }
 
@@ -40,6 +51,17 @@ function quoteMark(lang: string, side: 'open' | 'close'): string {
   const container = document.getElementById('footer-quote')!;
   const quotes = JSON.parse(container.dataset.quotes ?? '[]') as FooterQuote[];
 
+  // Rotate in random order (Fisher–Yates), but keep the server-rendered
+  // quote first so the opening display still matches what was built.
+  if (quotes.length > 1) {
+    const first = quotes.shift()!;
+    for (let i = quotes.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [quotes[i], quotes[j]] = [quotes[j]!, quotes[i]!];
+    }
+    quotes.unshift(first);
+  }
+
   function quoteMark(lang: string, side: QuoteMarkSide): string {
     if (lang === 'zh') return side === 'open' ? '\u300C' : '\u300D';
     return side === 'open' ? '\u201C' : '\u201D';
@@ -47,7 +69,7 @@ function quoteMark(lang: string, side: 'open' | 'close'): string {
 
   let index = 0;
   const textEl = document.getElementById('quote-text')!;
-  const authorEl = document.getElementById('quote-author')!;
+  const sourceEl = document.getElementById('quote-source')!;
   const openMark = document.getElementById('quote-mark-open')!;
   const closeMark = document.getElementById('quote-mark-close')!;
 
@@ -60,7 +82,7 @@ function quoteMark(lang: string, side: 'open' | 'close'): string {
     setTimeout(() => {
       textEl.textContent = quote.text;
       textEl.lang = quote.lang;
-      authorEl.innerHTML = '\u2014 ' + quote.author;
+      sourceEl.innerHTML = quote.source ? '\u2014 ' + quote.source : '';
       openMark.textContent = quoteMark(quote.lang, 'open');
       closeMark.textContent = quoteMark(quote.lang, 'close');
       container.classList.remove('fade');
@@ -72,11 +94,11 @@ function quoteMark(lang: string, side: 'open' | 'close'): string {
   // children, so events never fired; removed rather than left pretending.
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!reduceMotion && quotes.length > 1) {
-    let timer: ReturnType<typeof setInterval> = setInterval(cycleQuote, 10000);
+    let timer: ReturnType<typeof setInterval> = setInterval(cycleQuote, 7000);
     const pause = () => clearInterval(timer);
     const resume = () => {
       pause();
-      timer = setInterval(cycleQuote, 10000);
+      timer = setInterval(cycleQuote, 7000);
     };
     container.addEventListener('mouseenter', pause);
     container.addEventListener('mouseleave', resume);
@@ -136,11 +158,10 @@ function quoteMark(lang: string, side: 'open' | 'close'): string {
     }
   }
 
+  /* Same size as the quote text; the source below is the only smaller voice. */
   .quote-mark {
-    font-size: 0.75rem;
     color: var(--accent-gold);
     opacity: 0.6;
-    vertical-align: super;
   }
 
   .quote-text {
@@ -151,10 +172,11 @@ function quoteMark(lang: string, side: 'open' | 'close'): string {
     font-style: normal;
   }
 
-  .quote-author {
+  .quote-source {
     font-size: 0.75rem;
     color: var(--text-dim);
     white-space: nowrap;
+    align-self: center;
   }
 
   .footer-text {
@@ -163,7 +185,12 @@ function quoteMark(lang: string, side: 'open' | 'close'): string {
     margin: 0;
   }
 
-  .footer-text a {
+  .footer-quotes-link {
+    font-size: 0.8125rem;
+  }
+
+  .footer-text a,
+  .footer-quotes-link {
     color: var(--text-dim);
     text-decoration: underline;
     text-decoration-color: var(--border);
@@ -171,7 +198,8 @@ function quoteMark(lang: string, side: 'open' | 'close'): string {
     transition: color 0.2s, text-decoration-color 0.2s;
   }
 
-  .footer-text a:hover {
+  .footer-text a:hover,
+  .footer-quotes-link:hover {
     color: var(--accent);
     text-decoration-color: var(--accent);
   }

@@ -29,6 +29,7 @@
   --text: #ededf0;
   --text-muted: #aeaeBA;
   --text-dim: #7e7e8b;
+  --text-quiet: #a0a0ac;
   --accent: #e48a4a;
   --accent-hover: #ea944e;
   --accent-muted: rgba(228, 138, 74, 0.12);
@@ -333,14 +334,19 @@ main > .page {
   }
 }
 
+/* Tags are taxonomy text, not chips: no fill or shape, and gold stays
+   reserved for time metadata (dates, bylines). The # is generated so it is
+   not selectable, not announced, and never reaches copied text or schema. */
 .tag {
-  display: inline-block;
   font-size: 0.75rem;
-  padding: 0.15em 0.5em;
-  background: var(--border);
-  color: var(--accent-gold);
-  border-radius: 100px;
+  color: var(--text-quiet);
   white-space: nowrap;
+
+  &::before {
+    content: '#';
+    margin-right: 0.15em;
+    color: var(--text-dim);
+  }
 }
 
 .type-badge {
@@ -477,7 +483,8 @@ main > .page {
 .search-result-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
+  column-gap: 0.6rem;
+  row-gap: 0.3rem;
   margin-top: 0.75rem;
 }
 

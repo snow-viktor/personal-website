@@ -32,6 +32,8 @@ const { title, date, type, tags, summary, url } = Astro.props;
 <style>
   .project-card {
     position: relative;
+    display: flex;
+    flex-direction: column;
     padding: 1.25rem;
   }
 
@@ -46,7 +48,7 @@ const { title, date, type, tags, summary, url } = Astro.props;
 
   .project-card-title {
     font-size: 1.125rem;
-    margin: 0;
+    margin: 0 0 0.5rem;
   }
 
   /* Stretched link: the accessible name is the title alone (not meta +
@@ -89,10 +91,15 @@ const { title, date, type, tags, summary, url } = Astro.props;
     overflow: hidden;
   }
 
+  /* Equal-height grid rows stretch the card; the tag row absorbs the slack
+     so tags meet the bottom edge even when the summary runs short. The
+     padding keeps the ArticleCard-parity 0.5rem minimum gap. */
   .project-card-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.25rem;
-    margin-top: 0.5rem;
+    column-gap: 0.6rem;
+    row-gap: 0.3rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
   }
 </style>

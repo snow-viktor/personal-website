@@ -15,6 +15,22 @@ export async function getPublishedProjects(): Promise<ProjectEntry[]> {
   return projects;
 }
 
+export type QuoteItem = CollectionEntry<'quotes'>['data']['categories'][number]['quotes'][number];
+export interface QuoteCategory {
+  name: string;
+  quotes: QuoteItem[];
+}
+
+// Single YAML entry; category and quote order come straight from the file.
+export async function getQuoteCategories(): Promise<QuoteCategory[]> {
+  const entry = (await getCollection('quotes'))[0];
+  const categories = entry?.data.categories ?? [];
+  return categories.map((category) => ({
+    name: category.name,
+    quotes: category.quotes.filter((quote) => !quote.draft),
+  }));
+}
+
 export function groupByCollection(articles: ArticleEntry[]) {
   const grouped = new Map<string, ArticleEntry[]>();
   const ungrouped: ArticleEntry[] = [];

@@ -16,12 +16,12 @@ A long-running personal archive and public notebook. The author writes regularly
 
 ## Positioning
 
-A student's homework-diary-turned-personal-site: the core collection「聯絡簿日記」(contact-book diary) holds the daily entries,「閱讀心得」(reading notes) holds book notes with structured bibliographic headers (`BookInfo`), and standalone essays stay ungrouped. GitHub-style alert callouts (`> [!NOTE]` … `> [!CAUTION]`) appear throughout. The differentiator is the archive itself — dated, tagged, collection-grouped writing — not tooling.
+A student's homework-diary-turned-personal-site: the core collection「聯絡簿日記」(contact-book diary) holds the daily entries,「閱讀心得」(reading notes) holds book notes with structured bibliographic headers (`BookInfo`), and standalone essays stay ungrouped. A curated quote archive (`/quotes/`, themed categories) rounds out the body of work and feeds the footer rotation. GitHub-style alert callouts (`> [!NOTE]` … `> [!CAUTION]`) appear throughout. The differentiator is the archive itself — dated, tagged, collection-grouped writing — not tooling.
 
 ## Operating Context
 
-- Content is Markdown/MDX in `src/content/articles/` (mostly `YYYY-MM-DD.md`, plus slug-named `.md`/`.mdx`) and `src/content/projects/` (3 projects, slug filenames).
-- Readers browse latest → collections → article, or use `/search/` (MiniSearch over a pre-rendered JSON index).
+- Content is Markdown/MDX in `src/content/articles/` (mostly `YYYY-MM-DD.md`, plus slug-named `.md`/`.mdx`), `src/content/projects/` (3 projects, slug filenames), and `src/content/quotes.yaml` (quote archive, loaded at build; `footer: true` opts a short quote into the footer rotation).
+- Readers browse latest → collections → article, or use `/search/` (MiniSearch over a pre-rendered JSON index); quotes surface via the footer rotation and the `/quotes/` index.
 - Deployed as a static build to Cloudflare Pages (`https://snow-viktor.pages.dev`).
 
 ## Capabilities and Constraints
@@ -37,11 +37,11 @@ A student's homework-diary-turned-personal-site: the core collection「聯絡簿
 
 - Name `SnowViktor` + nickname `彬彬`; mono-spaced nav, serif CJK headings, warm dark palette (burnt-orange accent `#e48a4a`, gold `#d4a060`, muted blue `#7a9ec0`).
 - Voice: personal, reflective, student-notebook tone. Do not invent testimonials, credentials, or professional claims.
-- Footer cycling quotes (`QUOTES` in `src/config.ts`); playful details (WALL-E ASCII in `robots.txt`, rickroll on 404) are intentional — preserve them.
+- Footer cycling quotes (from `src/content/quotes.yaml`, opt-in per quote via `footer: true`); playful details (WALL-E ASCII in `robots.txt`, rickroll on 404) are intentional — preserve them.
 
 ## Evidence on Hand
 
-- 75 published articles (`src/content/articles/`, dated 2014–2026: 61 in「聯絡簿日記」, 5 in「閱讀心得」, 9 ungrouped), 3 projects (`src/content/projects/`), site copy in `src/pages/` and `src/config.ts`.
+- 75 published articles (`src/content/articles/`, dated 2014–2026: 61 in「聯絡簿日記」, 5 in「閱讀心得」, 9 ungrouped), 3 projects (`src/content/projects/`), and 85 collected quotes in 10 themed categories (`src/content/quotes.yaml`, 21 flagged into the footer rotation); site copy in `src/pages/` and `src/config.ts`.
 - No analytics, no Search Console access, no stated SEO targets.
 
 ## Product Principles

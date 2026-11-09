@@ -8,6 +8,7 @@ colors:
   text: "#ededf0"
   text-muted: "#aeaeba"
   text-dim: "#7e7e8b"
+  text-quiet: "#a0a0ac"
   accent: "#e48a4a"
   accent-hover: "#ea944e"
   accent-muted: "rgba(228, 138, 74, 0.12)"
@@ -84,15 +85,10 @@ typography:
     fontSize: "1rem"
     fontWeight: 400
   quote:
-    fontFamily: "'Noto Serif', 'Noto Serif Variable', 'Noto Serif CJK TC', 'Noto Serif TC', 'Noto Serif TC Variable', serif"
-    fontSize: "1.125rem"
+    fontFamily: "'Noto Sans', 'Noto Sans Variable', 'Noto Sans CJK TC', 'Noto Sans TC', 'Noto Sans TC Variable', sans-serif"
+    fontSize: "1rem"
     fontWeight: 400
-    lineHeight: 1.7
-  quote-mark:
-    fontFamily: "'Noto Serif', 'Noto Serif Variable', 'Noto Serif CJK TC', 'Noto Serif TC', 'Noto Serif TC Variable', serif"
-    fontSize: "3rem"
-    fontWeight: 400
-    lineHeight: 1
+    lineHeight: 1.8
   section:
     fontFamily: "'Noto Serif', 'Noto Serif Variable', 'Noto Serif CJK TC', 'Noto Serif TC', 'Noto Serif TC Variable', serif"
     fontSize: "1.5rem"
@@ -137,9 +133,9 @@ components:
     rounded: "{rounded.md}"
     padding: "{spacing.card}"
   tag:
-    backgroundColor: "{colors.border}"
-    textColor: "{colors.accent-gold}"
-    rounded: "{rounded.pill}"
+    backgroundColor: "transparent"
+    textColor: "{colors.text-quiet}"
+    rounded: "0"
   type-badge:
     backgroundColor: "{colors.accent-green-muted}"
     textColor: "{colors.accent-green}"
@@ -160,7 +156,7 @@ components:
 
 # Design System: SnowViktor personal website
 
-<!-- SCAN: refreshed 2026-10-18 from src/styles/global.css, components, and pages (Fontsource self-hosted webfonts; muted tints and <mark> highlight added to frontmatter). Qualitative names are descriptive, not user-confirmed. -->
+<!-- SCAN: refreshed 2026-11-09 from src/styles/global.css, components, and pages (tags de-chipped to #-marked text; pills now reserved for type badges and the 404 button; second pass same day — footer quote cadence 7s/hover-pause, stretched-link cards, quotes index captured, serif quote tokens corrected to the sans reality). Qualitative names are descriptive, not user-confirmed. -->
 
 ## Overview
 
@@ -181,7 +177,7 @@ Warm dark neutrals carry the page; three muted accents mark meaning (links/actio
 - **Burnt Orange** (#e48a4a, hover #ea944e): Links, primary actions, hover states, focus rings. The only accent allowed on interactive chrome.
 
 ### Secondary
-- **Muted Gold** (#d4a060): Dates, bylines, metadata, tags. Secondary information color.
+- **Muted Gold** (#d4a060): Dates, bylines, and quotation voice (blockquote rule, footer quote marks). The metadata/aside color.
 - **Dusty Blue** (#7a9ec0): Book-note context (`BookInfo` background tint), informational `Note` variant.
 - **Sage Green** (#7aaa7a): Collection marks, project type badges.
 
@@ -191,6 +187,7 @@ Warm dark neutrals carry the page; three muted accents mark meaning (links/actio
 - **Card Surface** (#17171b): Cards, search input, code blocks.
 - **Paper Text** (#ededf0): Body text.
 - **Muted Text** (#aeaeba): Summaries, descriptions.
+- **Quiet Text** (#a0a0ac): Tags — one step below Muted Text so metadata never reads as body copy.
 - **Dim Text** (#7e7e8b): Tertiary labels, placeholders, footer.
 - **Hairlines** (#363640 borders, #2a2a32 subtle, #42424d accent): Structure only, never decoration.
 
@@ -211,17 +208,18 @@ Each accent has one muted companion (12–15% alpha) used as a fill behind full-
 **Verse Font:** Iansui (self-hosted via Fontsource) — `free verse`-tagged article bodies only; falls back into the body sans stack (Noto Sans → Noto Variable → Noto CJK TC → Noto Sans TC → TC Variable).
 **JA Font:** Noto Sans — Latin Noto Sans (system-first, then its Fontsource Variable webfont) leads before the JP entries; then locally installed Noto Sans CJK JP / Noto Sans JP, Noto Sans JP Variable webfont (Fontsource), then generic `sans-serif` (no non-Noto platform JP fonts) — `lang="ja"` passages only.
 
-**Character:** Editorial serif for headings and quotes; calm high-legibility sans for body at a relaxed 1.7–1.8 line height suited to long CJK reading.
+**Character:** Editorial serif for headings and result titles; quote text stays in the body sans voice (italic for Latin runs); calm high-legibility sans body at a relaxed 1.7–1.8 line height suited to long CJK reading.
 
 ### Hierarchy
 - **Display** (700, 3rem/2.25rem mobile, 1.1): Homepage hero name and 404 code only.
 - **Headline** (600, 2.25rem, 1.3): Page/article `h1`.
 - **Title** (600, 1.125rem, 1.3): Card titles, `h3`.
 - **Body** (400, 1.0625rem, 1.7–1.8): Article and summary text.
+- **Quote** (400, 0.875–1rem, 1.6–1.8): Footer rotation and quotes-index text — body sans, italic when `lang="en"`, never serif; the footer renders 0.875rem.
 - **Label** (600–700, 0.6875–0.8125rem, 0.05–0.08em tracking, uppercase for Latin): Section headers, badges, alert labels, nav active states.
 
 ### Named Rules
-**The Serif Voice Rule.** Headings, quotes, and result titles are always serif; UI chrome and metadata are never serif.
+**The Serif Voice Rule.** Headings, page titles, and search-result titles are always serif; UI chrome, metadata, and quote text are never serif.
 
 ## Layout
 
@@ -236,18 +234,21 @@ Flat by default; depth is a hover response, not a resting state. Cards rest on t
 
 ## Shapes
 
-Gently rounded rects: 8px cards and inputs, 4px code and small elements, pills (100px) reserved for tags, badges, and the 404 home button. Callouts (markdown alerts, `BookInfo`) use a full 1px tinted border on a muted tint background — never a one-sided accent bar.
+Gently rounded rects: 8px cards and inputs, 4px code and small elements, pills (100px) reserved for type badges and the 404 home button. Tags carry no shape — they are `#`-marked text. Callouts (markdown alerts, `BookInfo`) use a full 1px tinted border on a muted tint background — never a one-sided accent bar.
 
 ## Components
 
 ### Cards (ArticleCard, ProjectCard)
 - **Character:** Quiet containers; content typeset, not decorated.
 - **Shape:** 8px radius, 1.25rem padding, 1px subtle border.
-- **Hover:** Accent border, translateY(-2px), soft shadow. Title color inherits (no color jump).
+- **Layout:** Title-to-summary gap is 0.5rem on both cards. Project cards stretch to equal row height, and their tag row is pinned to the bottom (`margin-top: auto`, 0.5rem padding floor) so tags align across a row while short summaries leave the slack above.
+- **Link anatomy (stretched link):** the title anchor is the card's only link — the accessible name is the title alone — with an `::after` (`inset: 0`) stretching the hit area over the whole card. Title is paper at rest, accent on hover (mirroring the border); the 2px accent focus ring (2px offset) is drawn by that same `::after`, so it tracks the real click target.
+- **Collection mark:** green dot (3px on cards, 4px in the article header) beside a lowercase collection name — green is the collection color.
+- **Hover:** Accent border, translateY(-2px), soft shadow; the title link follows into accent.
 - **Motion:** Scroll-linked `card-reveal` (opacity/translate, `animation-timeline: view()`), guarded by `prefers-reduced-motion`.
 
 ### Tags / Type badges
-- **Tags:** Pill, neutral border-color fill, gold text, 0.75rem. All tags shown per card, wrapping to multiple lines.
+- **Tags:** Unshaped metadata text — no fill, border, or radius: 0.75rem `--text-quiet`, with a `#` marker in `--text-dim` generated by `::before` (not selectable, not announced, absent from copied text and schema). Gold is reserved for dates/bylines, so tags read as taxonomy rather than a second date. All tags shown per card, wrapping to multiple lines.
 - **Type badges:** Pill, green tint fill, 1px green-mix border, uppercase 0.6875rem.
 
 ### Blockquote
@@ -286,11 +287,16 @@ Gently rounded rects: 8px cards and inputs, 4px code and small elements, pills (
 ### Navigation
 - **Header:** Fixed, 2.75rem, 50%-transparent bg blur over hairline bottom border; mono type; muted links, full-text on hover/active. Mobile collapses Search to icon-only (label hidden, icon retained with `aria-label` intact on the link text).
 - **Skip link:** Off-canvas until `:focus-visible`, then solid paper-on-ink pill top-left.
-- **Footer:** Social icons (labeled, dim → accent on hover), rotating quote (10s, pauses on hover/focus, static under reduced-motion), license line.
+- **Footer:** Social icons (labeled, dim in a 2rem circle that gains an accent-tint chip on hover), a Quotes link to `/quotes/` (dim, hairline underline, accent on hover), rotating quote (7s interval; random order after the server-rendered first quote; pauses on hover only — focus pausing was removed as a no-op; static under reduced-motion; 0.4s opacity fade; per-language marks `「」` for zh / curly quotes otherwise, gold at 60% opacity, same size as the text), license line.
 
 ### Collection nav (articles index)
 - **Character:** Sticky category jump-list; the page's table of contents. Ordered exactly as the sections below (ungrouped first); no "all" entry — it is not a category.
 - **Style:** Sticks under the fixed header (`top: 2.75rem`) with blur and a hairline bottom border, mirroring the header bar. Items are quiet text links (muted → paper on hover, collection-green with an underline bar when active — green is the system's collection color, matching `ArticleCard` marks), never pills. Active section tracked by IntersectionObserver scroll-spy; without JS the items are plain anchor links. Anchored groups carry `scroll-margin-top` clearing both bars.
+
+### Quotes index (/quotes/)
+- **Character:** The archive's appendix — a flat typographic list, no cards.
+- **Category heading:** Serif `h2` at 1rem, uppercase, muted, with a 1px `--border-accent` underline and a 5px accent dot at the rule's right end; dim category count beside it.
+- **Quote item:** Body sans at 1rem/1.8, italic when `lang="en"`; source as a dim `—`-prefixed 0.8125rem line. Anchored groups carry `scroll-margin-top` (3.5rem — clears the fixed header; this page has no collection nav).
 
 ### Search input
 - **Style:** Card-surface fill, 1px border, 8px radius; placeholder ends with `…`, `autocomplete="off"`, `spellcheck="false"`, `aria-label` + polite live status line.

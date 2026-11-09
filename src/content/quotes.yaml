@@ -1,0 +1,231 @@
+quotes:
+  # Quote archive — powers the footer rotation (footer: true) and the
+  # /quotes/ index page. Category order = display order; quote order within
+  # a category = authoring order. Per-quote fields: text (required),
+  # source? (person, book, or other attribution; omit when there is none),
+  # lang? (zh|en, default zh), footer? (opt into the footer rotation), draft?
+  categories:
+    - name: 自我與人性
+      quotes:
+        - text: 不必將罪惡之源歸咎於超自然因素，人類自身就囊括了所有的惡行。
+          source: 約瑟夫．康拉德
+        - text: 當你凝視深淵，深淵也在凝視你。
+          source: 尼采
+          footer: true
+        - text: 不要只想贏過你的同儕或前輩，先試著贏過你自己。
+          source: 福克納
+        - text: 所有怪誕的行為皆出自於與我們完全不同的模仿者。
+          source: 塞繆爾．約翰遜
+        - text: 別忘了我看不見我自己，我的角色僅限於鏡子裡看到的那個人。
+          source: 雅克．里戈
+        - text: 沒有什麼比希望不平凡更加平凡了。
+          source: 莎士比亞
+          footer: true
+        - text: 沒有一種狩獵比得上把人當獵物的那些久在獵人中得到刺激的人。
+          source: 海明威
+        - text: 正常人不會折磨人，通常是受過折磨的人才會施加折磨。
+          source: 卡爾．榮格
+        - text: 有時我會迷惑，是我瘋了還是其他人瘋了？
+          source: 愛因斯坦
+        - text: 惡魔通常只是凡人並且毫不起眼，他們與我們同床，與我們同桌共餐。
+          source: 威斯坦．休．奧登
+        - text: 一樣的東西，對某人來說是食物，對其他人卻是毒藥。
+          source: 提圖斯．盧克萊修．卡魯斯
+        - text: 在尋求復仇的同時，挖兩個墳墓──一個給自己。
+          source: 道格拉斯．霍頓
+        - text: 我們對自己的所作所為，將和我們一起死去，但我們對他人的所作所為，將永遠不死。
+          source: 阿爾伯特．派克
+        - text: 我們都習慣在別人面前偽裝自己，而最終我們是在自欺欺人。
+          source: 法蘭索瓦．德．拉羅希福可
+        - text: 我們很少意識到這件事，比方說，我們最私密的想法和情緒其實也不是自己的。因為我們都透過語言和圖像思考，但這些語言和圖像不是我們發明的，而是社會賦予我們的。
+          source: 艾倫．沃茨
+        - text: 是這些片片斷斷支撐了我的崩壞。
+          source: 艾略特
+        - text: 當一個人的自我形象與實際面貌相衝突，一定非常痛苦，這時你有兩種做法，你可以正視衝突，設法活出真正的你，也可以退縮閃避，維護心中的自我形象，而那只是一個幻想，你肯定會消失在其中。
+          source: 詹姆斯．鮑德溫
+        - text: 說不定，我們發現自己什麼都想要，是因為已經瀕臨什麼都不想要了。
+          source: 希薇亞．普拉斯
+        - text: 這個世界只有一個角落，你絕對可以改善，那就是你自己。
+          source: 赫胥黎
+        - text: 因為分心事從分心事裡分了心。
+          source: 艾略特
+        - text: 事無好壞，是思考評判好壞。
+          source: 《哈姆雷特》
+          footer: true
+        - text: 倘若追尋完美，你將永不滿足。
+          source: 《安娜．卡列尼娜》
+          footer: true
+        - text: 試圖定義你自己，形同嘗試咬自己的牙齒。
+          source: 艾倫．沃茨
+        - text: 沒有經你同意，沒有人可以讓你覺得矮人一截。
+          source: 愛蓮娜．羅斯福
+          footer: true
+
+    - name: 知識與真理
+      quotes:
+        - text: 想像力比知識更為重要，知識是有限的，而想像力則足以繞行全世界。
+          source: 愛因斯坦
+        - text: 一件事的荒謬，不能成為駁斥它存在的論據，反而是它存在的要件。
+          source: 尼采
+        - text: 辦事的人都把自己當作法官，在真理和知識的領域裡，他們會在眾神的笑聲中沉船。
+          source: 愛因斯坦
+        - text: 在全世界都騙人的時代，說實話是一種改革創新。
+        - text: 書籍裡的道理是高貴的，老一輩的學者汲取了他周圍的世界，經過推敲，在心裡把它重新整理好，再陳述出來。它進入到他心裡的過程是人生，從裡面出來的卻是真理；進去的時候是短暫的動作，出來的卻是不朽的思想；進去的是瑣事，出來的卻是詩歌。它過去是死的事實，而現在則成了活的思想。它既可以守，又可以攻；它一忽兒忍耐，一忽兒飛翔，一忽兒又給人以靈感。
+          source: 愛默生
+        - text: 我們只能相信事實：事實是大自然呈現給我們的，是騙不了人的。在任何情況下，我們都應該將我們的推理置於實驗的檢驗之下，永遠不要透過實驗和觀察的自然道路之外的方式尋找真理。
+          source: 拉瓦節《Traité élémentaire de chimie》
+        - text: 知識就是力量。
+          source: 法蘭西斯．培根
+          footer: true
+        - text: 世上唯一的善就是知識，而唯一的惡就是無知。
+          source: 蘇格拉底
+        - text: Whereof one cannot speak, thereof one must be silent.
+          source: Ludwig Wittgenstein
+          lang: en
+          footer: true
+        - text: As far as the laws of mathematics refer to reality, they are not certain; and as far as they are certain, they do not refer to reality.
+          source: Albert Einstein
+          lang: en
+
+    - name: 行動與實踐
+      quotes:
+        - text: 連鳥兒都會在暴風雨後歌唱，人們為什麼在陽光普照的時候還不盡情享受快樂呢？
+          source: 羅斯．甘迺迪
+        - text: 遇到狐狸，我們要學會狡猾。
+          source: 湯瑪斯．富勒
+        - text: 信仰不只是一種受頭腦支配的思想，它也是一種可以支配頭腦的思想。
+          source: 羅伯特．奧克斯頓．博爾特
+        - text: 不幸的是，大量的夢想必須付出代價，忍受未來不斷的夢魘。
+          source: 彼得．烏斯蒂諾夫爵士
+        - text: 在沒盡全力之前不作評價。
+          source: 伊莉莎白．巴雷特．白朗寧
+          footer: true
+        - text: 歸根究柢，重要的不是生命中的歲月，而是歲月中的人生。
+          source: 亞伯拉罕．林肯
+          footer: true
+        - text: 思考很容易，行動很困難。但全世界最困難的事是依據你的思考來行動。
+          source: 歌德
+        - text: 活著，或許不只是為了「開心」而努力，而是為了在千瘡百孔的感受中，還能找到存在身而為人，最可貴的勇氣與韌性。
+          source: 許皓宜
+        - text: 但到最後，人需要更多的勇氣，是為了要活下去，而不是自我了結。
+          source: 《快樂的死》
+        - text: If the hill will not come to Mahomet, Mahomet will go to the hill.
+          source: Francis Bacon
+          lang: en
+        - text: The best way to predict the future is to invent it.
+          source: Alan Kay
+          lang: en
+          footer: true
+
+    - name: 社會與情感
+      quotes:
+        - text: 當一個好人受到傷害，所有好人定將與其同歷磨難。
+          source: 尤里比底斯
+        - text: 太多的愛，不會帶給人榮耀或價值。
+          source: 尤里比底斯
+        - text: 意識形態分離了我們，而夢想和痛苦使我們走到了一起。
+          source: 尤金．尤內斯庫
+        - text: 最痛苦的淚水從墳墓裡流出，為了還沒有說出口的話和還沒有做過的事。
+          source: 哈里特．伊莉莎白．比徹．斯托
+        - text: 世界上最寬闊的東西是海洋，比海洋更寬闊的是天空，而比天空更寬闊的是人的心靈。
+          source: 維克多．雨果
+        - text: 每一個人，以宇宙的尺度來看，都是很珍貴的。就算哪個人跟你意見不合，也放他一條生路吧。
+          source: 薩根
+        - text: 人以信仰、以國族、以傳統區別你我，就會孕育出暴力。
+          source: 吉杜．克里希那穆提
+        - text: 等待有一天去愛，這算不上是活著。
+          source: 戴夫．艾格斯
+        - text: 反正所有的關係終將以眼淚或死亡作別，愛與不愛殊途同歸。
+          source: 穀子《無能戀愛諮商中心》
+        - text: 偏見是直覺的產物，歧視是文明的恥辱。
+          source: 賴昭正
+          footer: true
+
+    - name: 科技與媒介
+      quotes:
+        - text: 照片是關於秘密的秘密，它告訴你的越多，你知道的就越少。
+          source: 戴安．阿勃斯
+        - text: 我們對科技的期待，勝過對彼此的期待。
+          source: 雪莉．特克
+          footer: true
+        - text: 每次對AI的投入，都是短暫而廉價的情感劇本；而每一次關閉對話框，都是一場悄無聲息的離場與遺忘。
+          source: 時歌
+        - text: 當資訊的生產成本趨近於零，注意力就成了唯一稀缺的資源。
+          source: 時歌
+        - text: Make it work, make it right, make it fast.
+          source: Kent Beck
+          lang: en
+          footer: true
+
+    - name: 生活哲學
+      quotes:
+        - text: 沒有人比剛渡完假的人更需要休假。
+          source: 埃爾伯特．格林．哈伯德
+          footer: true
+        - text: 我非常認真地說，信仰工作的美德已對現代世界造成嚴重傷害，幸福繁榮之道，在於有計畫地減少工作。
+          source: 羅素
+        - text: 生活應該輕輕撫觸，不是大力勒緊。
+          source: 布萊伯利
+          footer: true
+        - text: 學會得到以前，應該先學會放手。
+          source: 布萊伯利
+        - text: 進步，代表更接近你想去的地方。但若你在途中轉錯了一個彎，這時再繼續向前走，也不會更靠近一步。
+          source: C．S．路易斯
+        - text: 不自為大，故能成其大。
+          source: 老子
+          footer: true
+        - text: 重要的是放開自己，任由它去尋找它的長處，不受任何妨礙。
+          source: 吳爾芙
+        - text: 畢竟，天要下雨，你再怎麼做，最好也就是讓它下吧。
+          source: 朗費羅
+        - text: 荒廢時間等於荒廢生命。
+          source: 川端康成
+          footer: true
+        - text: 人們往往習慣憧憬那條自己沒走過的路，有穩定生活的人羨慕那些漂泊在外的旅人，而外面的旅人又羨慕家鄉的溫暖。
+          source: lznauy
+
+    - name: 道德與和平
+      quotes:
+        - text: 我反對暴力，因為當暴力看似行善時，善只是暫時的，它所造成的惡卻是永久的。
+          source: 聖雄甘地
+        - text: 有些人利用文字，目的在偽裝其思想。
+          source: 伏爾泰
+        - text: 劍刃自身便會招致暴力。
+          source: 《奧德賽》
+        - text: 一個國家的偉大及道德進步可以從其對待動物的方式來判斷。
+          source: 聖雄甘地
+
+    - name: 環境與自然
+      quotes:
+        - text: 大自然裡，無一物完美，但萬物皆和諧。樹木或許扭曲彎折，奇形怪狀，但依然美麗。
+          source: 愛麗絲．華克
+        - text: 我們基因裡的鈣、牙齒裡的鈣、血液裡的鐵、蘋果派裡的碳，全都是在塌縮星的內部形成的。星塵構成了我們。
+          source: 《宇宙．宇宙》
+        - text: 愈接近自然生活的人稱之「野蠻」（跟生態環境情感濃厚），愈遠離自然環境生活的人稱之「文明」（用自然科學解釋生態，沒有情感），信奉西方宗教的一神論者是「文明」（outsiders），泛靈信仰的自然主義者是「野蠻」（insiders）。
+          source: 夏曼．藍波安《老海人．自序：滄海》
+
+    - name: 面對困境
+      quotes:
+        - text: 與其詛咒黑暗，不如燃起光芒。
+          source: 《風之谷》
+          footer: true
+        - text: 痛苦、悲劇或愚昧，即使是在清淨的世界也無法消除，因為那是人類的一部分。
+          source: 《風之谷》
+        - text: 火在一天之內把森林燒成灰燼，水和風卻需要一百年以上的時間來造林。
+          source: 《風之谷》
+        - text: 堅強，不是面對悲傷不流一滴淚，而是擦乾眼淚後微笑面對以後的生活。
+          source: 《風之谷》
+        - text: 如果只是把世界分為清淨和污濁兩者，是不是就反而看不到真相了呢？
+          source: 《風之谷》
+
+    - name: 其他
+      quotes:
+        - text: 健全的心靈，寓於健全的身體。
+          source: 《諷刺詩》
+          footer: true
+        - text: 魔術師是世界上最誠實的人。
+          source: 詹姆斯．蘭迪
+        - text: Simplicity is the ultimate sophistication.
+          source: Leonardo da Vinci
+          lang: en
+          footer: true
