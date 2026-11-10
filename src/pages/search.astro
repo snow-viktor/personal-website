@@ -15,7 +15,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           id="search-input"
           type="search"
           class="search-input"
-          placeholder="Search articles and projects…"
+          placeholder="Search articles, projects, tags and dates…"
           autocomplete="off"
           spellcheck="false"
           aria-label="Search articles and projects"
@@ -34,8 +34,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <script>
   import {
     tokenize,
+    getDateTokens,
     escapeHtml,
     getQueryTerms,
+    expandDateTerm,
     buildHighlightPattern,
     highlightWithPattern,
     extractSnippetForTerms,
@@ -70,7 +72,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     dateText: string;
     dateTime: string;
     titleHtml: string;
-    tagsHtml: string;
+    tagsEscaped: string[];
   }
 
   function prepareDoc(doc: SearchDoc): PreparedDoc {
@@ -81,9 +83,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       dateText: text,
       dateTime: datetime,
       titleHtml: escapeHtml(doc.title),
-      tagsHtml: doc.tags?.length
-        ? `<div class="search-result-tags">${doc.tags.map((t: string) => `<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>`
-        : '',
+      tagsEscaped: doc.tags?.map((t: string) => escapeHtml(t)) ?? [],
     };
   }
 
@@ -125,7 +125,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     // miniSearch is assigned after the dynamic import below; runSearch only
     // touches it once `ready` is true.
-    let miniSearch: { search: (q: string) => { id: string }[]; addAll: (d: SearchDoc[]) => void } | null = null;
+    let miniSearch: {
+      search: (q: string) => { id: string }[];
+      // PreparedDoc carries the derived dateText field getDateTokens indexes.
+      addAll: (d: PreparedDoc[]) => void;
+    } | null = null;
 
     const renderResults = (query: string, matches: { id: string }[]) => {
       const gen = ++renderGen;
@@ -142,23 +146,31 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       }
 
       // Tokenize + compile the highlight pattern once per search, not once
-      // per rendered card.
-      const terms = getQueryTerms(query);
-      const lowerTerms = terms.map((t) => t.toLowerCase());
-      const pattern = buildHighlightPattern(terms);
+      // per rendered card. Snippets keep the raw query terms (body text is
+      // what's matched); the pattern additionally gets display-form
+      // alternatives for compact date terms so '20240218' marks the
+      // rendered '2024/02/18'.
+      const queryTerms = getQueryTerms(query);
+      const lowerTerms = queryTerms.map((t) => t.toLowerCase());
+      const pattern = buildHighlightPattern(
+        queryTerms.flatMap((t) => [t, ...expandDateTerm(t)])
+      );
 
       const cardHtml = ({ id }: { id: string }): string => {
         const r = docsById.get(id)!;
         const snippet = extractSnippetForTerms(r.body, r.bodyLower, lowerTerms);
+        const tagsHtml = r.tagsEscaped.length
+          ? `<div class="search-result-tags">${r.tagsEscaped.map((t) => `<span class="tag">${highlightWithPattern(t, pattern)}</span>`).join('')}</div>`
+          : '';
         return `
           <a href="${r.url}" class="search-result">
             <div class="search-result-header">
               <span class="type-badge">${escapeHtml(r.type)}</span>
-              <time class="search-result-date" datetime="${escapeHtml(r.dateTime)}">${escapeHtml(r.dateText)}</time>
+              <time class="search-result-date" datetime="${escapeHtml(r.dateTime)}">${highlightWithPattern(r.dateText, pattern)}</time>
             </div>
             <h2 class="search-result-title">${highlightWithPattern(r.titleHtml, pattern)}</h2>
             ${snippet ? `<p class="search-result-snippet">${highlightWithPattern(escapeHtml(snippet), pattern)}</p>` : ''}
-            ${r.tagsHtml}
+            ${tagsHtml}
           </a>`;
       };
 
@@ -238,16 +250,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     const MiniSearch = (await import('minisearch')).default;
 
     miniSearch = new MiniSearch({
-      fields: ['title', 'body'],
+      fields: ['title', 'body', 'tags', 'dateText'],
       // Body is looked up from docsById for snippets; excluding it from stored
       // fields keeps every result object small.
       storeFields: ['title', 'url', 'type', 'tags', 'date'],
-      tokenize,
+      // tags is a string[] — space-join (not toString's comma-join) so each tag
+      // tokenizes separately instead of fusing the last/first tokens together.
+      stringifyField: (value: any) => (Array.isArray(value) ? value.join(' ') : String(value)),
+      // Only the indexed dateText field (the rendered 'YYYY/MM/DD' text, from
+      // prepareDoc) routes to the date tokenizer. Queries are tokenized without
+      // a field name, so they hit the plain branch — same behavior as before.
+      tokenize: (text: string, fieldName?: string) =>
+        fieldName === 'dateText' ? getDateTokens(text) : tokenize(text),
       processTerm: (term: string) => (term.length > 0 ? term : null),
       searchOptions: {
-        boost: { title: 3, body: 1 },
+        boost: { title: 3, tags: 2, body: 1, dateText: 1 },
         prefix: true,
-        fuzzy: 0.15,
+        // Digit-only terms (compact date queries) must match exactly — each
+        // digit carries meaning, so one edit distance silently lands on the
+        // adjacent day/month. Text terms keep a proportional one-typo
+        // tolerance. MiniSearch resolves the fuzzy option per term; returning
+        // null disables fuzzy for that term.
+        fuzzy: (term) => (/^\d+$/.test(term) ? null : 0.15),
         combineWith: 'AND',
       },
     });
@@ -260,11 +284,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       for (let i = 0; i < rawDocs.length; i += INDEX_CHUNK) {
         const slice = rawDocs.slice(i, i + INDEX_CHUNK);
-        miniSearch.addAll(slice);
-        for (const d of slice) {
-          const prepared = prepareDoc(d);
+        // Prepare before addAll: the index reads the prepared doc's dateText
+        // (display form) as a field; extras like bodyLower are ignored.
+        const preparedSlice = slice.map(prepareDoc);
+        miniSearch.addAll(preparedSlice);
+        for (const prepared of preparedSlice) {
           docs.push(prepared);
-          docsById.set(d.id, prepared);
+          docsById.set(prepared.id, prepared);
         }
         if (i + INDEX_CHUNK < rawDocs.length) await yieldToMain();
       }

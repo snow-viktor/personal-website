@@ -63,6 +63,46 @@ export function tokenize(text: string): string[] {
   return tokens;
 }
 
+// Date search tokens are derived from the exact display text a result card
+// renders ('YYYY/MM/DD', zh-TW 2-digit), so typing the date as shown always
+// matches — never the UTC-shifted date part of the stored ISO string. Both
+// separators and both paddings are emitted, plus standalone pieces and
+// 年/月/日, so mixed queries ('2024', '2024/02', '02月18日', '2024年2月18日')
+// match the date field term-by-term under AND combination. The compact forms
+// ('20240218', '0218') cover separator-free digit queries ('20240218'), and
+// every earlier prefix of them ('2024', '202402') hits via prefix matching,
+// so only the full sequences are needed. The set dedupes padded/unpadded
+// pieces when the number is already two digits (Oct–Dec).
+export function getDateTokens(dateText: string): string[] {
+  const match = /^(\d{4})\/(\d{1,2})\/(\d{1,2})$/.exec(dateText);
+  if (!match) return [];
+
+  const [, year, month, day] = match;
+  const unpadMonth = String(Number(month));
+  const unpadDay = String(Number(day));
+
+  return [
+    ...new Set([
+      dateText, // 2024/02/18 (displayed form)
+      `${year}${month}${day}`, // 20240218 (compact)
+      `${year}-${month}-${day}`,
+      `${month}${day}`, // 0218 (compact month-day)
+      `${month}/${day}`, // month-day compounds, so '02/18' works as a query
+      `${month}-${day}`,
+      `${unpadMonth}/${unpadDay}`, // 2024/2/18 (unpadded)
+      `${unpadMonth}-${unpadDay}`,
+      year,
+      month,
+      day,
+      unpadMonth,
+      unpadDay,
+      '年',
+      '月',
+      '日',
+    ]),
+  ];
+}
+
 export function escapeHtml(text: string): string {
   return text
     .replace(/&/g, '&amp;')
@@ -75,6 +115,26 @@ export function escapeHtml(text: string): string {
 // re-splitting for every rendered card.
 export function getQueryTerms(query: string): string[] {
   return query.split(/\s+/).filter(Boolean);
+}
+
+// A compact date query ('20240218') matches the index but never appears in
+// rendered text ('2024/02/18'), so highlight patterns (and nothing else —
+// snippets match the raw term against body text) need display-form
+// alternatives for it. Longest-compound-first is unnecessary here:
+// buildHighlightPattern already sorts by length.
+export function expandDateTerm(term: string): string[] {
+  const match = /^(\d{4})(\d{2})(\d{2})$/.exec(term);
+  if (!match) return [];
+
+  const [, year, month, day] = match;
+  return [
+    `${year}/${month}/${day}`,
+    `${year}/${month}`,
+    `${month}/${day}`,
+    year,
+    month,
+    day,
+  ];
 }
 
 const REGEX_SPECIAL = /[.*+?^${}()|[\]\\]/g;

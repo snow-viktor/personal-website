@@ -23,13 +23,13 @@
       "source": "pbakaus/impeccable",
       "sourceType": "github",
       "skillPath": ".agents/skills/impeccable/SKILL.md",
-      "computedHash": "0dfad54c8f055b67ff8796c9075d273fb4ba096d02d958fb464e4cb961ceb356"
+      "computedHash": "731d7fbd8800a9ad70a04c8834c25304370b4c3310866ff26bfd14e0c3b12975"
     },
     "seo-audit": {
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
       "skillPath": "skills/seo-audit/SKILL.md",
-      "computedHash": "9a94c66cb3098b03037f072b6f561cca75410c6d8611e50646baf9e8a5dabe8f"
+      "computedHash": "cd08d973fac6cc9f7ece60aed59b2e86c89548fbb2bd69c5ee1c1a503b747ade"
     },
     "web-design-guidelines": {
       "source": "vercel-labs/agent-skills",
